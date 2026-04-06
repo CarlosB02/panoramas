@@ -1,0 +1,220 @@
+.sudoku-page {
+    min-height: 100vh;
+    background: linear-gradient(145deg, #f0f7ff 0%, #e3f2fd 30%, #ffffff 60%, #f0f7ff 100%);
+    padding: 40px 20px 80px;
+    font-family: 'Inter', sans-serif;
+}
+
+.sudoku-header {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: sudFadeDown .7s ease-out;
+}
+
+.sudoku-header h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #4527A0, #7E57C2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+}
+
+.sudoku-header p {
+    color: #888;
+    font-size: 1.05rem;
+    max-width: 460px;
+    margin: 0 auto;
+}
+
+.sudoku-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    animation: sudFadeUp .6s ease-out .1s backwards;
+}
+
+.sudoku-btn {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 12px;
+    font-size: .9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .3s ease;
+    background: rgba(255, 255, 255, .85);
+    backdrop-filter: blur(8px);
+    color: #4527A0;
+    border: 1px solid rgba(69, 39, 160, .1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+}
+
+.sudoku-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(69, 39, 160, .12);
+}
+
+.sudoku-btn.primary {
+    background: linear-gradient(135deg, #4527A0, #7E57C2);
+    color: #fff;
+}
+
+/* ── Grid ── */
+.sudoku-grid-wrapper {
+    max-width: 420px;
+    margin: 0 auto 24px;
+    animation: sudFadeUp .6s ease-out .2s backwards;
+}
+
+.sudoku-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    background: rgba(255, 255, 255, .85);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 2px solid rgba(69, 39, 160, .12);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, .06);
+}
+
+.sudoku-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s ease;
+    border: 1px solid rgba(69, 39, 160, .06);
+    color: #333;
+    background: transparent;
+    user-select: none;
+}
+
+.sudoku-cell:hover {
+    background: rgba(126, 87, 194, .06);
+}
+
+.sudoku-cell.selected {
+    background: rgba(126, 87, 194, .15);
+    box-shadow: inset 0 0 0 2px #7E57C2;
+}
+
+.sudoku-cell.given {
+    font-weight: 800;
+    color: #4527A0;
+}
+
+.sudoku-cell.user-input {
+    color: #7E57C2;
+}
+
+.sudoku-cell.error {
+    color: #d32f2f;
+    background: rgba(211, 47, 47, .06);
+}
+
+/* Box borders */
+.sudoku-cell.br-right {
+    border-right: 2px solid rgba(69, 39, 160, .2);
+}
+
+.sudoku-cell.br-bottom {
+    border-bottom: 2px solid rgba(69, 39, 160, .2);
+}
+
+/* ── Number pad ── */
+.sudoku-numpad {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    max-width: 420px;
+    margin: 0 auto;
+    animation: sudFadeUp .6s ease-out .3s backwards;
+}
+
+.sudoku-num-btn {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s ease;
+    background: rgba(255, 255, 255, .85);
+    backdrop-filter: blur(8px);
+    color: #4527A0;
+    border: 1px solid rgba(69, 39, 160, .08);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .04);
+}
+
+.sudoku-num-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(69, 39, 160, .15);
+    background: linear-gradient(135deg, #4527A0, #7E57C2);
+    color: #fff;
+}
+
+.sudoku-num-btn.erase {
+    background: rgba(211, 47, 47, .06);
+    color: #d32f2f;
+    border-color: rgba(211, 47, 47, .1);
+}
+
+.sudoku-msg {
+    text-align: center;
+    margin-top: 24px;
+    padding: 14px 28px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, rgba(69, 39, 160, .08), rgba(126, 87, 194, .08));
+    color: #4527A0;
+    animation: sudFadeUp .4s ease;
+}
+
+@keyframes sudFadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes sudFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 480px) {
+    .sudoku-header h1 {
+        font-size: 2rem;
+    }
+
+    .sudoku-cell {
+        font-size: .9rem;
+    }
+
+    .sudoku-num-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+}

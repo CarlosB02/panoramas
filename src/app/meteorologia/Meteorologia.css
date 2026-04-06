@@ -1,0 +1,1349 @@
+/* =============================================
+   METEOROLOGIA PAGE — DUAL THEME STYLES
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+
+/* ---- SHARED LAYOUT ---- */
+
+.meteorologia-page {
+    padding: 1.5rem 0 3rem;
+    min-height: 70vh;
+    transition: background 0.4s ease;
+}
+
+.meteo-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Style Switch */
+.style-switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.switch-label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.switch-btn {
+    padding: 0.5rem 1.25rem;
+    border: 2px solid #333;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #f0f0f0;
+    color: #333;
+}
+
+.switch-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.switch-btn.active {
+    color: #fff;
+    border-color: transparent;
+}
+
+/* City Selector */
+.city-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.city-selector label {
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.city-selector select {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 2px solid #333;
+    font-weight: 600;
+    cursor: pointer;
+    min-width: 200px;
+}
+
+/* Main Grid: Map + Cards */
+.meteo-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+@media (max-width: 768px) {
+    .meteo-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Map Panel */
+.map-panel {
+    position: sticky;
+    top: 1rem;
+}
+
+.portugal-map-svg {
+    width: 100%;
+    height: auto;
+    max-height: 480px;
+}
+
+@keyframes pulse-ring {
+    0% {
+        r: 8;
+        opacity: 1;
+    }
+
+    100% {
+        r: 16;
+        opacity: 0;
+    }
+}
+
+.city-pulse {
+    animation: pulse-ring 1.5s ease-out infinite;
+}
+
+/* Weather Panel */
+.weather-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Data Cards Grid */
+.data-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+}
+
+@media (max-width: 900px) {
+    .data-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .data-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Data Card Base */
+.data-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 180px;
+}
+
+.data-card:hover {
+    transform: translateY(-4px);
+}
+
+.card-label {
+    margin-bottom: 0.5rem;
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-value {
+    font-size: 2.2rem;
+    font-weight: 900;
+    line-height: 1.1;
+}
+
+.card-value-text {
+    font-size: 1.1rem;
+}
+
+.card-sub {
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+    opacity: 0.85;
+}
+
+.temp-max {
+    color: inherit;
+}
+
+.temp-separator {
+    margin: 0 0.25rem;
+    opacity: 0.5;
+}
+
+.temp-min {
+    font-size: 1.4rem;
+    opacity: 0.7;
+}
+
+/* Loading & Error */
+.meteo-loading,
+.meteo-error {
+    text-align: center;
+    padding: 4rem 0;
+}
+
+.loading-spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid #ddd;
+    border-top-color: #0d47a1;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.meteo-error p {
+    color: #cc0000;
+    font-weight: 600;
+}
+
+/* Multi-Day Forecast Layout */
+.multi-day-forecast {
+    margin-top: 3rem;
+}
+
+.forecast-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.forecast-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1rem;
+}
+
+.forecast-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.25rem 0.75rem;
+    border-radius: 12px;
+    min-height: 160px;
+    transition: transform 0.3s ease;
+}
+
+.forecast-col:hover {
+    transform: translateY(-4px);
+}
+
+.f-day {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    min-height: 24px;
+}
+
+.f-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.f-temps {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.f-tmin {
+    opacity: 0.6;
+    font-size: 1.1rem;
+    margin-top: 0.15rem;
+}
+
+.f-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.85rem;
+    width: 100%;
+}
+
+.f-detail-item {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.25rem 0;
+    border-radius: 4px;
+}
+
+/* Footer */
+.meteo-footer {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #ddd;
+}
+
+/* =============================================
+   POP ART THEME
+   ============================================= */
+
+.theme-popart {
+    background:
+        radial-gradient(circle, rgba(255, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(135deg, #FFF7E0 0%, #FFE8CC 100%);
+    background-size: 8px 8px, 100% 100%;
+}
+
+/* Title Bubble */
+.popart-title-bubble {
+    display: inline-block;
+    background: #fff;
+    border: 4px solid #000;
+    border-radius: 30px 30px 30px 5px;
+    padding: 1rem 2.5rem;
+    position: relative;
+    box-shadow: 6px 6px 0 #000;
+}
+
+.popart-title-bubble h1 {
+    font-family: 'Bangers', cursive, sans-serif;
+    font-size: 2.8rem;
+    color: #CC0000;
+    letter-spacing: 3px;
+    margin: 0;
+    text-shadow: 2px 2px 0 #FFD700;
+}
+
+.bubble-sub {
+    display: block;
+    font-family: 'Bangers', cursive;
+    font-size: 1rem;
+    color: #0d47a1;
+    letter-spacing: 1px;
+}
+
+/* Pop Art Switch */
+.theme-popart .switch-label {
+    font-family: 'Bangers', cursive;
+    font-size: 1.1rem;
+    color: #000;
+}
+
+.theme-popart .switch-btn.active {
+    background: #CC0000;
+    box-shadow: 3px 3px 0 #000;
+}
+
+.theme-popart .switch-btn {
+    font-family: 'Bangers', cursive;
+    letter-spacing: 1px;
+    border: 3px solid #000;
+    border-radius: 4px;
+    box-shadow: 2px 2px 0 #000;
+}
+
+/* Pop Art City Selector */
+.theme-popart .city-selector label {
+    font-family: 'Bangers', cursive;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+.theme-popart .city-selector select {
+    font-family: 'Bangers', cursive;
+    border: 3px solid #000;
+    border-radius: 4px;
+    box-shadow: 3px 3px 0 #000;
+    font-size: 1.1rem;
+}
+
+/* Pop Art Map */
+.portugal-map-wrapper.popart {
+    background: #fff;
+    border: 4px solid #000;
+    border-radius: 8px;
+    padding: 0.75rem;
+    box-shadow: 6px 6px 0 #000;
+}
+
+/* Pop Art City Banner */
+.popart-city-name {
+    background: linear-gradient(135deg, #0288d1 0%, #01579b 100%);
+    color: #FFF;
+    padding: 1rem 1.5rem;
+    border: 4px solid #000;
+    border-radius: 6px;
+    text-align: center;
+    box-shadow: 4px 4px 0 #000;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: -4px;
+    /* Adjust overlap with image */
+    z-index: 2;
+}
+
+.popart-city-name::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+    background-size: 8px 8px;
+}
+
+.city-name-text {
+    display: block;
+    font-family: 'Bangers', cursive;
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 3px 3px 0 rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.city-subtitle {
+    display: block;
+    font-family: 'Bangers', cursive;
+    font-size: 1.1rem;
+    color: #FFD700;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 0 #000;
+    position: relative;
+}
+
+/* Pop Art City Monument Image */
+.city-image-container.popart-image {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.city-image-container.popart-image img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border: 4px solid #000;
+    border-radius: 4px;
+    box-shadow: 6px 6px 0 #000;
+    /* Apply halftone/comic book filters */
+    filter: sepia(30%) contrast(150%) saturate(180%) hue-rotate(-10deg);
+    position: relative;
+    z-index: 1;
+}
+
+/* Hide container if no image is found */
+.city-image-container.no-image {
+    display: none;
+}
+
+/* Pop Art Data Cards */
+.theme-popart .data-card {
+    border: 4px solid #000;
+    border-radius: 4px;
+    box-shadow: 5px 5px 0 #000;
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-popart .data-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+    background-size: 5px 5px;
+    pointer-events: none;
+}
+
+.theme-popart .data-card:hover {
+    box-shadow: 7px 7px 0 #000;
+}
+
+.theme-popart .card-temp {
+    background: linear-gradient(180deg, #FF6B35 0%, #FF4500 100%);
+    color: #fff;
+}
+
+.theme-popart .card-condition {
+    background: linear-gradient(180deg, #1E90FF 0%, #003399 100%);
+    color: #fff;
+}
+
+.theme-popart .card-rain {
+    background: linear-gradient(180deg, #87CEEB 0%, #6CA6CD 100%);
+    color: #0d47a1;
+}
+
+.theme-popart .card-wind {
+    background: linear-gradient(180deg, #2ECC71 0%, #1A9850 100%);
+    color: #fff;
+}
+
+.popart-label {
+    display: inline-block;
+    background: #fff;
+    color: #000;
+    padding: 0.2rem 0.6rem;
+    border: 2px solid #000;
+    border-radius: 3px;
+    font-family: 'Bangers', cursive;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+}
+
+.theme-popart .card-value {
+    font-family: 'Bangers', cursive;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+.theme-popart .card-value-text {
+    font-family: 'Bangers', cursive;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+}
+
+.theme-popart .card-sub {
+    font-family: 'Bangers', cursive;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+}
+
+.theme-popart .card-icon {
+    position: relative;
+    z-index: 1;
+}
+
+.theme-popart .temp-min {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Pop Art Footer */
+.popart-footer {
+    font-family: 'Bangers', cursive;
+    font-size: 1.1rem;
+    color: #CC0000;
+    letter-spacing: 2px;
+}
+
+/* Pop Art Multi-Day Forecast */
+.theme-popart .forecast-title {
+    font-family: 'Bangers', cursive;
+    font-size: 2.2rem;
+    color: #CC0000;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 0 #FFD700;
+    border: 4px solid #000;
+    display: inline-block;
+    padding: 0.5rem 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 5px 5px 0 #000;
+    margin: 0 auto 2rem;
+}
+
+.theme-popart .multi-day-forecast {
+    text-align: center;
+}
+
+.theme-popart .forecast-col {
+    border: 4px solid #000;
+    border-radius: 6px;
+    box-shadow: 4px 4px 0 #000;
+    background: #fff;
+    color: #000;
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 2rem;
+    /* Ensure all details fit */
+}
+
+.theme-popart .forecast-col::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+    background-size: 5px 5px;
+    pointer-events: none;
+}
+
+.theme-popart .forecast-col:hover {
+    box-shadow: 6px 6px 0 #000;
+}
+
+.theme-popart .today-col {
+    background: #FFD700;
+    /* Golden yellow for Today */
+}
+
+/* Alternating colors for Pop Art columns */
+.theme-popart .forecast-col:nth-child(2) {
+    background: #87CEEB;
+}
+
+.theme-popart .forecast-col:nth-child(3) {
+    background: #FF6B35;
+    color: #fff;
+    border-color: #000;
+}
+
+.theme-popart .forecast-col:nth-child(4) {
+    background: #2ECC71;
+}
+
+.theme-popart .forecast-col:nth-child(5) {
+    background: #9B59B6;
+    color: #fff;
+}
+
+.theme-popart .forecast-col:nth-child(6) {
+    background: #F1C40F;
+    border-color: #000;
+}
+
+.theme-popart .forecast-col:nth-child(7) {
+    background: #E74C3C;
+    color: #fff;
+}
+
+.theme-popart .f-day {
+    font-family: 'Bangers', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
+    position: relative;
+    z-index: 1;
+}
+
+.theme-popart .f-temps {
+    font-family: 'Bangers', cursive;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+.theme-popart .f-details {
+    font-family: 'Bangers', cursive;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+}
+
+.theme-popart .f-detail-item {
+    background: transparent;
+    border: 2px solid #000;
+    background: #fff;
+    color: #000;
+    box-shadow: 2px 2px 0 #000;
+}
+
+.ipma-note {
+    font-family: 'Bangers', cursive;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+/* =============================================
+   CLASSIC THEME
+   ============================================= */
+
+.theme-classic {
+    background: linear-gradient(180deg, #f8faf8 0%, #eef3ee 100%);
+}
+
+/* Classic Title */
+.classic-title h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1b4332;
+    margin: 0 0 0.25rem;
+}
+
+.classic-title p {
+    color: #666;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* Classic Switch */
+.theme-classic .switch-label {
+    color: #555;
+}
+
+.theme-classic .switch-btn.active {
+    background: #2d6a4f;
+    border-color: #2d6a4f;
+}
+
+.theme-classic .switch-btn {
+    border-color: #ccc;
+}
+
+/* Classic City Selector */
+.theme-classic .city-selector label {
+    color: #1b4332;
+}
+
+.theme-classic .city-selector select {
+    border-color: #2d6a4f;
+    border-radius: 8px;
+}
+
+/* Classic Map */
+.portugal-map-wrapper.classic {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Classic City Banner */
+.classic-city-name {
+    background: linear-gradient(135deg, #2d6a4f, #40916c);
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.classic-city-name h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.classic-city-name span {
+    font-size: 0.85rem;
+    opacity: 0.85;
+}
+
+/* Classic City Monument Image */
+.city-image-container.classic-image {
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: -10px;
+    /* Overlap gently with banner */
+    z-index: 1;
+    position: relative;
+}
+
+.city-image-container.classic-image img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Classic Data Cards */
+.theme-classic .data-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.theme-classic .data-card:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+}
+
+.classic-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #888;
+    font-weight: 700;
+}
+
+.theme-classic .card-temp .card-value {
+    color: #e74c3c;
+}
+
+.theme-classic .card-condition .card-value {
+    color: #2980b9;
+}
+
+.theme-classic .card-rain .card-value {
+    color: #3498db;
+}
+
+.theme-classic .card-wind .card-value {
+    color: #27ae60;
+}
+
+.theme-classic .card-sub {
+    color: #999;
+}
+
+.theme-classic .temp-min {
+    color: #999;
+}
+
+/* Classic Footer */
+.classic-footer {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+/* Classic Multi-Day Forecast */
+.theme-classic .forecast-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1b4332;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.theme-classic .forecast-col {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.theme-classic .forecast-col:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.theme-classic .today-col {
+    background: linear-gradient(180deg, #f0f7f4 0%, #fff 100%);
+    border-color: #2d6a4f;
+    border-width: 2px;
+}
+
+.theme-classic .f-day {
+    color: #1b4332;
+    font-weight: 700;
+}
+
+.theme-classic .f-temps {
+    color: #e74c3c;
+}
+
+.theme-classic .f-tmin {
+    color: #999;
+}
+
+.theme-classic .f-details {
+    color: #666;
+}
+
+.theme-classic .f-detail-item {
+    background: #f8f9fa;
+    border: 1px solid #eee;
+    color: #555;
+}
+
+/* =============================================
+   BOTANIC THEME
+   ============================================= */
+
+.theme-botanic {
+    background-color: #f4f1ea;
+    background-image: radial-gradient(#d3cbb8 1px, transparent 1px);
+    background-size: 20px 20px;
+    color: #2c2a25;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.theme-botanic .theme-title-container {
+    border: 2px solid #2c2a25;
+    padding: 1rem 2rem;
+    display: inline-block;
+    position: relative;
+    background: #f4f1ea;
+}
+
+.theme-botanic .theme-title-container::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    border: 1px solid #2c2a25;
+    pointer-events: none;
+}
+
+.theme-botanic h1 {
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+.theme-botanic .theme-subtitle {
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.theme-botanic .switch-label,
+.theme-botanic .city-selector label {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.theme-botanic .switch-btn {
+    border: 1px solid #2c2a25;
+    background: transparent;
+    color: #2c2a25;
+    font-family: Georgia, serif;
+    border-radius: 0;
+}
+
+.theme-botanic .switch-btn.active {
+    background: #2c2a25;
+    color: #f4f1ea;
+}
+
+.theme-botanic .city-selector select {
+    border: 1px solid #2c2a25;
+    background: #f4f1ea;
+    border-radius: 0;
+    font-family: Georgia, serif;
+}
+
+.theme-botanic .portugal-map-wrapper {
+    border: 1px solid #2c2a25;
+    background: #f4f1ea;
+    padding: 1rem;
+    position: relative;
+}
+
+.theme-botanic .portugal-map-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    border: 1px dashed #a8a08d;
+    pointer-events: none;
+}
+
+.theme-botanic .theme-city-name {
+    border-bottom: 2px solid #2c2a25;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.theme-botanic .theme-city-name h2 {
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin: 0;
+}
+
+.theme-botanic .theme-city-name .city-subtitle {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+}
+
+.theme-botanic .city-image-container {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.theme-botanic .city-monument-img {
+    filter: sepia(0.5) contrast(1.2) grayscale(0.8);
+    border: 1px solid #2c2a25;
+    border-radius: 0;
+    box-shadow: none;
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+}
+
+.theme-botanic .data-card {
+    border: 2px solid #2c2a25;
+    border-radius: 4px;
+    background: #fdfbf7;
+    position: relative;
+    box-shadow: none;
+}
+
+.theme-botanic .data-card::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    border: 1px solid #2c2a25;
+    pointer-events: none;
+    border-radius: 2px;
+}
+
+.theme-botanic .theme-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #2c2a25;
+    padding-bottom: 2px;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+.theme-botanic .card-value,
+.theme-botanic .card-condition .card-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2.5rem;
+    color: #2c2a25;
+}
+
+.theme-botanic .card-sub {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: #5a574f;
+}
+
+.theme-botanic .temp-min {
+    color: #5a574f;
+}
+
+.theme-botanic .forecast-title {
+    font-family: 'Courier New', Courier, monospace;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 1px dashed #2c2a25;
+    display: inline-block;
+    padding-bottom: 4px;
+    margin: 0 auto 2rem;
+}
+
+.theme-botanic .multi-day-forecast {
+    text-align: center;
+}
+
+.theme-botanic .forecast-col {
+    border: 1px solid #2c2a25;
+    background: #fdfbf7;
+    border-radius: 2px;
+    box-shadow: none;
+}
+
+.theme-botanic .today-col {
+    background: #e8e3d3;
+    border-width: 2px;
+}
+
+.theme-botanic .f-day {
+    font-family: Georgia, serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1rem;
+    border-bottom: 1px solid #2c2a25;
+    width: 100%;
+    padding-bottom: 4px;
+}
+
+.theme-botanic .f-temps {
+    font-family: 'Courier New', Courier, monospace;
+    color: #2c2a25;
+}
+
+.theme-botanic .f-tmin {
+    color: #5a574f;
+}
+
+.theme-botanic .f-details {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.75rem;
+    color: #2c2a25;
+}
+
+.theme-botanic .f-detail-item {
+    background: transparent;
+    border: none;
+    border-top: 1px dotted #a8a08d;
+    border-radius: 0;
+    color: #2c2a25;
+}
+
+.theme-botanic .theme-footer-text {
+    font-family: 'Courier New', Courier, monospace;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* =============================================
+   SYNTHWAVE THEME
+   ============================================= */
+
+.theme-synthwave {
+    background: linear-gradient(180deg, #120428 0%, #200547 50%, #3e0b59 100%);
+    color: #0ff;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    position: relative;
+    isolation: isolate;
+}
+
+.theme-synthwave::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    background:
+        linear-gradient(transparent 80%, rgba(0, 255, 255, 0.1) 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255, 0, 255, 0.2) 20px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255, 0, 255, 0.2) 40px);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.theme-synthwave .container {
+    position: relative;
+    z-index: 1;
+}
+
+.theme-synthwave .theme-title-container {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #0ff;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    display: inline-block;
+    box-shadow: 0 0 15px #0ff, inset 0 0 10px #0ff;
+}
+
+.theme-synthwave h1 {
+    font-family: 'Arial Black', Impact, sans-serif;
+    font-size: 2.5rem;
+    color: #f0f;
+    text-shadow: 0 0 5px #f0f, 0 0 10px #f0f, 0 0 20px #f0f;
+    margin: 0;
+    font-style: italic;
+    letter-spacing: 2px;
+}
+
+.theme-synthwave .theme-subtitle {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    color: #ff0;
+    text-shadow: 0 0 5px #ff0;
+    letter-spacing: 2px;
+}
+
+.theme-synthwave .switch-label,
+.theme-synthwave .city-selector label {
+    color: #0ff;
+    text-shadow: 0 0 5px #0ff;
+    font-weight: bold;
+}
+
+.theme-synthwave .switch-btn {
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid #f0f;
+    color: #f0f;
+    box-shadow: 0 0 5px #f0f;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.theme-synthwave .switch-btn.active {
+    background: #f0f;
+    color: #000;
+    box-shadow: 0 0 15px #f0f;
+}
+
+.theme-synthwave .city-selector select {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #0ff;
+    color: #0ff;
+    box-shadow: 0 0 10px #0ff;
+    text-shadow: 0 0 5px #0ff;
+}
+
+.theme-synthwave .portugal-map-wrapper {
+    background: rgba(20, 5, 40, 0.8);
+    border: 2px solid #f0f;
+    border-radius: 8px;
+    box-shadow: 0 0 15px #f0f, inset 0 0 10px #f0f;
+}
+
+.theme-synthwave .theme-city-name {
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #0ff;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 0 15px #0ff;
+    margin-bottom: 1rem;
+}
+
+.theme-synthwave .theme-city-name h2 {
+    font-family: 'Arial Black', Impact, sans-serif;
+    font-size: 2rem;
+    color: #ff0;
+    text-shadow: 0 0 10px #ff0;
+    margin: 0;
+    font-style: italic;
+}
+
+.theme-synthwave .theme-city-name .city-subtitle {
+    color: #0ff;
+    text-shadow: 0 0 5px #0ff;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.theme-synthwave .city-image-container {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.theme-synthwave .city-monument-img {
+    border: 2px solid #f0f;
+    border-radius: 8px;
+    box-shadow: 0 0 20px #f0f;
+    filter: hue-rotate(90deg) saturate(200%) contrast(120%);
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+}
+
+.theme-synthwave .data-card {
+    background: rgba(10, 0, 30, 0.7);
+    border: 2px solid #0ff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #0ff, inset 0 0 10px #0ff;
+    backdrop-filter: blur(5px);
+}
+
+.theme-synthwave .data-card:hover {
+    box-shadow: 0 0 20px #0ff, inset 0 0 15px #0ff;
+    transform: translateY(-2px);
+}
+
+.theme-synthwave .theme-label {
+    color: #f0f;
+    text-shadow: 0 0 5px #f0f;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.theme-synthwave .card-value,
+.theme-synthwave .card-condition .card-value {
+    font-style: italic;
+    color: #ff0;
+    text-shadow: 0 0 10px #ff0;
+}
+
+.theme-synthwave .card-sub {
+    color: #0ff;
+    text-shadow: 0 0 3px #0ff;
+}
+
+.theme-synthwave .temp-min {
+    color: rgba(255, 255, 0, 0.6);
+}
+
+.theme-synthwave .multi-day-forecast {
+    text-align: center;
+}
+
+.theme-synthwave .forecast-title {
+    color: #f0f;
+    text-shadow: 0 0 10px #f0f;
+    font-style: italic;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #f0f;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    display: inline-block;
+    margin: 0 auto 2rem;
+}
+
+.theme-synthwave .forecast-col {
+    background: rgba(20, 0, 40, 0.7);
+    border: 1px solid #0ff;
+    border-radius: 8px;
+    box-shadow: 0 0 5px #0ff;
+}
+
+.theme-synthwave .forecast-col:hover {
+    box-shadow: 0 0 15px #0ff;
+}
+
+.theme-synthwave .today-col {
+    background: rgba(40, 0, 80, 0.8);
+    border-color: #f0f;
+    box-shadow: 0 0 10px #f0f;
+}
+
+.theme-synthwave .today-col .f-day {
+    color: #f0f;
+    text-shadow: 0 0 5px #f0f;
+}
+
+.theme-synthwave .f-day {
+    color: #0ff;
+    font-style: italic;
+    text-shadow: 0 0 5px #0ff;
+}
+
+.theme-synthwave .f-temps {
+    color: #ff0;
+    text-shadow: 0 0 5px #ff0;
+}
+
+.theme-synthwave .f-tmin {
+    color: rgba(255, 255, 0, 0.7);
+}
+
+.theme-synthwave .f-details {
+    color: #fff;
+    text-shadow: 0 0 3px #fff;
+}
+
+.theme-synthwave .f-detail-item {
+    background: transparent;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    color: #fff;
+}
+
+.theme-synthwave .theme-footer-text {
+    color: #f0f;
+    text-shadow: 0 0 5px #f0f;
+    font-weight: bold;
+    letter-spacing: 2px;
+}

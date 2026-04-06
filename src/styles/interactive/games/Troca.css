@@ -1,0 +1,296 @@
+.troca-page {
+    min-height: 100vh;
+    background: linear-gradient(145deg, #fff5f0 0%, #ffe0d0 30%, #ffffff 60%, #fff5f0 100%);
+    padding: 40px 20px 80px;
+    font-family: 'Inter', sans-serif;
+}
+
+.troca-header {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: trocaFadeDown .7s ease-out;
+}
+
+.troca-header h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #00897B, #4DB6AC);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+}
+
+.troca-header p {
+    color: #888;
+    font-size: 1.05rem;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.troca-game {
+    max-width: 480px;
+    margin: 0 auto;
+    animation: trocaFadeUp .6s ease-out .15s backwards;
+}
+
+.troca-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, .85);
+    backdrop-filter: blur(12px);
+    border-radius: 14px;
+    border: 1px solid rgba(0, 137, 123, .08);
+}
+
+.troca-round {
+    font-weight: 700;
+    color: #00897B;
+}
+
+.troca-score-num {
+    font-weight: 700;
+    color: #555;
+}
+
+.troca-target {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.troca-target-label {
+    font-size: .85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #999;
+    margin-bottom: 8px;
+}
+
+.troca-target-word {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #00897B;
+    letter-spacing: 6px;
+}
+
+/* ── Letter tiles ── */
+.troca-tiles {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.troca-tile {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all .3s ease;
+    border: none;
+    user-select: none;
+}
+
+.troca-tile.unselected {
+    background: rgba(255, 255, 255, .9);
+    border: 2px solid rgba(0, 137, 123, .12);
+    color: #333;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .06);
+}
+
+.troca-tile.unselected:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 137, 123, .15);
+    border-color: #4DB6AC;
+}
+
+.troca-tile.selected {
+    background: linear-gradient(135deg, #00897B, #4DB6AC);
+    color: #fff;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 14px rgba(0, 137, 123, .3);
+    transform: translateY(-3px) scale(1.08);
+}
+
+.troca-tile.correct {
+    background: linear-gradient(135deg, #43A047, #66BB6A);
+    color: #fff;
+    border: 2px solid transparent;
+    animation: trocaPop .35s ease;
+}
+
+.troca-tile.wrong {
+    background: rgba(211, 47, 47, .08);
+    border: 2px solid #ef9a9a;
+    color: #d32f2f;
+    animation: trocaShake .4s ease;
+}
+
+/* ── Buttons ── */
+.troca-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.troca-btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+.troca-btn-check {
+    background: linear-gradient(135deg, #00897B, #4DB6AC);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(0, 137, 123, .25);
+}
+
+.troca-btn-check:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 137, 123, .3);
+}
+
+.troca-btn-shuffle {
+    background: #fff;
+    color: #00897B;
+    border: 2px solid rgba(0, 137, 123, .15);
+}
+
+.troca-btn-shuffle:hover {
+    background: #f0faf8;
+    transform: translateY(-2px);
+}
+
+.troca-msg {
+    text-align: center;
+    margin-top: 20px;
+    padding: 14px 20px;
+    border-radius: 14px;
+    font-weight: 700;
+    animation: trocaFadeUp .4s ease;
+}
+
+.troca-msg.success {
+    background: rgba(0, 137, 123, .08);
+    color: #00897B;
+}
+
+.troca-msg.error {
+    background: rgba(211, 47, 47, .08);
+    color: #d32f2f;
+}
+
+.troca-msg.complete {
+    background: linear-gradient(135deg, rgba(0, 137, 123, .1), rgba(77, 182, 172, .1));
+    color: #00695C;
+    font-size: 1.2rem;
+}
+
+.troca-play-again {
+    display: block;
+    margin: 16px auto 0;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(135deg, #00897B, #4DB6AC);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(0, 137, 123, .25);
+    transition: all .3s ease;
+}
+
+.troca-play-again:hover {
+    transform: translateY(-2px);
+}
+
+@keyframes trocaFadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes trocaFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes trocaPop {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes trocaShake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-6px);
+    }
+
+    40% {
+        transform: translateX(6px);
+    }
+
+    60% {
+        transform: translateX(-4px);
+    }
+
+    80% {
+        transform: translateX(4px);
+    }
+}
+
+@media (max-width: 480px) {
+    .troca-header h1 {
+        font-size: 2rem;
+    }
+
+    .troca-tile {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+    }
+}

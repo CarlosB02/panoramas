@@ -1,0 +1,272 @@
+.baixa-page {
+    min-height: 100vh;
+    background: linear-gradient(145deg, #f5f0ff 0%, #ede7f6 30%, #ffffff 60%, #f3eeff 100%);
+    padding: 40px 20px 80px;
+    font-family: 'Inter', sans-serif;
+}
+
+.baixa-header {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: baixaFadeDown .7s ease-out;
+}
+
+.baixa-header h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #7B1FA2, #CE93D8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+}
+
+.baixa-header p {
+    color: #888;
+    font-size: 1.05rem;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* ── Game area ── */
+.baixa-game {
+    max-width: 500px;
+    margin: 0 auto;
+    animation: baixaFadeUp .6s ease-out .15s backwards;
+}
+
+.baixa-info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, .85);
+    backdrop-filter: blur(12px);
+    border-radius: 14px;
+    border: 1px solid rgba(123, 31, 162, .08);
+}
+
+.baixa-info-bar .baixa-level {
+    font-weight: 700;
+    color: #7B1FA2;
+    font-size: 1rem;
+}
+
+.baixa-info-bar .baixa-score-display {
+    font-weight: 700;
+    color: #555;
+}
+
+/* ── Word column ── */
+.baixa-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.baixa-word-row {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+}
+
+.baixa-letter-cell {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .9);
+    border: 2px solid #e1d5f0;
+    color: #333;
+    transition: all .3s ease;
+}
+
+.baixa-letter-cell.revealed {
+    background: linear-gradient(135deg, #7B1FA2, #AB47BC);
+    color: #fff;
+    border-color: transparent;
+    animation: baixaPop .35s ease;
+}
+
+.baixa-letter-cell.hint {
+    background: linear-gradient(135deg, #FFA726, #FFB74D);
+    color: #fff;
+    border-color: transparent;
+}
+
+.baixa-letter-cell.found {
+    background: linear-gradient(135deg, #43A047, #66BB6A);
+    color: #fff;
+    border-color: transparent;
+    animation: baixaPop .35s ease;
+}
+
+/* ── Input ── */
+.baixa-input-area {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.baixa-input-area input {
+    flex: 1;
+    padding: 14px 18px;
+    border: 2px solid #e1d5f0;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, .9);
+    transition: border-color .3s;
+}
+
+.baixa-input-area input:focus {
+    border-color: #AB47BC;
+    box-shadow: 0 0 0 4px rgba(171, 71, 188, .12);
+}
+
+.baixa-submit-btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(135deg, #7B1FA2, #AB47BC);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(123, 31, 162, .25);
+    transition: all .3s ease;
+}
+
+.baixa-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(123, 31, 162, .3);
+}
+
+/* ── Word list ── */
+.baixa-found-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.baixa-found-word {
+    background: rgba(255, 255, 255, .85);
+    backdrop-filter: blur(8px);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: .9rem;
+    color: #7B1FA2;
+    border: 1px solid rgba(123, 31, 162, .12);
+    animation: baixaPop .3s ease;
+}
+
+.baixa-hint-btn {
+    display: block;
+    margin: 16px auto 0;
+    padding: 10px 24px;
+    border: 2px solid #e1d5f0;
+    border-radius: 12px;
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: #fff;
+    color: #7B1FA2;
+    transition: all .3s ease;
+}
+
+.baixa-hint-btn:hover {
+    background: #f3eeff;
+    transform: translateY(-1px);
+}
+
+.baixa-msg {
+    text-align: center;
+    margin-top: 20px;
+    padding: 14px;
+    border-radius: 14px;
+    font-weight: 700;
+    background: rgba(123, 31, 162, .08);
+    color: #7B1FA2;
+    animation: baixaFadeUp .4s ease;
+}
+
+.baixa-play-again {
+    display: block;
+    margin: 16px auto 0;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(135deg, #7B1FA2, #AB47BC);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(123, 31, 162, .25);
+    transition: all .3s ease;
+}
+
+.baixa-play-again:hover {
+    transform: translateY(-2px);
+}
+
+@keyframes baixaFadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes baixaFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes baixaPop {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 480px) {
+    .baixa-header h1 {
+        font-size: 2rem;
+    }
+
+    .baixa-letter-cell {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+    }
+}

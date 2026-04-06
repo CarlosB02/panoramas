@@ -1,0 +1,107 @@
+import React from 'react';
+import Link from 'next/link';
+import '@/styles/ArticlePage.css';
+
+export default function ArticleContent({ article, slug }) {
+    const articleTags = article.tags || [];
+
+    return (
+        <div className="article-page-wrapper">
+            <div className="ad-gutter ad-gutter-left">
+                <div className="ad-placeholder"><span>PUBLICIDADE</span></div>
+            </div>
+
+            <main className="article-content-column">
+                <nav className="article-breadcrumb">
+                    <Link href="/">Início</Link> &gt;
+                    {article.categorySlug && (
+                        <Link href={`/${article.categorySlug}`}> {article.category}</Link>
+                    )}
+                </nav>
+
+                <header className="article-header">
+                    {article.kicker && <span className="article-kicker">{article.kicker}</span>}
+                    <h1 className="article-title">{article.title}</h1>
+                    <p className="article-summary">{article.summary}</p>
+
+                    <div className="article-meta-bar">
+                        <div className="author-info">
+                            <span className="author-name">Por {article.author || 'Redação Panoramas'}</span>
+                        </div>
+                        <div className="time-info">
+                            <span>{article.timestamp}</span>
+                            {article.readTime && (
+                                <>
+                                    <span className="divider">•</span>
+                                    <span>{article.readTime}</span>
+                                </>
+                            )}
+                            <span className="divider">•</span>
+                            <span>💬 {article.comments || '0'}</span>
+                        </div>
+                    </div>
+                </header>
+
+                <figure className="article-hero-image">
+                    <img src={article.image} alt={article.title} />
+                    <figcaption>Panoramas — Imagem Ilustrativa</figcaption>
+                </figure>
+
+                <div className="article-body">
+                    {article.content && article.content.split('\n\n').map((p, i) => (
+                        <p key={i}>{p}</p>
+                    ))}
+
+                    {article.pullQuote && (
+                        <blockquote className="article-pullquote">
+                            <span className="pq-mark">&quot;</span>
+                            {article.pullQuote}
+                        </blockquote>
+                    )}
+
+                    {article.expertQuote && (
+                        <div className="article-expert-quote">
+                            <span className="eq-icon">💬</span>
+                            <blockquote>&quot;{article.expertQuote.text}&quot;</blockquote>
+                            <cite>— <strong>{article.expertQuote.author}</strong>, {article.expertQuote.title}</cite>
+                        </div>
+                    )}
+
+                    {article.infographic && (
+                        <div className="article-infographic">
+                            <h4>{article.infographic.title}</h4>
+                            <table>
+                                <tbody>
+                                    {article.infographic.rows.map((row, i) => (
+                                        <tr key={i}>
+                                            <td>{row.label}</td>
+                                            <td><strong>{row.value}</strong></td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+
+                    {article.bullet && (
+                        <div className="article-bullet">
+                            <span className="bullet-dot">●</span> {article.bullet}
+                        </div>
+                    )}
+                </div>
+
+                {articleTags.length > 0 && (
+                    <div className="article-tags">
+                        {articleTags.map((tag, i) => (
+                            <span key={i} className="article-tag">{tag}</span>
+                        ))}
+                    </div>
+                )}
+            </main>
+
+            <div className="ad-gutter ad-gutter-right">
+                <div className="ad-placeholder"><span>PUBLICIDADE</span></div>
+            </div>
+        </div>
+    );
+}

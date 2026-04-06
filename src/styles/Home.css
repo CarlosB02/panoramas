@@ -1,0 +1,346 @@
+/* ===================================
+   HOMEPAGE LAYOUT — EDITORIAL AESTHETIC
+   =================================== */
+
+   .home-page {
+    padding-top: var(--spacing-md);
+    padding-bottom: var(--spacing-3xl);
+    background-color: var(--color-background);
+}
+
+.mt-4 {
+    margin-top: var(--spacing-xl);
+}
+
+/* ── Latest News from Supabase ── */
+.latest-news-section {
+    margin-bottom: var(--spacing-2xl);
+    padding-bottom: var(--spacing-2xl);
+    border-bottom: 3px solid var(--color-primary);
+}
+
+.latest-news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-xl);
+}
+
+@media (max-width: 900px) {
+    .latest-news-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .latest-news-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Common Sidebar Headers ── */
+.sidebar-header {
+    border-bottom: 2px solid var(--color-text-main);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+}
+
+.sidebar-title {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--color-text-main);
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ── 1. EDITORIAL TOP SECTION (Lead + Top Stories) ── */
+.editorial-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-2xl);
+    margin-bottom: var(--spacing-3xl);
+    border-bottom: 4px solid var(--color-text-main);
+    padding-bottom: var(--spacing-2xl);
+}
+
+/* ── Live Updates Box ── */
+.live-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--color-danger);
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.live-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.live-list li {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px dotted var(--color-border);
+}
+
+.live-list li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.live-time {
+    font-weight: 700;
+    color: var(--color-primary);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.live-link {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    transition: color var(--transition-fast);
+}
+
+.live-link:hover {
+    color: var(--color-primary);
+}
+
+/* ── 2. ANALYSIS BAND (Secondary Stories) ── */
+.analysis-band {
+    background-color: var(--color-surface);
+    padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-2xl);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    margin: 0 calc(var(--spacing-lg) * -1) var(--spacing-3xl);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--color-primary);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-sm);
+}
+
+.section-header-title {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--color-text-main);
+}
+
+.section-header-link {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.section-header-link:hover {
+    text-decoration: underline;
+}
+
+.analysis-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-xl);
+}
+
+/* ── 3. MAIN CONTENT GRID ── */
+.editorial-main-grid {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr;
+    gap: var(--spacing-2xl);
+    margin-bottom: var(--spacing-3xl);
+}
+
+.content-col {
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* Prevents flex children from expanding grid column */
+}
+
+/* ── Right Sidebar / Most Read ── */
+.right-sidebar {
+    border-left: 1px solid var(--color-border);
+    padding-left: var(--spacing-xl);
+}
+
+/* ── Full Width Flow (No Sidebar) ── */
+.full-width-flow {
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--spacing-xl);
+    border-top: 1px solid var(--color-border-light);
+}
+
+.sticky-box {
+    position: sticky;
+    top: 80px;
+}
+
+.most-read-list {
+    counter-reset: rank;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.most-read-list li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.most-read-list li:last-child {
+    border-bottom: none;
+}
+
+.rank {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--color-border);
+    margin-right: var(--spacing-md);
+    line-height: 1;
+    min-width: 25px;
+    text-align: right;
+}
+
+.read-content a {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    transition: color var(--transition-fast);
+}
+
+.read-content a:hover {
+    color: var(--color-primary);
+}
+
+/* ── Newsletter Box ── */
+.newsletter-box {
+    background: var(--color-primary-darker);
+    color: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-sm);
+    text-align: center;
+}
+
+.newsletter-box h4 {
+    color: white;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.newsletter-box p {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: var(--spacing-md);
+}
+
+.nl-input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--spacing-sm);
+    font-family: var(--font-body);
+}
+
+.nl-btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--color-accent);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+
+.nl-btn:hover {
+    background: var(--color-accent-hover);
+}
+
+/* ═══════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════ */
+
+@media (max-width: 1024px) {
+    .editorial-top {
+        grid-template-columns: 1.5fr 1fr;
+    }
+
+    .analysis-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-lg);
+    }
+
+    .editorial-main-grid {
+        grid-template-columns: 1.5fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .editorial-top {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xl);
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .editorial-main-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .right-sidebar {
+        border-left: none;
+        padding-left: 0;
+        border-top: 4px solid var(--color-text-main);
+        padding-top: var(--spacing-lg);
+    }
+
+    .analysis-band {
+        padding: var(--spacing-lg) var(--spacing-md);
+        margin: 0 calc(var(--spacing-md) * -1) var(--spacing-xl);
+    }
+}
+
+@media (max-width: 480px) {
+    .analysis-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .analysis-band {
+        padding-left: var(--spacing-sm);
+        padding-right: var(--spacing-sm);
+        margin-left: calc(var(--spacing-sm) * -1);
+        margin-right: calc(var(--spacing-sm) * -1);
+    }
+}

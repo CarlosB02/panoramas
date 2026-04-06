@@ -1,0 +1,506 @@
+/* ============================================================
+   CATEGORY PAGE — 4-COLUMN GRID WITH 2×2 HERO
+   ============================================================ */
+
+.category-page-wrapper {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 1100px) 1fr;
+    gap: 0;
+    min-height: 80vh;
+    padding: 2rem 0;
+}
+
+/* Ad Gutters */
+.ad-gutter {
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ad-placeholder {
+    width: 160px;
+    height: 600px;
+    border: 2px dashed var(--color-border, #e0e0e0);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: repeating-linear-gradient(45deg, transparent, transparent 10px,
+            rgba(0, 0, 0, 0.015) 10px, rgba(0, 0, 0, 0.015) 20px);
+    position: sticky;
+    top: 100px;
+}
+
+.ad-placeholder span {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #ccc;
+    writing-mode: vertical-rl;
+}
+
+/* Central Content Column */
+.category-content-column {
+    padding: 0 1.5rem;
+    width: 100%;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.category-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.category-page-title {
+    font-family: var(--font-heading, 'Merriweather', serif);
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--color-primary, #0d47a1);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.5px;
+}
+
+.category-header-rule {
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-accent, #CC0000), var(--color-primary, #0d47a1));
+    margin: 0 auto 1rem;
+    border-radius: 2px;
+}
+
+.category-subtitle {
+    font-size: 0.88rem;
+    color: #888;
+    font-style: italic;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.category-empty {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    padding: 4rem 0;
+    font-size: 1.1rem;
+}
+
+/* ============================================================
+   4-COLUMN NEWS GRID
+   First child spans 2 columns × 2 rows
+   ============================================================ */
+
+.news-grid-4col {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: auto;
+    gap: 1.25rem;
+}
+
+/* ============================================================
+   GRID CARD — Default (1×1)
+   ============================================================ */
+
+.grid-card {
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.grid-card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+}
+
+/* ============================================================
+   HERO CARD — 2 columns × 2 rows
+   ============================================================ */
+
+.grid-card--hero {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+/* When expanded, take full width */
+.grid-card--expanded {
+    grid-column: 1 / -1;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
+    border-color: var(--color-primary, #0d47a1);
+}
+
+/* ============================================================
+   CARD IMAGE
+   ============================================================ */
+
+.grid-card__image {
+    position: relative;
+    overflow: hidden;
+}
+
+.grid-card__image img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/10;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+.grid-card:hover .grid-card__image img {
+    transform: scale(1.04);
+}
+
+/* Hero image taller */
+.grid-card--hero .grid-card__image img {
+    aspect-ratio: 16/11;
+}
+
+/* ============================================================
+   KICKER TAG
+   ============================================================ */
+
+.grid-card__kicker {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: var(--color-primary, #0d47a1);
+    color: white;
+    font-size: 0.6rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    letter-spacing: 0.5px;
+}
+
+.kicker--large {
+    font-size: 0.72rem;
+    padding: 7px 14px;
+    letter-spacing: 1px;
+}
+
+/* ============================================================
+   CARD BODY
+   ============================================================ */
+
+.grid-card__body {
+    padding: 0.8rem 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.grid-card--hero .grid-card__body {
+    padding: 1.25rem 1.5rem;
+}
+
+/* ============================================================
+   TITLE
+   ============================================================ */
+
+.grid-card__title {
+    font-family: var(--font-heading, 'Merriweather', serif);
+    font-size: 0.88rem;
+    font-weight: 800;
+    line-height: 1.3;
+    color: #111;
+    margin-bottom: 0.4rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.title--hero {
+    font-size: 1.35rem;
+    -webkit-line-clamp: unset;
+    line-height: 1.25;
+    margin-bottom: 0.6rem;
+}
+
+/* ============================================================
+   META
+   ============================================================ */
+
+.grid-card__meta {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.68rem;
+    color: #999;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.meta__author {
+    font-weight: 600;
+    color: var(--color-primary, #0d47a1);
+}
+
+/* ============================================================
+   SUMMARY
+   ============================================================ */
+
+.grid-card__summary {
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+}
+
+.summary--hero {
+    font-size: 0.95rem;
+    -webkit-line-clamp: 4;
+    line-height: 1.6;
+}
+
+/* ============================================================
+   PULL QUOTE (visible on hero + expanded)
+   ============================================================ */
+
+.grid-card__pullquote {
+    margin: 0.75rem 0 0;
+    padding: 0.6rem 1rem;
+    border-left: 3px solid var(--color-accent, #CC0000);
+    background: #f9f9f9;
+    font-family: var(--font-heading, 'Merriweather', serif);
+    font-size: 0.85rem;
+    font-style: italic;
+    font-weight: 600;
+    color: var(--color-primary, #0d47a1);
+    line-height: 1.45;
+    position: relative;
+    border-radius: 0 4px 4px 0;
+}
+
+.pq-mark {
+    font-size: 2.2rem;
+    color: var(--color-accent, #CC0000);
+    opacity: 0.2;
+    position: absolute;
+    top: -6px;
+    left: 6px;
+    font-family: Georgia, serif;
+    line-height: 1;
+}
+
+.grid-card--hero .grid-card__pullquote {
+    font-size: 1rem;
+    padding: 0.8rem 1.25rem;
+}
+
+/* ============================================================
+   EXPANDED DETAIL PANEL
+   ============================================================ */
+
+.grid-card__detail {
+    padding: 1.25rem 1.5rem 1.5rem;
+    border-top: 2px solid var(--color-primary, #0d47a1);
+    background: #fafbfc;
+    animation: slideOpen 0.3s ease;
+}
+
+@keyframes slideOpen {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.detail__body p {
+    font-size: 0.92rem;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 1rem;
+    text-align: justify;
+}
+
+.detail__body p:first-child::first-letter {
+    font-size: 2.5rem;
+    font-family: var(--font-heading, 'Merriweather', serif);
+    font-weight: 900;
+    color: var(--color-primary, #0d47a1);
+    float: left;
+    line-height: 0.85;
+    margin-right: 6px;
+    margin-top: 4px;
+}
+
+/* Expert Quote */
+.detail__expert {
+    margin: 1.25rem 0;
+    padding: 1rem 1.25rem;
+    background: #f0f2f5;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    position: relative;
+}
+
+.expert__icon {
+    position: absolute;
+    top: -10px;
+    left: 14px;
+    background: #fafbfc;
+    padding: 0 5px;
+    font-size: 1rem;
+}
+
+.detail__expert blockquote {
+    font-style: italic;
+    font-size: 0.88rem;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 0.6rem;
+    border: none;
+    padding: 0;
+}
+
+.detail__expert cite {
+    font-size: 0.75rem;
+    color: var(--color-primary, #0d47a1);
+    font-style: normal;
+    display: block;
+}
+
+/* Infographic */
+.detail__infographic {
+    margin: 1.25rem 0;
+    border: 2px solid var(--color-primary, #0d47a1);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.detail__infographic h4 {
+    background: var(--color-primary, #0d47a1);
+    color: white;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 8px 14px;
+    margin: 0;
+}
+
+.detail__infographic table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.detail__infographic td {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    border-bottom: 1px solid #eee;
+}
+
+.detail__infographic td:first-child {
+    color: #555;
+}
+
+.detail__infographic td:last-child {
+    text-align: right;
+    color: var(--color-primary, #0d47a1);
+}
+
+.detail__infographic tr:last-child td {
+    border-bottom: none;
+}
+
+.detail__infographic tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+/* Bullet */
+.detail__bullet {
+    margin: 1.25rem 0 0;
+    padding: 0.6rem 1rem;
+    background: #fff3f3;
+    border-left: 3px solid var(--color-accent, #CC0000);
+    border-radius: 0 4px 4px 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.5;
+}
+
+.bullet-dot {
+    color: var(--color-accent, #CC0000);
+    margin-right: 5px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1200px) {
+    .category-page-wrapper {
+        grid-template-columns: 50px 1fr 50px;
+    }
+
+    .ad-placeholder {
+        width: 40px;
+        height: 400px;
+    }
+
+    .news-grid-4col {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .news-grid-4col {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-card--hero {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+}
+
+@media (max-width: 640px) {
+    .category-page-wrapper {
+        grid-template-columns: 1fr;
+        padding: 1rem 0;
+    }
+
+    .ad-gutter {
+        display: none;
+    }
+
+    .category-content-column {
+        padding: 0 0.75rem;
+    }
+
+    .category-page-title {
+        font-size: 2rem;
+    }
+
+    .news-grid-4col {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .grid-card--hero {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+
+    .title--hero {
+        font-size: 1.15rem;
+    }
+}

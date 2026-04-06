@@ -1,0 +1,53 @@
+/* ===================================
+   SIDEBAR WIDGET
+   =================================== */
+
+.sidebar-widget {
+    background: white;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--transition-base);
+}
+
+.sidebar-widget:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.widget-title {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-main);
+    position: relative;
+}
+
+.widget-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 35px;
+    height: 3px;
+    background: var(--color-primary);
+    border-radius: 2px;
+}
+
+/* ── Highlight variant ── */
+.variant-highlight {
+    border-left: 3px solid var(--color-primary);
+    background: linear-gradient(135deg, rgba(13, 71, 161, 0.03) 0%, white 100%);
+}
+
+.variant-highlight .widget-title {
+    color: var(--color-primary);
+}
+
+.variant-highlight .widget-title::after {
+    background: var(--color-accent);
+}

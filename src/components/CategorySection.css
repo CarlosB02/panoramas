@@ -1,0 +1,59 @@
+/* ===================================
+   CATEGORY BLOCK — UNIFORM GRID
+   =================================== */
+
+   .category-section {
+    position: relative;
+    border-top: 2px solid var(--color-primary);
+    padding-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-xl);
+}
+
+.cat-section-header {
+    margin-bottom: var(--spacing-md);
+}
+
+.category-title {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--color-text-main);
+    display: inline-block;
+    letter-spacing: 0.02em;
+}
+
+.cat-uniform-grid {
+    display: grid;
+    column-gap: var(--spacing-xl);
+    row-gap: 0;
+}
+
+.cat-uniform-grid.cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.cat-uniform-grid.cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* Make sure the news cards inside look consistent */
+.cat-uniform-grid .news-card {
+    border-bottom: 1px dotted var(--color-border-light);
+    padding: var(--spacing-md) 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 992px) {
+    .cat-uniform-grid.cols-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .cat-uniform-grid.cols-2,
+    .cat-uniform-grid.cols-3 {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
