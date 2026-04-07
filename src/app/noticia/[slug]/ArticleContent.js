@@ -48,9 +48,23 @@ export default function ArticleContent({ article, slug }) {
                 </figure>
 
                 <div className="article-body">
-                    {article.content && article.content.split('\n\n').map((p, i) => (
-                        <p key={i}>{p}</p>
-                    ))}
+                    {article.content && article.content.split('\n\n').map((block, i) => {
+                        const trimmed = block.trim();
+                        if (!trimmed) return null;
+                        if (trimmed.startsWith('### ')) {
+                            return <h4 key={i} className="article-subtitle" style={{marginTop: '1.5em', marginBottom: '0.8em', fontSize: '1.2rem'}}>{trimmed.substring(4)}</h4>;
+                        } else if (trimmed.startsWith('## ')) {
+                            return <h3 key={i} className="article-subtitle" style={{marginTop: '1.5em', marginBottom: '0.8em', fontSize: '1.4rem'}}>{trimmed.substring(3)}</h3>;
+                        } else if (trimmed.startsWith('# ')) {
+                            return <h2 key={i} className="article-subtitle" style={{marginTop: '1.5em', marginBottom: '0.8em', fontSize: '1.6rem'}}>{trimmed.substring(2)}</h2>;
+                        } else {
+                            // Basic bold matching for simple markdown support
+                            const htmlContent = trimmed
+                                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                .replace(/\*(.*?)\*/g, '<em>$1</em>');
+                            return <p key={i} dangerouslySetInnerHTML={{ __html: htmlContent }}></p>;
+                        }
+                    })}
 
                     {article.pullQuote && (
                         <blockquote className="article-pullquote">

@@ -18,8 +18,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="pt">
-            <body>
+        <html lang="pt" suppressHydrationWarning>
+            <body suppressHydrationWarning>
                 <div className="layout-wrapper">
                     <Header />
                     <main className="main-content">
