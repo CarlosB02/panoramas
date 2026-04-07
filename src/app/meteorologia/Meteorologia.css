@@ -1347,3 +1347,98 @@
     font-weight: bold;
     letter-spacing: 2px;
 }
+
+/* =============================================
+   MOBILE RESPONSIVENESS & CAROUSELS
+   ============================================= */
+
+@media (max-width: 768px) {
+    /* Full Bleed Carousels on Mobile */
+    .style-switch {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 1rem;
+        /* create bleeding effect */
+        margin-left: -1rem;
+        margin-right: -1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* Hide Scrollbars */
+    .style-switch::-webkit-scrollbar,
+    .forecast-row::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .style-switch,
+    .forecast-row {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+    .switch-btn {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        white-space: nowrap;
+    }
+
+    .switch-label {
+        flex: 0 0 auto;
+        margin-right: 0.5rem;
+    }
+
+    /* Multi-Day Forecast Carousel */
+    .forecast-row {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 1rem;
+        padding-bottom: 1.5rem;
+        /* create bleeding effect */
+        margin-left: -1rem;
+        margin-right: -1rem;
+        padding-left: 1rem;
+        padding-right: 2rem; /* extra padding at the end for easy scrolling */
+    }
+
+    .forecast-col {
+        flex: 0 0 160px; /* Fixed width for swipeable cards */
+        scroll-snap-align: center;
+    }
+
+    /* Adjust page padding for mobile */
+    .meteorologia-page {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .meteo-grid {
+        gap: 1.5rem;
+    }
+    
+    .city-selector select {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .forecast-col {
+        flex: 0 0 140px;
+    }
+    
+    .theme-popart .forecast-title {
+        font-size: 1.5rem;
+        padding: 0.5rem 1rem;
+    }
+    
+    .card-value {
+        font-size: 1.8rem;
+    }
+}

@@ -4,9 +4,8 @@ import React, { useState, useEffect } from 'react';
 import PortugalMap from '@/components/PortugalMap';
 import './Meteorologia.css';
 
-const PROXY = 'https://corsproxy.io/?';
-const API_CITIES = 'https://api.ipma.pt/open-data/distrits-islands.json';
-const API_WEATHER_TYPES = 'https://api.ipma.pt/open-data/weather-type-classe.json';
+const API_CITIES = '/api/ipma/open-data/distrits-islands.json';
+const API_WEATHER_TYPES = '/api/ipma/open-data/weather-type-classe.json';
 
 const WIND_SPEED_CLASSES = {
     1: 'Fraco', 2: 'Moderado', 3: 'Forte', 4: 'Muito Forte',
@@ -35,8 +34,8 @@ export default function MeteorologiaPage() {
             try {
                 setLoading(true);
                 const [citiesRes, weatherRes] = await Promise.all([
-                    fetch(PROXY + encodeURIComponent(API_CITIES)),
-                    fetch(PROXY + encodeURIComponent(API_WEATHER_TYPES)),
+                    fetch(API_CITIES),
+                    fetch(API_WEATHER_TYPES),
                 ]);
                 const citiesData = await citiesRes.json();
                 const weatherData = await weatherRes.json();
@@ -57,8 +56,8 @@ export default function MeteorologiaPage() {
         const fetchCityForecast = async () => {
             try {
                 setLoading(true);
-                const forecastUrl = `https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/${selectedCityId}.json`;
-                const forecastRes = await fetch(PROXY + encodeURIComponent(forecastUrl));
+                const forecastUrl = `/api/ipma/open-data/forecast/meteorology/cities/daily/${selectedCityId}.json`;
+                const forecastRes = await fetch(forecastUrl);
                 const forecastData = await forecastRes.json();
                 let forecastList = forecastData.data || [];
                 if (forecastList.length > 0 && forecastList.length < 7) {
@@ -92,10 +91,65 @@ export default function MeteorologiaPage() {
 
     const getThemeConfig = () => {
         switch (theme) {
-            case 'popart': return { title: 'METEOROLOGIA!', subtitle: 'Dados em tempo real do IPMA', citySelector: '📍 ESCOLHE A CIDADE:', todayPrevisão: 'PREVISÃO DE HOJE!', tempLabel: 'TEMP', condLabel: 'CONDIÇÃO', rainLabel: 'PROB. CHUVA', windLabel: 'VENTO', forecastTitle: '🔮 PRÓXIMOS DIAS!', todayLabel: 'HOJE', footer: 'DADOS REAIS DO IPMA! ⚡ ATUALIZAÇÃO DIÁRIA ⚡' };
-            case 'botanic': return { title: 'PORTUGAL WEATHER SCHEMATIC', subtitle: 'System V.2.1 / Live Feed', citySelector: 'Location Designation:', todayPrevisão: 'CURRENT WEATHER SYSTEM SCHEMATIC', tempLabel: 'TEMP', condLabel: 'CONDITION', rainLabel: 'RAIN', windLabel: 'WIND', forecastTitle: '7-DAY FORECAST SCHEMATIC', todayLabel: 'TODAY', footer: '* DATA ACQUIRED FROM IPMA SYSTEM *' };
-            case 'synthwave': return { title: 'PORTUGAL WEATHER NOW!', subtitle: 'NEON GRID UPLINK', citySelector: 'SELECT NODE:', todayPrevisão: 'LOCAL STATUS', tempLabel: 'TEMP', condLabel: 'CONDITION', rainLabel: 'RAIN', windLabel: 'WIND', forecastTitle: 'FUTURE PROJECTIONS', todayLabel: 'NOW', footer: 'LIVE UPDATES! // SOURCE: IPMA // NEON-NET' };
-            default: return { title: 'Meteorologia', subtitle: 'Previsão meteorológica para Portugal — Fonte: IPMA', citySelector: '📍 Selecionar cidade:', todayPrevisão: 'Previsão para hoje', tempLabel: 'Temperatura', condLabel: 'Condição', rainLabel: 'Prob. de Chuva', windLabel: 'Vento', forecastTitle: 'Previsão para os próximos dias', todayLabel: 'Hoje', footer: 'Fonte: Instituto Português do Mar e da Atmosfera (IPMA) — Atualização diária' };
+            case 'popart':
+                return {
+                    title: 'METEOROLOGIA!',
+                    subtitle: 'Dados em tempo real do IPMA',
+                    citySelector: '📍 ESCOLHE A CIDADE:',
+                    todayPrevisão: 'PREVISÃO DE HOJE!',
+                    tempLabel: 'TEMP',
+                    condLabel: 'CONDIÇÃO',
+                    rainLabel: 'PROB. CHUVA',
+                    windLabel: 'VENTO',
+                    forecastTitle: '🔮 PRÓXIMOS DIAS!',
+                    todayLabel: 'HOJE',
+                    footer: 'DADOS REAIS DO IPMA! ⚡ ATUALIZAÇÃO DIÁRIA ⚡'
+                };
+
+            case 'botanic':
+                return {
+                    title: 'ESQUEMA METEOROLÓGICO DE PORTUGAL',
+                    subtitle: 'Sistema V.2.1 / Transmissão em Direto',
+                    citySelector: 'Designação da Localização:',
+                    todayPrevisão: 'ESQUEMA DO SISTEMA ATUAL',
+                    tempLabel: 'Temperatura',
+                    condLabel: 'CONDIÇÃO',
+                    rainLabel: 'CHUVA',
+                    windLabel: 'VENTO',
+                    forecastTitle: 'ESQUEMA DE PREVISÃO PARA 7 DIAS',
+                    todayLabel: 'HOJE',
+                    footer: '* DADOS ADQUIRIDOS DO SISTEMA IPMA *'
+                };
+
+            case 'synthwave':
+                return {
+                    title: 'PORTUGAL METEO AGORA!',
+                    subtitle: 'LIGAÇÃO À REDE NEON',
+                    citySelector: 'SELECIONAR NÓ:',
+                    todayPrevisão: 'ESTADO LOCAL',
+                    tempLabel: 'Temperatura',
+                    condLabel: 'CONDIÇÃO',
+                    rainLabel: 'CHUVA',
+                    windLabel: 'VENTO',
+                    forecastTitle: 'PROJEÇÕES FUTURAS',
+                    todayLabel: 'AGORA',
+                    footer: 'ATUALIZAÇÕES EM DIRETO! // FONTE: IPMA // REDE-NEON'
+                };
+
+            default:
+                return {
+                    title: 'Meteorologia',
+                    subtitle: 'Previsão meteorológica para Portugal — Fonte: IPMA',
+                    citySelector: '📍 Selecionar cidade:',
+                    todayPrevisão: 'Previsão para hoje',
+                    tempLabel: 'Temperatura',
+                    condLabel: 'Condição',
+                    rainLabel: 'Prob. de Chuva',
+                    windLabel: 'Vento',
+                    forecastTitle: 'Previsão para os próximos dias',
+                    todayLabel: 'Hoje',
+                    footer: 'Fonte: Instituto Português do Mar e da Atmosfera (IPMA) — Atualização diária'
+                };
         }
     };
     const t = getThemeConfig();

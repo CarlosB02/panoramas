@@ -29,6 +29,19 @@ const Header = () => {
         setIsSearchOpen(false);
     }, [pathname]);
 
+    // Prevent body scroll when menu is open
+    useEffect(() => {
+        if (isMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isMenuOpen]);
+
     // Auto-focus search input when it opens
     useEffect(() => {
         if (isSearchOpen && searchInputRef.current) {

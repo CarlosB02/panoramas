@@ -390,11 +390,13 @@
         right: 0;
         width: 280px;
         height: 100vh;
+        height: 100dvh; /* Use dynamic viewport height if supported */
         background: var(--color-primary-dark);
         flex-direction: column;
-        padding: 80px var(--spacing-lg) var(--spacing-lg);
+        padding: 80px var(--spacing-lg) calc(var(--spacing-lg) + 40px); /* Extrapadding at bottom */
         z-index: 1000;
         overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
         box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
         gap: 0;
     }
