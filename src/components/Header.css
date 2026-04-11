@@ -110,7 +110,7 @@
 .main-nav-bar {
     background-color: var(--color-primary);
     position: relative;
-    z-index: 100;
+    z-index: 1050;
     transition: all var(--transition-base);
 }
 
@@ -419,6 +419,7 @@
 
     .nav-links li {
         width: 100%;
+        flex-shrink: 0;
     }
 
     .nav-links li a {
@@ -447,7 +448,7 @@
         right: 0;
         bottom: 0;
         background: rgba(0, 0, 0, 0.5);
-        z-index: 999;
+        z-index: 1040;
         animation: fadeIn 0.2s ease;
     }
 
@@ -634,4 +635,3 @@
         transform: translateY(0);
     }
 }
-@media (max-width: 992px) { .nav-links { box-sizing: border-box; overscroll-behavior-y: contain; } .nav-links li { flex-shrink: 0; } }

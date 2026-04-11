@@ -29,16 +29,29 @@ const Header = () => {
         setIsSearchOpen(false);
     }, [pathname]);
 
-    // Prevent body scroll when menu is open
+    // Prevent body scroll when menu is open (Fixed for mobile Safari)
     useEffect(() => {
         if (isMenuOpen) {
-            document.body.style.overflow = 'hidden';
+            const scrollY = window.scrollY;
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
+            document.body.style.width = '100%';
+            // Store it to retrieve when closing
+            document.body.dataset.scrollY = scrollY;
         } else {
-            document.body.style.overflow = '';
+            const scrollY = document.body.dataset.scrollY;
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            if (scrollY) {
+                window.scrollTo(0, parseInt(scrollY));
+            }
         }
         
         return () => {
-            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
         };
     }, [isMenuOpen]);
 
@@ -107,8 +120,8 @@ const Header = () => {
                 <div className="container utility-container">
                     <span className="utility-date">{formattedDate}</span>
                     <div className="utility-right">
-                        <a href="#" className="utility-link">Newsletter</a>
-                        <a href="#" className="utility-link">Contactos</a>
+                        <Link href="/newsletter" className="utility-link">Newsletter</Link>
+                        <Link href="/contactos" className="utility-link">Contactos</Link>
                         <a href="#" className="utility-link login-link">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
