@@ -392,17 +392,17 @@
         height: 100vh;
         height: 100dvh; /* Use dynamic viewport height if supported */
         background: var(--color-primary-dark);
-        flex-direction: column;
         padding: 80px var(--spacing-lg) calc(var(--spacing-lg) + 40px); /* Extrapadding at bottom */
         z-index: 1000;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
-        gap: 0;
+        box-sizing: border-box;
+        overscroll-behavior-y: contain;
     }
 
     .nav-links.mobile-open {
-        display: flex;
+        display: block;
         animation: slideInRight 0.3s ease;
     }
 
@@ -634,3 +634,4 @@
         transform: translateY(0);
     }
 }
+@media (max-width: 992px) { .nav-links { box-sizing: border-box; overscroll-behavior-y: contain; } .nav-links li { flex-shrink: 0; } }
