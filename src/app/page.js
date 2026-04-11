@@ -53,7 +53,7 @@ export default function HomePage() {
                                 {satiricalLive.slice(0, 3).map(item => (
                                     <li key={item.id}>
                                         <div className="live-time">{item.status?.split(' ')[0] || '12:00'}</div>
-                                        <Link href={`/noticia/${item.seoMeta.slug}`} className="live-link">{item.title}</Link>
+                                        <Link href={`/${item.categorySlug || 'noticia'}/${item.seoMeta.slug}`} className="live-link">{item.title}</Link>
                                     </li>
                                 ))}
                             </ul>
@@ -96,7 +96,7 @@ export default function HomePage() {
                                     <li key={item.id}>
                                         <span className="rank">{index + 1}</span>
                                         <div className="read-content">
-                                            <Link href={`/noticia/${item.seoMeta.slug}`}>{item.title}</Link>
+                                            <Link href={`/${item.categorySlug || 'noticia'}/${item.seoMeta.slug}`}>{item.title}</Link>
                                         </div>
                                     </li>
                                 ))}

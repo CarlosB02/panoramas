@@ -192,7 +192,7 @@ const Header = () => {
                     <ul className="trending-links">
                         {satiricalMostRead.slice(0, 5).map((item) => (
                             <li key={item.id}>
-                                <Link href={`/noticia/${item.seoMeta.slug}`}>{item.kicker}</Link>
+                                <Link href={`/${item.categorySlug || 'noticia'}/${item.seoMeta.slug}`}>{item.kicker}</Link>
                             </li>
                         ))}
                     </ul>

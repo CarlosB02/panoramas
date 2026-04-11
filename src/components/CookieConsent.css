@@ -1,0 +1,110 @@
+.cookie-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  padding: var(--spacing-md);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.cookie-banner {
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  padding: var(--spacing-lg);
+  max-width: 650px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  transform: translateY(150%);
+  transition: transform var(--transition-slow) cubic-bezier(0.16, 1, 0.3, 1), opacity var(--transition-slow);
+  opacity: 0;
+}
+
+.cookie-banner.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.cookie-content h3 {
+  margin-bottom: var(--spacing-sm);
+  font-size: 1.15rem;
+  color: var(--color-primary-dark);
+}
+
+.cookie-content p {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+.cookie-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-xs);
+}
+
+@media (max-width: 480px) {
+  .cookie-actions {
+    flex-direction: column;
+  }
+  .cookie-actions .btn {
+    width: 100%;
+  }
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-light);
+}
+
+.btn-decline {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.btn-decline:hover {
+  background: var(--color-surface-alt);
+  color: var(--color-text-main);
+  box-shadow: none;
+}
+
+.cookie-feedback {
+  position: fixed;
+  bottom: var(--spacing-xl);
+  left: 50%;
+  transform: translateX(-50%) translateY(150%);
+  background: var(--color-success);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: 500;
+  font-size: 0.95rem;
+  z-index: 10000;
+  opacity: 0;
+  transition: all var(--transition-base);
+}
+
+.cookie-feedback.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}

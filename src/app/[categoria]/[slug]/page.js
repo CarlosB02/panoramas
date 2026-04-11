@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import ArticleContent from './ArticleContent';
 
 export async function generateMetadata({ params }) {
-    const { slug } = await params;
+    const { slug, categoria } = await params;
     const article = await getArticleBySlug(slug);
 
     if (!article) {
@@ -18,7 +18,7 @@ export async function generateMetadata({ params }) {
         openGraph: {
             title: `${article.title} - Panoramas`,
             description: article.seoMeta?.meta_description || article.summary,
-            url: `${siteUrl}/noticia/${slug}`,
+            url: `${siteUrl}/${categoria}/${slug}`,
             type: 'article',
             images: [
                 {
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }) {
             images: [article.image?.startsWith('http') ? article.image : `${siteUrl}${article.image}`],
         },
         alternates: {
-            canonical: `${siteUrl}/noticia/${slug}`,
+            canonical: `${siteUrl}/${categoria}/${slug}`,
         },
     };
 }

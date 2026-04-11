@@ -2,9 +2,9 @@ import React from 'react';
 import NewsCard from './NewsCard';
 import './CategorySection.css';
 
-const CategorySection = ({ title, articles, columns = 2 }) => {
+const CategorySection = ({ title, articles, columns = 2, limit = 6 }) => {
     if (!articles || articles.length === 0) return null;
-    const displayArticles = articles.slice(0, 6);
+    const displayArticles = articles.slice(0, limit);
 
     return (
         <section className="category-section">

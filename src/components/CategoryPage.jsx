@@ -41,7 +41,10 @@ const CategoryPage = ({ categoryName, articles = [] }) => {
                             <article
                                 key={article.id}
                                 className={`grid-card ${isHero ? 'grid-card--hero' : ''}`}
-                                onClick={() => router.push(`/noticia/${article.seoMeta.slug}`)}
+                                onClick={() => {
+                                    const catSlug = article.categorySlug || (article.category ? article.category.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-') : 'noticia');
+                                    router.push(`/${catSlug}/${article.seoMeta.slug}`);
+                                }}
                             >
                                 <div className="grid-card__image">
                                     <img src={article.image} alt={article.title} />

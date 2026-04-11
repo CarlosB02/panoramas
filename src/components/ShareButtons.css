@@ -1,0 +1,177 @@
+/* Container for Share Buttons */
+.share-buttons-container {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.share-action-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #111);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-right: 8px;
+    opacity: 0.8;
+}
+
+/* Individual Button */
+.share-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: var(--color-background-secondary, #f0f0f0);
+    color: var(--color-text-primary, #333);
+    border: 1px solid var(--color-border, #ddd);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    outline: none;
+}
+
+[data-theme="dark"] .share-btn {
+    background-color: var(--color-background-secondary, #222);
+    color: var(--color-text-primary, #eee);
+    border-color: var(--color-border, #333);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.share-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Hover effects */
+.share-btn:hover {
+    transform: translateY(-6px) scale(1.05);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+[data-theme="dark"] .share-btn:hover {
+    box-shadow: 0 8px 15px rgba(0,0,0,0.5);
+}
+
+.share-btn:hover svg {
+    transform: scale(1.15) rotate(5deg);
+}
+
+/* Brand Colors on Hover */
+.share-btn.twitter:hover {
+    background-color: #000000;
+    color: #ffffff;
+    border-color: #000000;
+}
+[data-theme="dark"] .share-btn.twitter:hover {
+    background-color: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+}
+
+.share-btn.facebook:hover {
+    background-color: #1877F2;
+    color: #ffffff;
+    border-color: #1877F2;
+}
+
+.share-btn.linkedin:hover {
+    background-color: #0A66C2;
+    color: #ffffff;
+    border-color: #0A66C2;
+}
+
+.share-btn.whatsapp:hover {
+    background-color: #25D366;
+    color: #ffffff;
+    border-color: #25D366;
+}
+
+/* Desktop Only Display */
+.desktop-inline {
+    margin: 20px 0 30px 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border, #eee);
+}
+
+[data-theme="dark"] .desktop-inline {
+    border-color: #333;
+}
+
+.mobile-fixed {
+    display: none;
+}
+
+/* Mobile Fixed Bottom Bar Version */
+@media (max-width: 768px) {
+    .desktop-inline {
+        display: none;
+    }
+    
+    .share-buttons-container.mobile-fixed {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: 0;
+        padding: 16px 20px;
+        background: var(--color-background-primary, #ffffff);
+        border-top: 1px solid var(--color-border, #eee);
+        z-index: 999;
+        justify-content: center;
+        gap: 24px;
+        box-shadow: 0 -8px 30px rgba(0,0,0,0.12);
+        animation: slideUpShare 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
+        border-radius: 20px 20px 0 0;
+        backdrop-filter: blur(12px);
+        background: rgba(255, 255, 255, 0.95);
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    [data-theme="dark"] .share-buttons-container.mobile-fixed {
+        background: rgba(18, 18, 18, 0.95);
+        border-color: #333;
+        box-shadow: 0 -8px 30px rgba(0,0,0,0.5);
+    }
+
+    .mobile-share-handle {
+        position: absolute;
+        top: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 36px;
+        height: 4px;
+        background: var(--color-border, #ccc);
+        border-radius: 4px;
+        opacity: 0.5;
+    }
+    
+    .share-buttons-container.mobile-fixed .share-btn {
+        width: 48px;
+        height: 48px;
+        box-shadow: none;
+        background: var(--color-background-secondary, #f5f5f5);
+        border: none;
+    }
+
+    [data-theme="dark"] .share-buttons-container.mobile-fixed .share-btn {
+        background: var(--color-background-secondary, #2a2a2a);
+    }
+    
+    .share-buttons-container.mobile-fixed .share-btn:hover,
+    .share-buttons-container.mobile-fixed .share-btn:active {
+        transform: translateY(-4px) scale(1.05);
+    }
+}
+
+@keyframes slideUpShare {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}

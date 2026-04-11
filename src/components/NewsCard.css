@@ -319,3 +319,4 @@
         font-size: 0.95rem;
     }
 }
+.card-rank-indicator { position: absolute; bottom: 0; left: 0; background: var(--color-accent, #CC0000); color: white; font-family: var(--font-heading, serif); font-size: 2.2rem; font-weight: 900; padding: 4px 22px; line-height: 1; border-top-right-radius: var(--radius-md, 8px); z-index: 5; }

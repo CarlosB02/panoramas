@@ -653,16 +653,16 @@ export const satiricalTrending = [
 
 // Most read
 export const satiricalMostRead = [
-    { id: getNewsId(), title: "Metro de Lisboa Inaugura Ligação ao Aeroporto", kicker: "NOVA LINHA", views: "2.1M", seoMeta: { slug: "metro-lisboa-expansao-aeroporto-novas-estacoes" } },
-    { id: getNewsId(), title: "Exportações Tech Superam Têxtil pela Primeira Vez", kicker: "EXPORTAÇÕES TECNOLÓGICAS", views: "1.8M", seoMeta: { slug: "exportacoes-tecnologia-portugal-recorde" } },
-    { id: getNewsId(), title: "Centro Biomédico de Coimbra Abre Portas", kicker: "INOVAÇÃO MÉDICA", views: "1.5M", seoMeta: { slug: "centro-biomedico-coimbra-cancro-tratamento" } },
-    { id: getNewsId(), title: "ONU Adota Tratado de Regulação de IA", kicker: "REGULAÇÃO DA IA", views: "1.3M", seoMeta: { slug: "onu-tratado-regulacao-inteligencia-artificial" } },
-    { id: getNewsId(), title: "Portugal Assume Presidência da UE", kicker: "PRESIDÊNCIA UE", views: "1.2M", seoMeta: { slug: "portugal-presidencia-conselho-ue-digital" } },
-    { id: getNewsId(), title: "PIB Cresce 2,8% com Investimento Verde", kicker: "ECONOMIA SUSTENTÁVEL", views: "980k", seoMeta: { slug: "banco-portugal-crescimento-2026-investimento-verde" } }
+    { id: getNewsId(), title: "Metro de Lisboa Inaugura Ligação ao Aeroporto", kicker: "NOVA LINHA", views: "2.1M", categorySlug: "portugal", seoMeta: { slug: "metro-lisboa-expansao-aeroporto-novas-estacoes" } },
+    { id: getNewsId(), title: "Exportações Tech Superam Têxtil pela Primeira Vez", kicker: "EXPORTAÇÕES TECNOLÓGICAS", views: "1.8M", categorySlug: "economia", seoMeta: { slug: "exportacoes-tecnologia-portugal-recorde" } },
+    { id: getNewsId(), title: "Centro Biomédico de Coimbra Abre Portas", kicker: "INOVAÇÃO MÉDICA", views: "1.5M", categorySlug: "saude", seoMeta: { slug: "centro-biomedico-coimbra-cancro-tratamento" } },
+    { id: getNewsId(), title: "ONU Adota Tratado de Regulação de IA", kicker: "REGULAÇÃO DA IA", views: "1.3M", categorySlug: "mundo", seoMeta: { slug: "onu-tratado-regulacao-inteligencia-artificial" } },
+    { id: getNewsId(), title: "Portugal Assume Presidência da UE", kicker: "PRESIDÊNCIA UE", views: "1.2M", categorySlug: "politica", seoMeta: { slug: "portugal-presidencia-conselho-ue-digital" } },
+    { id: getNewsId(), title: "PIB Cresce 2,8% com Investimento Verde", kicker: "ECONOMIA SUSTENTÁVEL", views: "980k", categorySlug: "economia", seoMeta: { slug: "banco-portugal-crescimento-2026-investimento-verde" } }
 ];
 
 // Updating now / live
 export const satiricalLive = [
-    { id: getNewsId(), title: "Direto: Sessão inaugural da presidência portuguesa da UE em Bruxelas", status: "Em curso", seoMeta: { slug: "portugal-presidencia-conselho-ue-digital" } },
-    { id: getNewsId(), title: "Direto: Cerimónia de abertura do Centro Biomédico de Coimbra", status: "A decorrer", seoMeta: { slug: "centro-biomedico-coimbra-cancro-tratamento" } }
+    { id: getNewsId(), title: "Direto: Sessão inaugural da presidência portuguesa da UE em Bruxelas", status: "Em curso", categorySlug: "politica", seoMeta: { slug: "portugal-presidencia-conselho-ue-digital" } },
+    { id: getNewsId(), title: "Direto: Cerimónia de abertura do Centro Biomédico de Coimbra", status: "A decorrer", categorySlug: "saude", seoMeta: { slug: "centro-biomedico-coimbra-cancro-tratamento" } }
 ];

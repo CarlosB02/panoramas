@@ -1,18 +1,22 @@
 import React from 'react';
 import Link from 'next/link';
 import '@/styles/ArticlePage.css';
+import ShareButtons from '@/components/ShareButtons';
+import RecommendedArticles from '@/components/RecommendedArticles';
+import ArticleFooterDiscovery from '@/components/ArticleFooterDiscovery';
 
 export default function ArticleContent({ article, slug }) {
     const articleTags = article.tags || [];
 
     return (
-        <div className="article-page-wrapper">
-            <div className="ad-gutter ad-gutter-left">
-                <div className="ad-placeholder"><span>PUBLICIDADE</span></div>
-            </div>
+        <React.Fragment>
+            <div className="article-page-wrapper">
+                <div className="ad-gutter ad-gutter-left">
+                    <div className="ad-placeholder"><span>PUBLICIDADE</span></div>
+                </div>
 
-            <main className="article-content-column">
-                <nav className="article-breadcrumb">
+                <main className="article-content-column">
+                    <nav className="article-breadcrumb">
                     <Link href="/">Início</Link> &gt;
                     {article.categorySlug && (
                         <Link href={`/${article.categorySlug}`}> {article.category}</Link>
@@ -40,6 +44,8 @@ export default function ArticleContent({ article, slug }) {
                             <span>💬 {article.comments || '0'}</span>
                         </div>
                     </div>
+
+                    <ShareButtons title={article.title} />
                 </header>
 
                 <figure className="article-hero-image">
@@ -117,5 +123,11 @@ export default function ArticleContent({ article, slug }) {
                 <div className="ad-placeholder"><span>PUBLICIDADE</span></div>
             </div>
         </div>
+
+        <div className="container article-discovery-container" style={{ paddingBottom: '4rem' }}>
+            <RecommendedArticles currentArticleId={article.id} fallbackCategory={article.categorySlug} />
+            <ArticleFooterDiscovery currentArticleId={article.id} currentCategory={article.categorySlug} />
+        </div>
+        </React.Fragment>
     );
 }

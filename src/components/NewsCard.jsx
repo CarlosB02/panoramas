@@ -5,20 +5,22 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import './NewsCard.css';
 
-const NewsCard = ({ news, variant = 'standard', showSummary = true }) => {
+const NewsCard = ({ news, variant = 'standard', showSummary = true, rankIndicator = null }) => {
     const router = useRouter();
     const [imageLoaded, setImageLoaded] = useState(false);
     const { title, summary, category, image, timestamp, featured, kicker, readTime, comments, bullet, seoMeta } = news;
 
     const handleClick = () => {
         if (seoMeta?.slug) {
-            router.push(`/noticia/${seoMeta.slug}`);
+            const catSlug = news.categorySlug || (category ? category.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-') : 'noticia');
+            router.push(`/${catSlug}/${seoMeta.slug}`);
         }
     };
 
     const renderTitle = () => {
         if (seoMeta?.slug) {
-            return <Link href={`/noticia/${seoMeta.slug}`} onClick={(e) => e.stopPropagation()}>{title}</Link>;
+            const catSlug = news.categorySlug || (category ? category.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-') : 'noticia');
+            return <Link href={`/${catSlug}/${seoMeta.slug}`} onClick={(e) => e.stopPropagation()}>{title}</Link>;
         }
         return <a href="#">{title}</a>;
     };
@@ -106,6 +108,7 @@ const NewsCard = ({ news, variant = 'standard', showSummary = true }) => {
                 <img src={image} alt={title} className={`card-img ${imageLoaded ? 'loaded' : ''}`} onLoad={() => setImageLoaded(true)} loading="lazy" />
                 {variant === 'standard' && kicker && <span className="kicker-badge">{kicker}</span>}
                 <div className="image-overlay" />
+                {rankIndicator && <div className="card-rank-indicator">{rankIndicator}</div>}
             </div>
             <div className="card-content">
                 {variant === 'compact' && kicker && <span className="kicker-text">{kicker}</span>}

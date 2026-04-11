@@ -2,7 +2,7 @@ import React from 'react';
 import NewsCard from './NewsCard';
 import './MixedNewsBand.css';
 
-const MixedNewsBand = ({ articles, variant = 'mosaic' }) => {
+const MixedNewsBand = ({ articles, variant = 'mosaic', title, subtitle }) => {
     if (!articles || articles.length === 0) return null;
 
     if (variant === 'featured-band') {
@@ -28,8 +28,8 @@ const MixedNewsBand = ({ articles, variant = 'mosaic' }) => {
         return (
             <div className="mixed-band carousel-band">
                 <div className="mixed-band-header">
-                    <h4 className="mixed-band-title">Na Ordem do Dia</h4>
-                    <span className="mixed-band-subtitle">Destaques</span>
+                    <h4 className="mixed-band-title">{title || "Na Ordem do Dia"}</h4>
+                    <span className="mixed-band-subtitle">{subtitle || "Destaques"}</span>
                 </div>
                 <div className="mixed-carousel-container">
                     {articles.map(article => (

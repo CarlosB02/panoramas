@@ -333,3 +333,4 @@
         flex-wrap: wrap;
     }
 }
+@media (max-width: 768px) { .article-page-wrapper { padding-bottom: 90px; } }
