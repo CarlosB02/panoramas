@@ -12,6 +12,10 @@ const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
+    const [email, setEmail] = useState('');
+    const [subCategories, setSubCategories] = useState([]);
+    const [subStatus, setSubStatus] = useState('idle');
     const [trendingNews, setTrendingNews] = useState(localMostRead.slice(0, 5));
     const pathname = usePathname();
     const router = useRouter();
@@ -86,6 +90,25 @@ const Header = () => {
         }
     };
 
+    const handleSubToggle = (catId) => {
+        setSubCategories(prev => prev.includes(catId) ? prev.filter(c => c !== catId) : [...prev, catId]);
+    };
+
+    const handleSubscribe = (e) => {
+        e.preventDefault();
+        if(!email) return;
+        setSubStatus('loading');
+        setTimeout(() => {
+            setSubStatus('success');
+            setTimeout(() => {
+                setIsNewsletterOpen(false);
+                setSubStatus('idle');
+                setEmail('');
+                setSubCategories([]);
+            }, 3000);
+        }, 1500);
+    };
+
     const today = new Date();
     const formattedDate = today.toLocaleDateString('pt-PT', {
         weekday: 'long',
@@ -128,15 +151,8 @@ const Header = () => {
                 <div className="container utility-container">
                     <span className="utility-date">{formattedDate}</span>
                     <div className="utility-right">
-                        <Link href="/newsletter" className="utility-link">Newsletter</Link>
+                        <button onClick={() => setIsNewsletterOpen(true)} className="utility-link newsletter-btn">Newsletter</button>
                         <Link href="/contactos" className="utility-link">Contactos</Link>
-                        <a href="#" className="utility-link login-link">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
-                            Entrar
-                        </a>
                     </div>
                 </div>
             </div>
@@ -219,6 +235,61 @@ const Header = () => {
                     </ul>
                 </div>
             </div>
+
+            {isNewsletterOpen && (
+                <div className="newsletter-overlay" onClick={() => setIsNewsletterOpen(false)}>
+                    <div className="newsletter-modal" onClick={e => e.stopPropagation()}>
+                        <button className="newsletter-close" onClick={() => setIsNewsletterOpen(false)} aria-label="Fechar">×</button>
+                        {subStatus === 'success' ? (
+                            <div className="newsletter-success">
+                                <div className="success-icon">✓</div>
+                                <h3>Inscrição Concluída!</h3>
+                                <p>Obrigado por se juntar à comunidade Panoramas!</p>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSubscribe} className="newsletter-form">
+                                <h3>A sua informação de confiança.</h3>
+                                <p>Subscreva para receber as principais notícias diretamente no seu email.</p>
+                                
+                                <label className="nl-label">E-mail</label>
+                                <input 
+                                    type="email" 
+                                    className="nl-input" 
+                                    placeholder="O seu endereço de e-mail" 
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
+
+                                <label className="nl-label">Tópicos de Interesse</label>
+                                <div className="nl-categories">
+                                    {[
+                                        { id: 'politica', label: 'Política' },
+                                        { id: 'economia', label: 'Economia' },
+                                        { id: 'desporto', label: 'Desporto' },
+                                        { id: 'mundo', label: 'Portugal & Mundo' },
+                                        { id: 'saude', label: 'Saúde' },
+                                        { id: 'tecnologia', label: 'IA & Tech' }
+                                    ].map(cat => (
+                                        <label key={cat.id} className={`nl-checkbox-btn ${subCategories.includes(cat.id) ? 'checked' : ''}`}>
+                                            <input 
+                                                type="checkbox" 
+                                                checked={subCategories.includes(cat.id)}
+                                                onChange={() => handleSubToggle(cat.id)}
+                                            />
+                                            {cat.label}
+                                        </label>
+                                    ))}
+                                </div>
+
+                                <button type="submit" className="nl-submit" disabled={subStatus === 'loading' || !email}>
+                                    {subStatus === 'loading' ? 'A processar...' : 'Subscrever Notícias'}
+                                </button>
+                            </form>
+                        )}
+                    </div>
+                </div>
+            )}
         </header>
     );
 };

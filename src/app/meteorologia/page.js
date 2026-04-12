@@ -255,5 +255,3 @@ export default function MeteorologiaPage() {
         </div>
     );
 }
-
-export const revalidate = 60;
