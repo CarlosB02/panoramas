@@ -1,8 +1,9 @@
-'use client';
 import CategoryPage from '@/components/CategoryPage';
-import { satiricalByCategory } from '@/data/satiricalNews';
+import { getArticlesByCategory } from '@/lib/articles';
 
-export default function EconomiaPage() {
-    const articles = satiricalByCategory["Economia"] || [];
+export default async function EconomiaPage() {
+    const articles = await getArticlesByCategory("Economia");
     return <CategoryPage categoryName="Economia" articles={articles} />;
 }
+
+export const revalidate = 60;

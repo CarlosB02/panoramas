@@ -1,4 +1,4 @@
-import { allSatiricalArticles } from '../data/satiricalNews';
+import { allLocalArticles } from '../data/localNews';
 
 export const NewsGenerator = {
     generateNews: (count = 3, prefs = { categories: {} }) => {
@@ -6,7 +6,7 @@ export const NewsGenerator = {
             .sort(([, a], [, b]) => b - a)
             .map(([cat]) => cat);
 
-        let availableArticles = [...allSatiricalArticles];
+        let availableArticles = [...allLocalArticles];
         const generated = [];
 
         // Try to pick articles from preferred categories first

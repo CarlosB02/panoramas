@@ -1,8 +1,9 @@
-'use client';
 import CategoryPage from '@/components/CategoryPage';
-import { satiricalByCategory } from '@/data/satiricalNews';
+import { getArticlesByCategory } from '@/lib/articles';
 
-export default function PortugalPage() {
-    const articles = satiricalByCategory["Portugal"] || [];
+export default async function PortugalPage() {
+    const articles = await getArticlesByCategory("Portugal");
     return <CategoryPage categoryName="Portugal" articles={articles} />;
 }
+
+export const revalidate = 60;

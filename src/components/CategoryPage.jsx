@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import './CategoryPage.css';
 
 const CategoryPage = ({ categoryName, articles = [] }) => {
@@ -47,7 +48,7 @@ const CategoryPage = ({ categoryName, articles = [] }) => {
                                 }}
                             >
                                 <div className="grid-card__image">
-                                    <img src={article.image} alt={article.title} />
+                                    <Image src={article.image || 'https://via.placeholder.com/600x400?text=Panoramas'} alt={article.title} fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover' }} />
                                     {article.kicker && (
                                         <span className={`grid-card__kicker ${isHero ? 'kicker--large' : ''}`}>{article.kicker}</span>
                                     )}

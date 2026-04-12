@@ -44,12 +44,74 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ArticlePage({ params }) {
-    const { slug } = await params;
+    const { slug, categoria } = await params;
     const article = await getArticleBySlug(slug);
 
     if (!article) {
         notFound();
     }
 
-    return <ArticleContent article={article} slug={slug} />;
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://panoramas.pt';
+
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'NewsArticle',
+        headline: article.title,
+        image: article.image?.startsWith('http') ? article.image : `${siteUrl}${article.image}`,
+        datePublished: article.rawDate ? new Date(article.rawDate).toISOString() : new Date().toISOString(),
+        dateModified: article.rawDate ? new Date(article.rawDate).toISOString() : new Date().toISOString(),
+        author: [{
+            '@type': 'Organization',
+            name: article.author || 'Redação Panoramas',
+            url: siteUrl
+        }],
+        publisher: {
+            '@type': 'Organization',
+            name: 'Panoramas',
+            logo: {
+                '@type': 'ImageObject',
+                url: `${siteUrl}/images/almada_float.png`
+            }
+        },
+        description: article.summary
+    };
+
+    const breadcrumbLd = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Início',
+                item: siteUrl
+            },
+            {
+                '@type': 'ListItem',
+                position: 2,
+                name: article.category || categoria,
+                item: `${siteUrl}/${categoria}`
+            },
+            {
+                '@type': 'ListItem',
+                position: 3,
+                name: article.title,
+                item: `${siteUrl}/${categoria}/${slug}`
+            }
+        ]
+    };
+
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+            />
+            <ArticleContent article={article} slug={slug} />
+        </>
+    );
 }

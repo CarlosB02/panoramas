@@ -1,26 +1,34 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { allSatiricalArticles } from '@/data/satiricalNews';
+import Image from 'next/image';
+import { searchArticles } from '@/lib/articles';
 import '@/components/CategoryPage.css';
 
 export default function SearchContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const query = searchParams.get('q') || '';
+    const [results, setResults] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    const results = useMemo(() => {
-        if (!query.trim()) return [];
-        const lowerQuery = query.toLowerCase();
-        return allSatiricalArticles.filter(article => {
-            return (
-                article.title.toLowerCase().includes(lowerQuery) ||
-                article.summary.toLowerCase().includes(lowerQuery) ||
-                article.category.toLowerCase().includes(lowerQuery) ||
-                (article.content && article.content.toLowerCase().includes(lowerQuery))
-            );
+    useEffect(() => {
+        if (!query.trim()) {
+            setResults([]);
+            return;
+        }
+        
+        let isMounted = true;
+        setLoading(true);
+        searchArticles(query.trim()).then(res => {
+            if (isMounted) {
+                setResults(res);
+                setLoading(false);
+            }
         });
+
+        return () => { isMounted = false; };
     }, [query]);
 
     return (
@@ -35,12 +43,12 @@ export default function SearchContent() {
                     </h1>
                     <div className="category-header-rule"></div>
                     <p className="category-subtitle">
-                        {results.length === 1
+                        {loading ? 'A pesquisar...' : (results.length === 1
                             ? 'Encontrámos 1 artigo correspondente.'
-                            : `Encontrámos ${results.length} artigos correspondentes.`}
+                            : `Encontrámos ${results.length} artigos correspondentes.`)}
                     </p>
                 </header>
-                {results.length > 0 ? (
+                {!loading && results.length > 0 ? (
                     <div className="news-grid-4col">
                         {results.map((article, index) => {
                             const isHero = index === 0 && results.length > 2;
@@ -54,7 +62,7 @@ export default function SearchContent() {
                                     }}
                                 >
                                     <div className="grid-card__image">
-                                        <img src={article.image} alt={article.title} />
+                                        <Image src={article.image || 'https://via.placeholder.com/600x400?text=Panoramas'} alt={article.title} fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover' }} />
                                         {article.kicker && (
                                             <span className={`grid-card__kicker ${isHero ? 'kicker--large' : ''}`}>{article.kicker}</span>
                                         )}
@@ -71,8 +79,7 @@ export default function SearchContent() {
                             );
                         })}
                     </div>
-                ) : (
-                    <p className="category-empty" style={{ marginTop: '2rem', textAlign: 'center' }}>
+                ) : (!loading && <p className="category-empty" style={{ marginTop: '2rem', textAlign: 'center' }}>
                         Não encontrámos notícias para a sua pesquisa. Quer tentar outro termo?
                     </p>
                 )}

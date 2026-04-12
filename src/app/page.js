@@ -7,32 +7,47 @@ import NewsCard from '@/components/NewsCard';
 import CategorySection from '@/components/CategorySection';
 import InteractiveHub from '@/components/InteractiveHub';
 import MixedNewsBand from '@/components/MixedNewsBand';
-import { satiricalFeatured, satiricalByCategory, satiricalBreaking, satiricalMostRead, satiricalLive, allSatiricalArticles } from '@/data/satiricalNews';
+import { localFeatured, localByCategory, localBreaking, localMostRead, localLive, allLocalArticles } from '@/data/localNews';
+import { getTrendingArticles, getLatestArticles } from '@/lib/articles';
 import '@/styles/Home.css';
 
 export default function HomePage() {
-    const categorySections = Object.entries(satiricalByCategory).map(([name, articles]) => ({
+    const [mostReadArticles, setMostReadArticles] = React.useState(localMostRead);
+    const [latestArticles, setLatestArticles] = React.useState([]);
+
+    React.useEffect(() => {
+        getTrendingArticles(5).then(data => {
+            if (data && data.length > 0) setMostReadArticles(data);
+        });
+
+        getLatestArticles(20).then(data => {
+            if (data && data.length > 0) setLatestArticles(data);
+        });
+    }, []);
+
+    const categorySections = Object.entries(localByCategory).map(([name, articles]) => ({
         name,
         articles
     }));
 
-    const topStoriesColumn = allSatiricalArticles.slice(0, 4);
-    const opinionBand = allSatiricalArticles.slice(4, 8);
+    const topStoriesColumn = latestArticles.length > 0 ? latestArticles.slice(0, 4) : allLocalArticles.slice(0, 4);
+    const opinionBand = allLocalArticles.slice(4, 8);
 
     const getMixedArticles = (index) => {
-        const start = (8 + (index * 10)) % allSatiricalArticles.length;
-        return allSatiricalArticles.slice(start, start + 10);
+        const start = (8 + (index * 10)) % allLocalArticles.length;
+        return allLocalArticles.slice(start, start + 10);
     };
 
     return (
         <div className="home-page">
             <div className="container">
-                <BreakingNews headlines={satiricalBreaking} />
+                <h1 style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', border: 0 }}>Panoramas - Informação de Confiança e Última Hora</h1>
+                <BreakingNews headlines={latestArticles.length > 0 ? latestArticles.slice(0, 5).map(a => a.title) : localBreaking} />
 
                 {/* EDITORIAL TOP SECTION */}
                 <div className="editorial-top">
                     <div className="lead-story-area">
-                        <NewsCard news={satiricalFeatured} variant="lead" showSummary={true} />
+                        <NewsCard news={localFeatured} variant="lead" showSummary={true} />
                     </div>
                     <aside className="top-stories-sidebar">
                         <div className="sidebar-header">
@@ -50,12 +65,22 @@ export default function HomePage() {
                                 </h3>
                             </div>
                             <ul className="live-list">
-                                {satiricalLive.slice(0, 3).map(item => (
-                                    <li key={item.id}>
-                                        <div className="live-time">{item.status?.split(' ')[0] || '12:00'}</div>
-                                        <Link href={`/${item.categorySlug || 'noticia'}/${item.seoMeta.slug}`} className="live-link">{item.title}</Link>
-                                    </li>
-                                ))}
+                                {(latestArticles.length > 0 ? latestArticles.slice(0, 3) : localLive.slice(0, 3)).map((item, idx) => {
+                                    let timeStr = 'Agora';
+                                    if (item.rawDate) {
+                                        const d = new Date(item.rawDate);
+                                        timeStr = `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+                                    } else if (item.status) {
+                                        timeStr = item.status.split(' ')[0];
+                                    }
+                                    
+                                    return (
+                                        <li key={item.id || idx}>
+                                            <div className="live-time">{timeStr}</div>
+                                            <Link href={`/${item.categorySlug || 'noticia'}/${item.seoMeta.slug}`} className="live-link">{item.title}</Link>
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         </div>
                     </aside>
@@ -92,7 +117,7 @@ export default function HomePage() {
                                 <h3 className="sidebar-title">As Mais Lidas</h3>
                             </div>
                             <ol className="most-read-list">
-                                {satiricalMostRead.map((item, index) => (
+                                {mostReadArticles.map((item, index) => (
                                     <li key={item.id}>
                                         <span className="rank">{index + 1}</span>
                                         <div className="read-content">
@@ -120,7 +145,7 @@ export default function HomePage() {
                                 <CategorySection title={cat.name} articles={cat.articles} columns={3} />
                                 {actualIndex < categorySections.length - 1 && (
                                     <MixedNewsBand
-                                        articles={getMixedArticles(actualIndex)}
+                                        articles={actualIndex === 2 && latestArticles.length > 0 ? latestArticles.slice(0, 10) : getMixedArticles(actualIndex)}
                                         variant={actualIndex % 2 === 0 ? "carousel-band" : "mosaic"}
                                     />
                                 )}

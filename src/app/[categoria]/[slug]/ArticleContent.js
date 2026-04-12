@@ -1,15 +1,18 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import '@/styles/ArticlePage.css';
 import ShareButtons from '@/components/ShareButtons';
 import RecommendedArticles from '@/components/RecommendedArticles';
 import ArticleFooterDiscovery from '@/components/ArticleFooterDiscovery';
+import ViewTracker from '@/components/ViewTracker';
 
 export default function ArticleContent({ article, slug }) {
     const articleTags = article.tags || [];
 
     return (
         <React.Fragment>
+            <ViewTracker slug={slug} />
             <div className="article-page-wrapper">
                 <div className="ad-gutter ad-gutter-left">
                     <div className="ad-placeholder"><span>PUBLICIDADE</span></div>
@@ -48,9 +51,9 @@ export default function ArticleContent({ article, slug }) {
                     <ShareButtons title={article.title} />
                 </header>
 
-                <figure className="article-hero-image">
-                    <img src={article.image} alt={article.title} />
-                    <figcaption>Panoramas — Imagem Ilustrativa</figcaption>
+                <figure className="article-hero-image" style={{ position: 'relative', width: '100%', aspectRatio: '16/9' }}>
+                    <Image src={article.image || 'https://via.placeholder.com/1200x630?text=Panoramas'} alt={article.title || 'Noticia'} fill style={{ objectFit: 'cover' }} priority />
+                    <figcaption style={{ position: 'absolute', bottom: '-25px' }}>Panoramas — Imagem Ilustrativa</figcaption>
                 </figure>
 
                 <div className="article-body">

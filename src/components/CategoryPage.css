@@ -145,12 +145,14 @@
 .grid-card__image {
     position: relative;
     overflow: hidden;
+    width: 100%;
+    aspect-ratio: 16/10;
 }
 
 .grid-card__image img {
+    /* For standard img tags if still used somewhere */
     width: 100%;
-    height: auto;
-    aspect-ratio: 16/10;
+    height: 100%;
     object-fit: cover;
     display: block;
     transition: transform 0.35s ease;
@@ -161,7 +163,7 @@
 }
 
 /* Hero image taller */
-.grid-card--hero .grid-card__image img {
+.grid-card--hero .grid-card__image {
     aspect-ratio: 16/11;
 }
 

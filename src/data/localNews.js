@@ -587,7 +587,7 @@ const ia2 = {
 // ============================================================
 
 // All articles in a flat array
-export const allSatiricalArticles = [
+export const allLocalArticles = [
     artigo1, artigo2, artigo3, artigo4, artigo5, artigo6,
     politica3, politica4, politica5, politica6,
     economia3, economia4, economia5, economia6,
@@ -600,10 +600,10 @@ export const allSatiricalArticles = [
 ];
 
 // Featured article (Metro de Lisboa)
-export const satiricalFeatured = artigo6;
+export const localFeatured = artigo6;
 
 // Group by category
-export const satiricalByCategory = {
+export const localByCategory = {
     "Política": [artigo2, artigo4, politica3, politica4, politica5, politica6],
     "Economia": [artigo3, artigo5, economia3, economia4, economia5, economia6],
     "Saúde": [artigo1, saude2, saude3, saude4, saude5],
@@ -631,7 +631,7 @@ export const categorySlugMap = {
 };
 
 // Breaking news headlines
-export const satiricalBreaking = [
+export const localBreaking = [
     "ÚLTIMA HORA: Novo centro biomédico em Coimbra inicia ensaios clínicos revolucionários contra o cancro",
     "FLASH: Metro de Lisboa inaugura ligação ao aeroporto — viagem em 18 minutos ao centro da cidade",
     "URGENTE: Exportações tecnológicas ultrapassam setor têxtil pela primeira vez na história de Portugal",
@@ -642,7 +642,7 @@ export const satiricalBreaking = [
 ];
 
 // Trending topics
-export const satiricalTrending = [
+export const localTrending = [
     "METRO MARTE",
     "TURISMO ORBITAL",
     "SOLAR ALENTEJO",
@@ -652,7 +652,7 @@ export const satiricalTrending = [
 ];
 
 // Most read
-export const satiricalMostRead = [
+export const localMostRead = [
     { id: getNewsId(), title: "Metro de Lisboa Inaugura Ligação ao Aeroporto", kicker: "NOVA LINHA", views: "2.1M", categorySlug: "portugal", seoMeta: { slug: "metro-lisboa-expansao-aeroporto-novas-estacoes" } },
     { id: getNewsId(), title: "Exportações Tech Superam Têxtil pela Primeira Vez", kicker: "EXPORTAÇÕES TECNOLÓGICAS", views: "1.8M", categorySlug: "economia", seoMeta: { slug: "exportacoes-tecnologia-portugal-recorde" } },
     { id: getNewsId(), title: "Centro Biomédico de Coimbra Abre Portas", kicker: "INOVAÇÃO MÉDICA", views: "1.5M", categorySlug: "saude", seoMeta: { slug: "centro-biomedico-coimbra-cancro-tratamento" } },
@@ -662,7 +662,7 @@ export const satiricalMostRead = [
 ];
 
 // Updating now / live
-export const satiricalLive = [
+export const localLive = [
     { id: getNewsId(), title: "Direto: Sessão inaugural da presidência portuguesa da UE em Bruxelas", status: "Em curso", categorySlug: "politica", seoMeta: { slug: "portugal-presidencia-conselho-ue-digital" } },
     { id: getNewsId(), title: "Direto: Cerimónia de abertura do Centro Biomédico de Coimbra", status: "A decorrer", categorySlug: "saude", seoMeta: { slug: "centro-biomedico-coimbra-cancro-tratamento" } }
 ];

@@ -4,13 +4,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import './Header.css';
-import { satiricalMostRead } from '../data/satiricalNews';
+import { localMostRead } from '../data/localNews';
+import { getTrendingArticles } from '@/lib/articles';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [trendingNews, setTrendingNews] = useState(localMostRead.slice(0, 5));
     const pathname = usePathname();
     const router = useRouter();
     const searchInputRef = useRef(null);
@@ -20,6 +22,12 @@ const Header = () => {
             setIsScrolled(window.scrollY > 120);
         };
         window.addEventListener('scroll', handleScroll);
+        
+        // Fetch real trending dynamics
+        getTrendingArticles(5).then(data => {
+            if (data && data.length > 0) setTrendingNews(data);
+        });
+        
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -203,9 +211,9 @@ const Header = () => {
                         Tendências
                     </span>
                     <ul className="trending-links">
-                        {satiricalMostRead.slice(0, 5).map((item) => (
+                        {trendingNews.map((item) => (
                             <li key={item.id}>
-                                <Link href={`/${item.categorySlug || 'noticia'}/${item.seoMeta.slug}`}>{item.kicker}</Link>
+                                <Link href={`/${item.categorySlug || 'noticia'}/${item.seoMeta.slug}`}>{item.kicker || (item.category || '').toUpperCase() || 'NOTÍCIA'}</Link>
                             </li>
                         ))}
                     </ul>

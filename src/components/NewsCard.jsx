@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import './NewsCard.css';
 
@@ -63,7 +64,7 @@ const NewsCard = ({ news, variant = 'standard', showSummary = true, rankIndicato
             <article className="news-card horizontal clickable" onClick={handleClick}>
                 <div className="card-image-wrapper">
                     {!imageLoaded && <div className="image-placeholder" />}
-                    <img src={image} alt={title} className={`card-img ${imageLoaded ? 'loaded' : ''}`} onLoad={() => setImageLoaded(true)} loading="lazy" />
+                    <Image src={image || 'https://via.placeholder.com/600x400?text=Panoramas'} alt={title || 'Noticia'} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className={`card-img ${imageLoaded ? 'loaded' : ''}`} onLoad={() => setImageLoaded(true)} loading="lazy" style={{ objectFit: "cover" }} />
                 </div>
                 <div className="card-content">
                     {kicker && <span className="kicker-text">{kicker}</span>}
@@ -79,11 +80,11 @@ const NewsCard = ({ news, variant = 'standard', showSummary = true, rankIndicato
             <article className="news-card lead clickable" onClick={handleClick}>
                 <div className="card-image-wrapper">
                     {!imageLoaded && <div className="image-placeholder" />}
-                    <img src={image} alt={title} className={`card-img ${imageLoaded ? 'loaded' : ''}`} onLoad={() => setImageLoaded(true)} loading="lazy" />
+                    <Image src={image || 'https://via.placeholder.com/600x400?text=Panoramas'} alt={title || 'Noticia'} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 50vw" className={`card-img ${imageLoaded ? 'loaded' : ''}`} onLoad={() => setImageLoaded(true)} loading="lazy" style={{ objectFit: "cover" }} />
                 </div>
                 <div className="card-content">
                     {kicker && <span className="kicker-text">{kicker}</span>}
-                    <h1 className="title">{renderTitle()}</h1>
+                    <h2 className="title" style={{ fontSize: '2.2rem' }}>{renderTitle()}</h2>
                     {showSummary && summary && <p className="summary">{summary}</p>}
                     {bullet && (
                         <div className="bullet-highlight">
@@ -105,7 +106,7 @@ const NewsCard = ({ news, variant = 'standard', showSummary = true, rankIndicato
         <article className={`news-card ${variant} clickable`} onClick={handleClick}>
             <div className="card-image-wrapper">
                 {!imageLoaded && <div className="image-placeholder" />}
-                <img src={image} alt={title} className={`card-img ${imageLoaded ? 'loaded' : ''}`} onLoad={() => setImageLoaded(true)} loading="lazy" />
+                <Image src={image || 'https://via.placeholder.com/600x400?text=Panoramas'} alt={title || 'Noticia'} fill sizes="(max-width: 768px) 100vw, 33vw" className={`card-img ${imageLoaded ? 'loaded' : ''}`} onLoad={() => setImageLoaded(true)} loading="lazy" style={{ objectFit: "cover" }} />
                 {variant === 'standard' && kicker && <span className="kicker-badge">{kicker}</span>}
                 <div className="image-overlay" />
                 {rankIndicator && <div className="card-rank-indicator">{rankIndicator}</div>}

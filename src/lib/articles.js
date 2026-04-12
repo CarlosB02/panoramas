@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import { allSatiricalArticles } from '../data/satiricalNews';
+import { allLocalArticles, localMostRead, localByCategory } from '../data/localNews';
 
 /**
  * Map a Supabase `noticias` row to the article shape used by components.
@@ -30,6 +30,7 @@ export function mapSupabaseArticle(row) {
         timestamp: row.created_at
             ? new Date(row.created_at).toLocaleDateString('pt-PT', { day: 'numeric', month: 'long', year: 'numeric' })
             : '',
+        rawDate: row.created_at || null,
         author: 'Redação Panoramas',
         kicker: row.categoria ? row.categoria.toUpperCase() : '',
         readTime: row.leitura_estimada || (content
@@ -66,7 +67,7 @@ export async function getArticleBySlug(slug) {
     }
 
     // Fallback to local data
-    const localArticle = allSatiricalArticles.find(a => a.seoMeta?.slug === slug);
+    const localArticle = allLocalArticles.find(a => a.seoMeta?.slug === slug);
     return localArticle ? { ...localArticle, _fromSupabase: false } : null;
 }
 
@@ -89,4 +90,113 @@ export async function getLatestArticles(limit = 10) {
         console.warn('[getLatestArticles] Supabase failed:', e.message);
         return [];
     }
+}
+
+/**
+ * Fetch most viewed articles from Supabase. Falls back to local data.
+ */
+export async function getTrendingArticles(limit = 6) {
+    if (supabase) {
+        try {
+            const { data, error } = await supabase
+                .from('noticias')
+                .select('*')
+                .order('views', { ascending: false })
+                .limit(limit);
+
+            if (data && !error && data.length > 0) {
+                return data.map(mapSupabaseArticle);
+            }
+        } catch (e) {
+            console.warn('[getTrendingArticles] Supabase failed, falling back:', e.message);
+        }
+    }
+
+    return localMostRead.slice(0, limit);
+}
+
+/**
+ * Search articles from Supabase and merge with local data.
+ */
+export async function searchArticles(queryStr) {
+    if (!queryStr) return [];
+    
+    let supabaseResults = [];
+    if (supabase) {
+        try {
+            const unaccentedQuery = queryStr.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let orQuery = `titulo_reescrito.ilike.%${queryStr}%,conteudo_markdown.ilike.%${queryStr}%,categoria.ilike.%${queryStr}%`;
+            if (unaccentedQuery !== queryStr) {
+                orQuery += `,titulo_reescrito.ilike.%${unaccentedQuery}%,conteudo_markdown.ilike.%${unaccentedQuery}%,categoria.ilike.%${unaccentedQuery}%`;
+            }
+            
+            const { data, error } = await supabase
+                .from('noticias')
+                .select('*')
+                .or(orQuery)
+                .limit(50);
+
+            if (data && !error) {
+                supabaseResults = data.map(mapSupabaseArticle);
+            }
+        } catch (e) {
+            console.warn('[searchArticles] Supabase failed:', e.message);
+        }
+    }
+
+    const lowerQuery = queryStr.toLowerCase();
+    const localResults = allLocalArticles.filter(article => {
+        return (
+            article.title.toLowerCase().includes(lowerQuery) ||
+            article.summary.toLowerCase().includes(lowerQuery) ||
+            article.category.toLowerCase().includes(lowerQuery) ||
+            (article.content && article.content.toLowerCase().includes(lowerQuery))
+        );
+    });
+
+    const merged = [...supabaseResults];
+    for (const local of localResults) {
+        if (!merged.find(m => m.seoMeta?.slug === local.seoMeta?.slug)) {
+            merged.push({ ...local, _fromSupabase: false });
+        }
+    }
+
+    return merged;
+}
+
+/**
+ * Fetch articles for a specific category from Supabase and merge with local data.
+ */
+export async function getArticlesByCategory(categoryName) {
+    if (!categoryName) return [];
+    
+    let supabaseResults = [];
+    if (supabase) {
+        try {
+            const unaccentedCategory = categoryName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const { data, error } = await supabase
+                .from('noticias')
+                .select('*')
+                .or(`categoria.ilike.%${categoryName}%,categoria.ilike.%${unaccentedCategory}%`)
+                .order('created_at', { ascending: false })
+                .limit(20);
+
+            if (data && !error) {
+                supabaseResults = data.map(mapSupabaseArticle);
+            }
+        } catch (e) {
+            console.warn('[getArticlesByCategory] Supabase failed:', e.message);
+        }
+    }
+
+    const localResults = localByCategory[categoryName] || [];
+
+    const merged = [...supabaseResults];
+    for (const local of localResults) {
+        if (!merged.find(m => m.seoMeta?.slug === local.seoMeta?.slug)) {
+            merged.push({ ...local, _fromSupabase: false });
+        }
+    }
+
+    return merged;
 }

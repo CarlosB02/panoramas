@@ -1,4 +1,9 @@
-'use client';
 import CategoryPage from '@/components/CategoryPage';
-import { satiricalByCategory } from '@/data/satiricalNews';
-export default function IAPage() { const articles = satiricalByCategory["IA"] || []; return <CategoryPage categoryName="IA" articles={articles} />; }
+import { getArticlesByCategory } from '@/lib/articles';
+
+export default async function IAPage() {
+    const articles = await getArticlesByCategory("Inteligência Artificial");
+    return <CategoryPage categoryName="Inteligência Artificial" articles={articles} />;
+}
+
+export const revalidate = 60;

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { getTopPreference, recordCategoryView } from '@/lib/userPreferences';
-import { allSatiricalArticles } from '@/data/satiricalNews';
+import { allLocalArticles } from '@/data/localNews';
 import MixedNewsBand from './MixedNewsBand';
 
 export default function RecommendedArticles({ currentArticleId, fallbackCategory }) {
@@ -16,14 +16,14 @@ export default function RecommendedArticles({ currentArticleId, fallbackCategory
         const preferredCat = getTopPreference(fallbackCategory);
         
         // Obter os artigos dessa mesma categoria
-        let candidates = allSatiricalArticles.filter(a => 
+        let candidates = allLocalArticles.filter(a => 
             a.id !== currentArticleId && 
             (a.categorySlug === preferredCat || a.category === preferredCat)
         );
         
         // Se a categoria tiver poucos artigos, misturar com artigos gerais para não ficar vazio
         if (candidates.length < 4) {
-            const others = allSatiricalArticles.filter(a => 
+            const others = allLocalArticles.filter(a => 
                 a.id !== currentArticleId && 
                 a.categorySlug !== preferredCat
             );

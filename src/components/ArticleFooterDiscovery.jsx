@@ -2,12 +2,13 @@ import React from 'react';
 import Link from 'next/link';
 import NewsCard from './NewsCard';
 import CategorySection from './CategorySection';
-import { allSatiricalArticles, satiricalMostRead, satiricalByCategory } from '@/data/satiricalNews';
+import { allLocalArticles, localByCategory } from '@/data/localNews';
+import { getTrendingArticles } from '@/lib/articles';
 import './ArticleFooterDiscovery.css';
 
-export default function ArticleFooterDiscovery({ currentArticleId, currentCategory }) {
+export default async function ArticleFooterDiscovery({ currentArticleId, currentCategory }) {
     // Excluir o artigo atual da pool
-    const otherArticles = allSatiricalArticles.filter(a => a.id !== currentArticleId);
+    const otherArticles = allLocalArticles.filter(a => a.id !== currentArticleId);
     
     // Grid 1: Mais Notícias (9 artigos, misturados pseudo-aleatório consistente)
     const grid1Articles = otherArticles.slice(0, 9);
@@ -17,13 +18,16 @@ export default function ArticleFooterDiscovery({ currentArticleId, currentCatego
 
     // Outras Categorias (escolher 3 categorias que não sejam a atual)
     const currentCatNormalized = currentCategory ? currentCategory.toLowerCase() : '';
-    const otherCats = Object.entries(satiricalByCategory)
+    const otherCats = Object.entries(localByCategory)
         .filter(([cat]) => cat.toLowerCase() !== currentCatNormalized)
         .slice(0, 3);
         
+    const trendingNews = await getTrendingArticles(6);
+
     // Ligar a lista das Mais Lidas aos artigos completos para obter as imagens
-    const mostReadWithImages = satiricalMostRead.map(mr => {
-        const fullArticle = allSatiricalArticles.find(a => a.seoMeta?.slug === mr.seoMeta?.slug);
+    const mostReadWithImages = trendingNews.map(mr => {
+        if (mr._fromSupabase) return mr;
+        const fullArticle = allLocalArticles.find(a => a.seoMeta?.slug === mr.seoMeta?.slug);
         return { ...mr, image: fullArticle?.image || 'https://via.placeholder.com/600x400?text=Panoramas' };
     });
     

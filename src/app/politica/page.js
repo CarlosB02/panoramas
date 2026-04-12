@@ -1,8 +1,9 @@
-'use client';
 import CategoryPage from '@/components/CategoryPage';
-import { satiricalByCategory } from '@/data/satiricalNews';
+import { getArticlesByCategory } from '@/lib/articles';
 
-export default function PoliticaPage() {
-    const articles = satiricalByCategory["Política"] || [];
+export default async function PoliticaPage() {
+    const articles = await getArticlesByCategory("Política");
     return <CategoryPage categoryName="Política" articles={articles} />;
 }
+
+export const revalidate = 60;

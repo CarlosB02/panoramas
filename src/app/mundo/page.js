@@ -1,8 +1,9 @@
-'use client';
 import CategoryPage from '@/components/CategoryPage';
-import { satiricalByCategory } from '@/data/satiricalNews';
+import { getArticlesByCategory } from '@/lib/articles';
 
-export default function MundoPage() {
-    const articles = satiricalByCategory["Mundo"] || [];
+export default async function MundoPage() {
+    const articles = await getArticlesByCategory("Mundo");
     return <CategoryPage categoryName="Mundo" articles={articles} />;
 }
+
+export const revalidate = 60;
