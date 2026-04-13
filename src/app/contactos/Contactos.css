@@ -22,6 +22,7 @@
     font-weight: 900;
     margin-bottom: 1rem;
     letter-spacing: -0.5px;
+    color: #ffffff; /* User requested explicit white */
 }
 
 .contactos-subtitle {
@@ -60,10 +61,11 @@
 }
 
 .contactos-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 /* Form Container */
@@ -183,7 +185,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    margin-top: 3rem; /* Align vaguely with form */
+    width: 100%;
 }
 
 .info-card {

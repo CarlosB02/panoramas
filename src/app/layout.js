@@ -15,6 +15,11 @@ export const metadata = {
         locale: 'pt_PT',
         type: 'website',
     },
+    icons: {
+        icon: '/images/favicon.png',
+        shortcut: '/images/favicon.png',
+        apple: '/images/favicon.png',
+    },
 };
 
 export default function RootLayout({ children }) {

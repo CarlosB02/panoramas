@@ -69,9 +69,17 @@
 }
 
 .hub-icon {
-    font-size: 2.5rem;
     margin-bottom: var(--spacing-md);
     transition: transform var(--transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hub-icon img {
+    width: 54px;
+    height: 54px;
+    object-fit: contain;
 }
 
 .hub-card:hover .hub-icon {
@@ -150,8 +158,14 @@
 }
 
 .fuel-header .hub-icon {
-    font-size: 1.5rem;
     margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.fuel-header .hub-icon img {
+    width: 24px;
+    height: 24px;
 }
 
 .fuel-header h4 {

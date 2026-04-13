@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PortugalMap from '@/components/PortugalMap';
 import './Meteorologia.css';
 
@@ -20,11 +20,138 @@ const WEATHER_EMOJI = {
     26: '🌫️', 27: '☁️', 28: '❄️', 29: '⛈️',
 };
 
+const getWeatherCondition = (idWeatherType) => {
+    if ([1, 2].includes(idWeatherType)) return 'sunny';
+    if ([3, 5, 24, 25].includes(idWeatherType)) return 'partlycloudy';
+    if ([4, 27].includes(idWeatherType)) return 'cloudy';
+    if ([6, 7, 9, 10, 11, 12, 13, 14, 15].includes(idWeatherType)) return 'rain';
+    if ([8, 19, 20, 23, 29].includes(idWeatherType)) return 'thunderstorm';
+    if ([16, 17, 26].includes(idWeatherType)) return 'fog';
+    if ([18, 21, 22, 28].includes(idWeatherType)) return 'snow';
+    return 'cloudy';
+};
+
+// ── Rain Canvas ──
+const RainCanvas = ({ intensity = 1, active }) => {
+    const canvasRef = useRef(null);
+    const animRef = useRef(null);
+
+    useEffect(() => {
+        if (!active) return;
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        const resize = () => {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+        };
+        resize();
+        window.addEventListener('resize', resize);
+
+        const drops = Array.from({ length: Math.floor(80 * intensity) }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            speed: 8 + Math.random() * 8,
+            length: 12 + Math.random() * 16,
+            opacity: 0.25 + Math.random() * 0.35,
+        }));
+
+        const draw = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drops.forEach(d => {
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(174, 214, 241, ${d.opacity})`;
+                ctx.lineWidth = 1;
+                ctx.moveTo(d.x, d.y);
+                ctx.lineTo(d.x - 2, d.y + d.length);
+                ctx.stroke();
+                d.y += d.speed;
+                if (d.y > canvas.height) { d.y = -d.length; d.x = Math.random() * canvas.width; }
+            });
+            animRef.current = requestAnimationFrame(draw);
+        };
+        draw();
+        return () => { cancelAnimationFrame(animRef.current); window.removeEventListener('resize', resize); };
+    }, [active, intensity]);
+
+    if (!active) return null;
+    return <canvas ref={canvasRef} className="weather-canvas rain-canvas" />;
+};
+
+// ── Snow Canvas ──
+const SnowCanvas = ({ active }) => {
+    const canvasRef = useRef(null);
+    const animRef = useRef(null);
+
+    useEffect(() => {
+        if (!active) return;
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
+        resize();
+        window.addEventListener('resize', resize);
+
+        const flakes = Array.from({ length: 60 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: 2 + Math.random() * 4,
+            speed: 1 + Math.random() * 2,
+            drift: (Math.random() - 0.5) * 0.5,
+            opacity: 0.5 + Math.random() * 0.5,
+        }));
+
+        const draw = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            flakes.forEach(f => {
+                ctx.beginPath();
+                ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${f.opacity})`;
+                ctx.fill();
+                f.y += f.speed;
+                f.x += f.drift;
+                if (f.y > canvas.height) { f.y = -10; f.x = Math.random() * canvas.width; }
+            });
+            animRef.current = requestAnimationFrame(draw);
+        };
+        draw();
+        return () => { cancelAnimationFrame(animRef.current); window.removeEventListener('resize', resize); };
+    }, [active]);
+
+    if (!active) return null;
+    return <canvas ref={canvasRef} className="weather-canvas snow-canvas" />;
+};
+
+// ── Lightning Effect ──
+const LightningEffect = ({ active }) => {
+    const [flash, setFlash] = useState(false);
+    useEffect(() => {
+        if (!active) return;
+        const tick = () => {
+            const delay = 2000 + Math.random() * 4000;
+            const t = setTimeout(() => {
+                if (Math.random() > 0.5) {
+                    setFlash(true);
+                    setTimeout(() => setFlash(false), 80 + Math.random() * 120);
+                }
+                tick();
+            }, delay);
+            return t;
+        };
+        const t = tick();
+        return () => clearTimeout(t);
+    }, [active]);
+    if (!active) return null;
+    return <div className={`lightning-flash ${flash ? 'visible' : ''}`} />;
+};
+
+// ── Main Component ──
 export default function MeteorologiaPage() {
     const [cities, setCities] = useState([]);
     const [weatherTypes, setWeatherTypes] = useState({});
     const [selectedCityId, setSelectedCityId] = useState(1110600);
-    const [theme, setTheme] = useState('popart');
+    const [theme, setTheme] = useState('classic');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [sevenDayForecast, setSevenDayForecast] = useState([]);
@@ -39,7 +166,24 @@ export default function MeteorologiaPage() {
                 ]);
                 const citiesData = await citiesRes.json();
                 const weatherData = await weatherRes.json();
-                setCities(citiesData.data || []);
+
+                // 20 Target locations requested by user
+                const CITY_MAP = {
+                    "Aveiro": "Aveiro", "Beja": "Beja", "Braga": "Braga", "Bragança": "Bragança",
+                    "Castelo Branco": "Castelo Branco", "Coimbra": "Coimbra", "Évora": "Évora", "Faro": "Faro",
+                    "Guarda": "Guarda", "Leiria": "Leiria", "Lisboa": "Lisboa", "Portalegre": "Portalegre",
+                    "Porto": "Porto", "Santarém": "Santarém", "Setúbal": "Setúbal", "Viana do Castelo": "Viana do Castelo",
+                    "Vila Real": "Vila Real", "Viseu": "Viseu", "Ponta Delgada": "Açores", "Funchal": "Madeira"
+                };
+
+                const filtered = (citiesData.data || [])
+                    .filter(city => CITY_MAP[city.local])
+                    .map(city => ({
+                        ...city,
+                        local: CITY_MAP[city.local]
+                    }));
+
+                setCities(filtered);
                 const wtMap = {};
                 (weatherData.data || []).forEach(wt => { wtMap[wt.idWeatherType] = wt.descWeatherTypePT; });
                 setWeatherTypes(wtMap);
@@ -62,11 +206,10 @@ export default function MeteorologiaPage() {
                 let forecastList = forecastData.data || [];
                 if (forecastList.length > 0 && forecastList.length < 7) {
                     const lastDay = forecastList[forecastList.length - 1];
-                    const daysToAdd = 7 - forecastList.length;
-                    for (let i = 1; i <= daysToAdd; i++) {
-                        const lastDate = new Date(lastDay.forecastDate);
-                        lastDate.setDate(lastDate.getDate() + i);
-                        forecastList.push({ ...lastDay, forecastDate: lastDate.toISOString().split('T')[0] });
+                    for (let i = 1; i <= 7 - forecastList.length; i++) {
+                        const d = new Date(lastDay.forecastDate);
+                        d.setDate(d.getDate() + i);
+                        forecastList.push({ ...lastDay, forecastDate: d.toISOString().split('T')[0] });
                     }
                 }
                 setSevenDayForecast(forecastList);
@@ -88,71 +231,23 @@ export default function MeteorologiaPage() {
     const conditionEmoji = selectedForecast ? (WEATHER_EMOJI[selectedForecast.idWeatherType] || '🌡️') : '🌡️';
     const windDir = selectedForecast?.predWindDir || '—';
     const windSpeed = selectedForecast ? (WIND_SPEED_CLASSES[selectedForecast.classWindSpeed] || '—') : '—';
+    const weatherCondition = selectedForecast ? getWeatherCondition(selectedForecast.idWeatherType) : 'cloudy';
 
-    const getThemeConfig = () => {
-        switch (theme) {
-            case 'popart':
-                return {
-                    title: 'METEOROLOGIA!',
-                    subtitle: 'Dados em tempo real do IPMA',
-                    citySelector: '📍 ESCOLHE A CIDADE:',
-                    todayPrevisão: 'PREVISÃO DE HOJE!',
-                    tempLabel: 'TEMP',
-                    condLabel: 'CONDIÇÃO',
-                    rainLabel: 'PROB. CHUVA',
-                    windLabel: 'VENTO',
-                    forecastTitle: '🔮 PRÓXIMOS DIAS!',
-                    todayLabel: 'HOJE',
-                    footer: 'DADOS REAIS DO IPMA! ⚡ ATUALIZAÇÃO DIÁRIA ⚡'
-                };
+    const isDynamic = theme === 'dynamic';
+    const isRain = isDynamic && weatherCondition === 'rain';
+    const isThunder = isDynamic && weatherCondition === 'thunderstorm';
+    const isSnow = isDynamic && weatherCondition === 'snow';
 
-            case 'botanic':
-                return {
-                    title: 'ESQUEMA METEOROLÓGICO DE PORTUGAL',
-                    subtitle: 'Sistema V.2.1 / Transmissão em Direto',
-                    citySelector: 'Designação da Localização:',
-                    todayPrevisão: 'ESQUEMA DO SISTEMA ATUAL',
-                    tempLabel: 'Temperatura',
-                    condLabel: 'CONDIÇÃO',
-                    rainLabel: 'CHUVA',
-                    windLabel: 'VENTO',
-                    forecastTitle: 'ESQUEMA DE PREVISÃO PARA 7 DIAS',
-                    todayLabel: 'HOJE',
-                    footer: '* DADOS ADQUIRIDOS DO SISTEMA IPMA *'
-                };
-
-            case 'synthwave':
-                return {
-                    title: 'PORTUGAL METEO AGORA!',
-                    subtitle: 'LIGAÇÃO À REDE NEON',
-                    citySelector: 'SELECIONAR NÓ:',
-                    todayPrevisão: 'ESTADO LOCAL',
-                    tempLabel: 'Temperatura',
-                    condLabel: 'CONDIÇÃO',
-                    rainLabel: 'CHUVA',
-                    windLabel: 'VENTO',
-                    forecastTitle: 'PROJEÇÕES FUTURAS',
-                    todayLabel: 'AGORA',
-                    footer: 'ATUALIZAÇÕES EM DIRETO! // FONTE: IPMA // REDE-NEON'
-                };
-
-            default:
-                return {
-                    title: 'Meteorologia',
-                    subtitle: 'Previsão meteorológica para Portugal — Fonte: IPMA',
-                    citySelector: '📍 Selecionar cidade:',
-                    todayPrevisão: 'Previsão para hoje',
-                    tempLabel: 'Temperatura',
-                    condLabel: 'Condição',
-                    rainLabel: 'Prob. de Chuva',
-                    windLabel: 'Vento',
-                    forecastTitle: 'Previsão para os próximos dias',
-                    todayLabel: 'Hoje',
-                    footer: 'Fonte: Instituto Português do Mar e da Atmosfera (IPMA) — Atualização diária'
-                };
-        }
+    const t = {
+        title: 'Meteorologia',
+        subtitle: 'Previsão meteorológica para Portugal — Fonte: IPMA',
+        citySelector: '📍 Selecionar cidade:',
+        todayPrevisão: 'Previsão para hoje',
+        tempLabel: 'Temperatura', condLabel: 'Condição',
+        rainLabel: 'Prob. de Chuva', windLabel: 'Vento',
+        forecastTitle: 'Previsão para os próximos dias', todayLabel: 'Hoje',
+        footer: 'Fonte: Instituto Português do Mar e da Atmosfera (IPMA) — Atualização diária'
     };
-    const t = getThemeConfig();
 
     const formatDateStr = (dateStr) => {
         if (!dateStr) return '';
@@ -162,92 +257,124 @@ export default function MeteorologiaPage() {
     };
 
     return (
-        <div className={`meteorologia-page theme-${theme}`}>
+        <div className={`meteorologia-page theme-${theme} ${isDynamic ? `dynamic-${weatherCondition}` : ''}`}>
+
+            {/* Weather FX Layer — Dynamic only */}
+            {isDynamic && (
+                <div className="weather-fx-layer">
+                    <RainCanvas active={isRain} intensity={1} />
+                    <RainCanvas active={isThunder} intensity={1.6} />
+                    <SnowCanvas active={isSnow} />
+                    <LightningEffect active={isThunder} />
+                    {weatherCondition === 'fog' && <div className="fog-overlay" />}
+                    {weatherCondition === 'sunny' && <div className="sun-glow" />}
+                    {weatherCondition === 'partlycloudy' && <div className="sun-glow dim" />}
+                </div>
+            )}
+
             <div className="container">
+                {/* Header */}
                 <div className="meteo-header">
                     <div className="theme-title-container">
                         <h1>{t.title}</h1>
                         <span className="theme-subtitle">{t.subtitle}</span>
                     </div>
                 </div>
+
+                {/* Theme Switch — only 2 options */}
                 <div className="style-switch">
                     <span className="switch-label">Estilo:</span>
-                    <button className={`switch-btn ${theme === 'popart' ? 'active' : ''}`} onClick={() => setTheme('popart')}>🎨 Pop Art</button>
-                    <button className={`switch-btn ${theme === 'classic' ? 'active' : ''}`} onClick={() => setTheme('classic')}>📊 Clássico</button>
-                    <button className={`switch-btn ${theme === 'botanic' ? 'active' : ''}`} onClick={() => setTheme('botanic')}>🌿 Botânica</button>
-                    <button className={`switch-btn ${theme === 'synthwave' ? 'active' : ''}`} onClick={() => setTheme('synthwave')}>⚡ Synthwave</button>
+                    <button className={`switch-btn ${theme === 'classic' ? 'active' : ''}`} onClick={() => setTheme('classic')}>
+                        📊 Clássico
+                    </button>
+                    <button className={`switch-btn ${theme === 'dynamic' ? 'active' : ''}`} onClick={() => setTheme('dynamic')}>
+                        🌦️ Dinâmico
+                    </button>
                 </div>
+
                 {loading && <div className="meteo-loading"><div className="loading-spinner"></div><p>A carregar dados...</p></div>}
                 {error && <div className="meteo-error"><p>{error}</p></div>}
+
                 {!loading && !error && (
                     <div className="meteo-content">
+                        {/* City Selector */}
                         <div className="city-selector">
                             <label htmlFor="city-select">{t.citySelector}</label>
                             <select id="city-select" value={selectedCityId} onChange={(e) => setSelectedCityId(Number(e.target.value))}>
-                                {sortedCities.map(city => <option key={city.globalIdLocal} value={city.globalIdLocal}>{city.local}</option>)}
+                                {sortedCities.map(city => (
+                                    <option key={city.globalIdLocal} value={city.globalIdLocal}>{city.local}</option>
+                                ))}
                             </select>
                         </div>
+
                         <div className="meteo-grid">
+                            {/* Map */}
                             <div className="map-panel">
                                 <PortugalMap cities={cities} selectedCityId={selectedCityId} onCitySelect={setSelectedCityId} theme={theme} />
                             </div>
+
+                            {/* Weather Cards */}
                             <div className="weather-panel">
-                                <div className="city-banner">
                                     <div className="theme-city-name">
                                         <h2 className="city-name-text">{selectedCity?.local || 'Lisboa'}</h2>
                                         <span className="city-subtitle">{t.todayPrevisão}</span>
                                     </div>
-                                    {selectedCity && (
-                                        <div className="city-image-container">
-                                            <img src={`/images/cities/${selectedCity.local.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-')}.jpg`} alt={`Monumento de ${selectedCity.local}`} onError={(e) => { e.target.style.display = 'none'; e.target.parentElement.classList.add('no-image'); }} className="city-monument-img" />
-                                        </div>
-                                    )}
-                                </div>
+
                                 <div className="data-cards">
                                     <div className="data-card card-temp">
                                         <div className="card-label"><span className="theme-label">{t.tempLabel}</span></div>
                                         <div className="card-icon">🌡️</div>
-                                        <div className="card-value">{selectedForecast ? <><span className="temp-max">{selectedForecast.tMax}°C</span><span className="temp-separator">/</span><span className="temp-min">{selectedForecast.tMin}°C</span></> : '—'}</div>
-                                        <div className="card-sub">{theme === 'classic' ? `Máx: ${selectedForecast?.tMax || '—'}°C | Mín: ${selectedForecast?.tMin || '—'}°C` : `(MAX ${selectedForecast?.tMax || '—'}° / MIN ${selectedForecast?.tMin || '—'}°)`}</div>
+                                        <div className="card-value">
+                                            {selectedForecast ? (
+                                                <><span className="temp-max">{selectedForecast.tMax}°C</span><span className="temp-separator">/</span><span className="temp-min">{selectedForecast.tMin}°C</span></>
+                                            ) : '—'}
+                                        </div>
+                                        <div className="card-sub">Máx: {selectedForecast?.tMax || '—'}°C | Mín: {selectedForecast?.tMin || '—'}°C</div>
                                     </div>
+
                                     <div className="data-card card-condition">
                                         <div className="card-label"><span className="theme-label">{t.condLabel}</span></div>
                                         <div className="card-icon">{conditionEmoji}</div>
                                         <div className="card-value card-value-text">{conditionText}</div>
                                     </div>
+
                                     <div className="data-card card-rain">
                                         <div className="card-label"><span className="theme-label">{t.rainLabel}</span></div>
                                         <div className="card-icon">🌧️</div>
                                         <div className="card-value">{selectedForecast ? `${parseFloat(selectedForecast.precipitaProb).toFixed(0)}%` : '—'}</div>
-                                        <div className="card-sub">{theme === 'classic' ? 'Probabilidade de precipitação' : (parseFloat(selectedForecast?.precipitaProb || 0) > 50 ? '(UMBRELLA REQ!)' : '(MAYBE...)')}</div>
+                                        <div className="card-sub">Probabilidade de precipitação</div>
                                     </div>
+
                                     <div className="data-card card-wind">
                                         <div className="card-label"><span className="theme-label">{t.windLabel}</span></div>
                                         <div className="card-icon">💨</div>
                                         <div className="card-value">{windDir}</div>
-                                        <div className="card-sub">{theme === 'classic' ? `Intensidade: ${windSpeed}` : `(${String(windSpeed).toUpperCase()}!)`}</div>
+                                        <div className="card-sub">Intensidade: {windSpeed}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        {/* Multi-Day Forecast */}
                         {sevenDayForecast.length > 0 && (
                             <div className="multi-day-forecast">
                                 <h3 className="forecast-title">{t.forecastTitle}</h3>
                                 <div className="forecast-row">
-                                    {sevenDayForecast.map((day, index) => {
-                                        const weatherEmoji = WEATHER_EMOJI[day.idWeatherType] || '🌡️';
-                                        return (
-                                            <div key={day.forecastDate + index} className={`forecast-col ${index === 0 ? 'today-col' : ''}`}>
-                                                <div className="f-day">{index === 0 ? t.todayLabel : formatDateStr(day.forecastDate)}</div>
-                                                <div className="f-icon">{weatherEmoji}</div>
-                                                <div className="f-temps"><span className="f-tmax">{day.tMax}°</span><span className="f-tmin">{day.tMin}°</span></div>
-                                                <div className="f-details"><span className="f-detail-item">💨 {day.predWindDir}</span><span className="f-detail-item">🌧️ {parseFloat(day.precipitaProb).toFixed(0)}%</span></div>
+                                    {sevenDayForecast.map((day, index) => (
+                                        <div key={day.forecastDate + index} className={`forecast-col ${index === 0 ? 'today-col' : ''}`}>
+                                            <div className="f-day">{index === 0 ? t.todayLabel : formatDateStr(day.forecastDate)}</div>
+                                            <div className="f-icon">{WEATHER_EMOJI[day.idWeatherType] || '🌡️'}</div>
+                                            <div className="f-temps"><span className="f-tmax">{day.tMax}°</span><span className="f-tmin">{day.tMin}°</span></div>
+                                            <div className="f-details">
+                                                <span className="f-detail-item">💨 {day.predWindDir}</span>
+                                                <span className="f-detail-item">🌧️ {parseFloat(day.precipitaProb).toFixed(0)}%</span>
                                             </div>
-                                        );
-                                    })}
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         )}
+
                         <div className="meteo-footer"><p className="theme-footer-text">{t.footer}</p></div>
                     </div>
                 )}

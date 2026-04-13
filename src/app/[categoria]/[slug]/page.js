@@ -10,7 +10,10 @@ export async function generateMetadata({ params }) {
         return { title: 'Artigo não encontrado' };
     }
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://panoramas.pt';
+    const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://panoramas.pt').replace(/\/$/, "");
+    const articleImage = article.image?.startsWith('http') 
+        ? article.image 
+        : `${siteUrl}${article.image?.startsWith('/') ? article.image : '/' + article.image}`;
 
     return {
         title: article.title,
@@ -22,7 +25,7 @@ export async function generateMetadata({ params }) {
             type: 'article',
             images: [
                 {
-                    url: article.image?.startsWith('http') ? article.image : `${siteUrl}${article.image}`,
+                    url: articleImage || `${siteUrl}/images/almada_float.png`,
                     width: 1200,
                     height: 630,
                     alt: article.title,
@@ -35,7 +38,7 @@ export async function generateMetadata({ params }) {
             card: 'summary_large_image',
             title: article.title,
             description: article.seoMeta?.meta_description || article.summary,
-            images: [article.image?.startsWith('http') ? article.image : `${siteUrl}${article.image}`],
+            images: [articleImage || `${siteUrl}/images/almada_float.png`],
         },
         alternates: {
             canonical: `${siteUrl}/${categoria}/${slug}`,

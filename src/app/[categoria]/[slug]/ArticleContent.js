@@ -48,7 +48,7 @@ export default function ArticleContent({ article, slug }) {
                         </div>
                     </div>
 
-                    <ShareButtons title={article.title} />
+                    <ShareButtons title={article.title} image={article.image} />
                 </header>
 
                 <figure className="article-hero-image" style={{ position: 'relative', width: '100%', aspectRatio: '16/9' }}>

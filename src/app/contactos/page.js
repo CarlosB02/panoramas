@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import ContactForm from '@/components/ContactForm';
 import './Contactos.css';
 
 export const metadata = { title: 'Contactos | Panoramas' };
@@ -12,9 +11,6 @@ export default function ContactosPage() {
             {/* Header / Hero Section */}
             <section className="contactos-header-section">
                 <div className="contactos-header-wrapper">
-                    <div className="contactos-breadcrumb">
-                        <Link href="/">Início</Link> &gt; <span>Contactos</span>
-                    </div>
                     <h1 className="contactos-title">Fale Connosco</h1>
                     <p className="contactos-subtitle">
                         Valorizamos a sua opinião. Seja para sugestões de reportagem, denúncias, ou propostas de negócio, encontra aqui todos os canais abertos para nos alcançar diretamente.
@@ -24,14 +20,9 @@ export default function ContactosPage() {
 
             {/* Main Interactive Grid */}
             <section className="contactos-main-content">
-                <div className="contactos-grid">
+                <div className="contactos-grid centered">
                     
-                    {/* Left Column - Contact Form */}
-                    <div className="contact-form-container">
-                        <ContactForm />
-                    </div>
-
-                    {/* Right Column - Directory Cards */}
+                    {/* Centered Directory Cards */}
                     <div className="contact-info-column">
                         
                         <div className="info-card">

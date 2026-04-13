@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import './Header.css';
 import { localMostRead } from '../data/localNews';
@@ -26,12 +27,12 @@ const Header = () => {
             setIsScrolled(window.scrollY > 120);
         };
         window.addEventListener('scroll', handleScroll);
-        
+
         // Fetch real trending dynamics
         getTrendingArticles(5).then(data => {
             if (data && data.length > 0) setTrendingNews(data);
         });
-        
+
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -59,7 +60,7 @@ const Header = () => {
                 window.scrollTo(0, parseInt(scrollY));
             }
         }
-        
+
         return () => {
             document.body.style.position = '';
             document.body.style.top = '';
@@ -94,19 +95,37 @@ const Header = () => {
         setSubCategories(prev => prev.includes(catId) ? prev.filter(c => c !== catId) : [...prev, catId]);
     };
 
-    const handleSubscribe = (e) => {
+    const handleSubscribe = async (e) => {
         e.preventDefault();
-        if(!email) return;
+        if (!email) return;
         setSubStatus('loading');
-        setTimeout(() => {
-            setSubStatus('success');
-            setTimeout(() => {
-                setIsNewsletterOpen(false);
+
+        try {
+            const response = await fetch('/api/newsletter/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, categories: subCategories }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setSubStatus('success');
+                setTimeout(() => {
+                    setIsNewsletterOpen(false);
+                    setSubStatus('idle');
+                    setEmail('');
+                    setSubCategories([]);
+                }, 3000);
+            } else {
+                alert(data.error || 'Ocorreu um erro ao subscrever.');
                 setSubStatus('idle');
-                setEmail('');
-                setSubCategories([]);
-            }, 3000);
-        }, 1500);
+            }
+        } catch (error) {
+            console.error('Subscription error:', error);
+            alert('Não foi possível ligar ao servidor. Tente mais tarde.');
+            setSubStatus('idle');
+        }
     };
 
     const today = new Date();
@@ -126,27 +145,13 @@ const Header = () => {
         { href: '/entretenimento', label: 'Entretenimento' },
         { href: '/desporto', label: 'Desporto' },
         { href: '/saude', label: 'Saúde' },
-        { href: '/estilo-de-vida', label: 'Estilo de Vida' },
         { href: '/ia', label: 'IA' },
         { href: '/meteorologia', label: 'Meteorologia' },
-        { href: '/mais', label: 'Mais' },
     ];
 
     return (
         <header className={`site-header ${isScrolled ? 'scrolled' : ''}`}>
-            {/* Logo Bar */}
-            <div className="logo-bar">
-                <div className="container logo-container">
-                    <Link href="/" className="logo-link">
-                        <div className="logo-main">
-                            <span className="logo-name">PANORAMAS</span>
-                        </div>
-                        <span className="logo-tagline">Informação de Confiança</span>
-                    </Link>
-                </div>
-            </div>
-
-            {/* Top Utility Bar */}
+            {/* 1. Top Utility Bar (Blue) */}
             <div className="utility-bar">
                 <div className="container utility-container">
                     <span className="utility-date">{formattedDate}</span>
@@ -157,28 +162,53 @@ const Header = () => {
                 </div>
             </div>
 
-            {/* Main Navigation */}
+            {/* 2. Main Navigation Bar (White) - Contains Logo, Links and Search */}
             <nav className={`main-nav-bar ${isScrolled ? 'nav-sticky' : ''}`}>
                 <div className="container nav-container">
-                    {isScrolled && (
-                        <Link href="/" className="sticky-logo">
-                            <span>P</span>
+                    {/* Logo on the left */}
+                    <div className="nav-logo-area">
+                        <Link href="/" className="logo-link">
+                            <Image
+                                src="/images/panoramas_logo.png"
+                                alt="Panoramas Logo"
+                                width={240}
+                                height={48}
+                                priority
+                                className="main-logo-img"
+                            />
                         </Link>
-                    )}
+                    </div>
 
+                    {/* Navigation links in the middle/right */}
                     <ul className={`nav-links ${isMenuOpen ? 'mobile-open' : ''}`}>
                         {navLinks.map(link => (
                             <li key={link.href}>
                                 <Link
                                     href={link.href}
-                                    className={pathname === link.href ? 'active' : ''}
+                                    className={`${pathname === link.href ? 'active' : ''} ${link.href === '/meteorologia' ? 'nav-link-special' : ''}`}
                                 >
+                                    {link.href === '/meteorologia' && (
+                                        <span className="nav-special-icon-wrapper">
+                                            <svg className="nav-special-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                <circle cx="12" cy="12" r="4"></circle>
+                                                <path d="M12 2v2"></path>
+                                                <path d="M12 20v2"></path>
+                                                <path d="m4.93 4.93 1.41 1.41"></path>
+                                                <path d="m17.66 17.66 1.41 1.41"></path>
+                                                <path d="M2 12h2"></path>
+                                                <path d="M20 12h2"></path>
+                                                <path d="m6.34 17.66-1.41 1.41"></path>
+                                                <path d="m19.07 4.93-1.41 1.41"></path>
+                                            </svg>
+                                        </span>
+                                    )}
                                     {link.label}
                                 </Link>
                             </li>
                         ))}
                     </ul>
 
+                    {/* Actions (Search, Hamburger) on far right */}
                     <div className="nav-actions">
                         <div className="search-container">
                             <button className="btn-search" onClick={() => setIsSearchOpen(!isSearchOpen)} aria-label="Pesquisar">
@@ -195,10 +225,10 @@ const Header = () => {
                                 )}
                             </button>
                             <form className={`search-form ${isSearchOpen ? 'open' : ''}`} onSubmit={handleSearchSubmit}>
-                                <input 
+                                <input
                                     ref={searchInputRef}
-                                    type="text" 
-                                    placeholder="Pesquisar notícias..." 
+                                    type="text"
+                                    placeholder="Pesquisar notícias..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     className="search-input"
@@ -250,12 +280,12 @@ const Header = () => {
                             <form onSubmit={handleSubscribe} className="newsletter-form">
                                 <h3>A sua informação de confiança.</h3>
                                 <p>Subscreva para receber as principais notícias diretamente no seu email.</p>
-                                
+
                                 <label className="nl-label">E-mail</label>
-                                <input 
-                                    type="email" 
-                                    className="nl-input" 
-                                    placeholder="O seu endereço de e-mail" 
+                                <input
+                                    type="email"
+                                    className="nl-input"
+                                    placeholder="O seu endereço de e-mail"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
@@ -272,8 +302,8 @@ const Header = () => {
                                         { id: 'tecnologia', label: 'IA & Tech' }
                                     ].map(cat => (
                                         <label key={cat.id} className={`nl-checkbox-btn ${subCategories.includes(cat.id) ? 'checked' : ''}`}>
-                                            <input 
-                                                type="checkbox" 
+                                            <input
+                                                type="checkbox"
                                                 checked={subCategories.includes(cat.id)}
                                                 onChange={() => handleSubToggle(cat.id)}
                                             />

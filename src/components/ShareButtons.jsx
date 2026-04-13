@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import './ShareButtons.css';
 
-export default function ShareButtons({ title }) {
+export default function ShareButtons({ title, image }) {
     const [url, setUrl] = useState('');
 
     useEffect(() => {
