@@ -11,13 +11,21 @@ const WIND_SPEED_CLASSES = {
     1: 'Fraco', 2: 'Moderado', 3: 'Forte', 4: 'Muito Forte',
 };
 
-const WEATHER_EMOJI = {
-    1: '☀️', 2: '🌤️', 3: '⛅', 4: '☁️', 5: '🌥️',
-    6: '🌧️', 7: '🌦️', 8: '⛈️', 9: '🌧️', 10: '🌧️',
-    11: '🌧️', 12: '🌧️', 13: '🌧️', 14: '🌧️', 15: '🌧️',
-    16: '🌫️', 17: '🌫️', 18: '❄️', 19: '⛈️', 20: '⛈️',
-    21: '🧊', 22: '🥶', 23: '⛈️', 24: '☁️', 25: '🌥️',
-    26: '🌫️', 27: '☁️', 28: '❄️', 29: '⛈️',
+const WEATHER_ICONS = {
+    1: 'icon-sun.png', 2: 'icon-ensolarado.png', 3: 'icon-ensolarado.png', 4: 'icon-nublado.png', 5: 'icon-nublado com sol.png',
+    6: 'icon-rain.png', 7: 'icon-aguaceiros.png', 8: 'icon-trovoada.png', 9: 'icon-rain.png', 10: 'icon-rain.png',
+    11: 'icon-rain.png', 12: 'icon-rain.png', 13: 'icon-rain.png', 14: 'icon-rain.png', 15: 'icon-rain.png',
+    16: 'icon-fog.png', 17: 'icon-fog.png', 18: 'icon-snow.png', 19: 'icon-trovoada.png', 20: 'icon-trovoada.png',
+    21: 'icon-frozen.png', 22: 'icon-frozen.png', 23: 'icon-trovoada.png', 24: 'icon-nublado.png', 25: 'icon-nublado com sol.png',
+    26: 'icon-fog.png', 27: 'icon-nublado.png', 28: 'icon-snow.png', 29: 'icon-trovoada.png',
+};
+
+const getTempIcon = (tMax) => {
+    const t = parseFloat(tMax);
+    if (isNaN(t)) return 'icon-medium temperature.png';
+    if (t <= 10) return 'icon-low temperature.png';
+    if (t >= 26) return 'icon-hot temperature.png';
+    return 'icon-medium temperature.png';
 };
 
 const getWeatherCondition = (idWeatherType) => {
@@ -29,6 +37,19 @@ const getWeatherCondition = (idWeatherType) => {
     if ([16, 17, 26].includes(idWeatherType)) return 'fog';
     if ([18, 21, 22, 28].includes(idWeatherType)) return 'snow';
     return 'cloudy';
+};
+
+// Maps IPMA city names to custom icon filenames
+const getCityIcon = (cityName) => {
+    if (!cityName) return null;
+    const nameMap = {
+        'Viana do Castelo': 'viana',
+        'Faro': 'faro',
+    };
+    const mapped = nameMap[cityName];
+    if (mapped) return `/icons/${mapped}.png`;
+
+    return `/icons/${cityName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-')}.png`;
 };
 
 // ── Rain Canvas ──
@@ -167,13 +188,16 @@ export default function MeteorologiaPage() {
                 const citiesData = await citiesRes.json();
                 const weatherData = await weatherRes.json();
 
-                // 20 Target locations requested by user
+                // Target locations requested by user
                 const CITY_MAP = {
                     "Aveiro": "Aveiro", "Beja": "Beja", "Braga": "Braga", "Bragança": "Bragança",
                     "Castelo Branco": "Castelo Branco", "Coimbra": "Coimbra", "Évora": "Évora", "Faro": "Faro",
                     "Guarda": "Guarda", "Leiria": "Leiria", "Lisboa": "Lisboa", "Portalegre": "Portalegre",
                     "Porto": "Porto", "Santarém": "Santarém", "Setúbal": "Setúbal", "Viana do Castelo": "Viana do Castelo",
-                    "Vila Real": "Vila Real", "Viseu": "Viseu", "Ponta Delgada": "Açores", "Funchal": "Madeira"
+                    "Vila Real": "Vila Real", "Viseu": "Viseu",
+                    "Funchal": "Funchal", "Porto Santo": "Porto Santo",
+                    "Horta": "Horta", "Santa Cruz das Flores": "Santa Cruz das Flores",
+                    "Angra do Heroísmo": "Angra do Heroísmo", "Ponta Delgada": "Ponta Delgada"
                 };
 
                 const filtered = (citiesData.data || [])
@@ -228,7 +252,7 @@ export default function MeteorologiaPage() {
     const selectedForecast = sevenDayForecast.length > 0 ? sevenDayForecast[0] : null;
     const sortedCities = [...cities].sort((a, b) => a.local.localeCompare(b.local));
     const conditionText = selectedForecast ? (weatherTypes[selectedForecast.idWeatherType] || 'Desconhecido') : '—';
-    const conditionEmoji = selectedForecast ? (WEATHER_EMOJI[selectedForecast.idWeatherType] || '🌡️') : '🌡️';
+    const conditionIcon = selectedForecast ? (WEATHER_ICONS[selectedForecast.idWeatherType] || 'icon-medium temperature.png') : 'icon-medium temperature.png';
     const windDir = selectedForecast?.predWindDir || '—';
     const windSpeed = selectedForecast ? (WIND_SPEED_CLASSES[selectedForecast.classWindSpeed] || '—') : '—';
     const weatherCondition = selectedForecast ? getWeatherCondition(selectedForecast.idWeatherType) : 'cloudy';
@@ -241,7 +265,7 @@ export default function MeteorologiaPage() {
     const t = {
         title: 'Meteorologia',
         subtitle: 'Previsão meteorológica para Portugal — Fonte: IPMA',
-        citySelector: '📍 Selecionar cidade:',
+        citySelector: <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}><img src="/icons/meteorologia/icon-select.png" width="18" height="18" alt="select"/>Selecionar cidade:</span>,
         todayPrevisão: 'Previsão para hoje',
         tempLabel: 'Temperatura', condLabel: 'Condição',
         rainLabel: 'Prob. de Chuva', windLabel: 'Vento',
@@ -284,11 +308,11 @@ export default function MeteorologiaPage() {
                 {/* Theme Switch — only 2 options */}
                 <div className="style-switch">
                     <span className="switch-label">Estilo:</span>
-                    <button className={`switch-btn ${theme === 'classic' ? 'active' : ''}`} onClick={() => setTheme('classic')}>
-                        📊 Clássico
+                    <button className={`switch-btn ${theme === 'classic' ? 'active' : ''}`} onClick={() => setTheme('classic')} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                        <img src="/icons/meteorologia/icon-classico.png" width="16" height="16" alt=""/> Clássico
                     </button>
-                    <button className={`switch-btn ${theme === 'dynamic' ? 'active' : ''}`} onClick={() => setTheme('dynamic')}>
-                        🌦️ Dinâmico
+                    <button className={`switch-btn ${theme === 'dynamic' ? 'active' : ''}`} onClick={() => setTheme('dynamic')} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                        <img src="/icons/meteorologia/icon-aguaceiros.png" width="16" height="16" alt=""/> Dinâmico
                     </button>
                 </div>
 
@@ -315,15 +339,30 @@ export default function MeteorologiaPage() {
 
                             {/* Weather Cards */}
                             <div className="weather-panel">
-                                    <div className="theme-city-name">
+                                <div className="theme-city-name">
+                                    <div className="city-name-with-icon">
+                                        {selectedCity && (
+                                            <img
+                                                src={getCityIcon(selectedCity.local)}
+                                                alt={`Ícone de ${selectedCity.local}`}
+                                                className="district-icon"
+                                                onError={(e) => {
+                                                    console.error('Erro ao carregar o ícone:', getCityIcon(selectedCity.local));
+                                                    e.target.style.display = 'none';
+                                                }}
+                                            />
+                                        )}
                                         <h2 className="city-name-text">{selectedCity?.local || 'Lisboa'}</h2>
-                                        <span className="city-subtitle">{t.todayPrevisão}</span>
                                     </div>
+                                    <span className="city-subtitle">{t.todayPrevisão}</span>
+                                </div>
 
                                 <div className="data-cards">
                                     <div className="data-card card-temp">
                                         <div className="card-label"><span className="theme-label">{t.tempLabel}</span></div>
-                                        <div className="card-icon">🌡️</div>
+                                        <div className="card-icon">
+                                            <img src={`/icons/meteorologia/${getTempIcon(selectedForecast?.tMax)}`} width="36" height="36" alt="temperatura"/>
+                                        </div>
                                         <div className="card-value">
                                             {selectedForecast ? (
                                                 <><span className="temp-max">{selectedForecast.tMax}°C</span><span className="temp-separator">/</span><span className="temp-min">{selectedForecast.tMin}°C</span></>
@@ -334,20 +373,26 @@ export default function MeteorologiaPage() {
 
                                     <div className="data-card card-condition">
                                         <div className="card-label"><span className="theme-label">{t.condLabel}</span></div>
-                                        <div className="card-icon">{conditionEmoji}</div>
+                                        <div className="card-icon">
+                                            <img src={`/icons/meteorologia/${conditionIcon}`} width="36" height="36" alt="condição"/>
+                                        </div>
                                         <div className="card-value card-value-text">{conditionText}</div>
                                     </div>
 
                                     <div className="data-card card-rain">
                                         <div className="card-label"><span className="theme-label">{t.rainLabel}</span></div>
-                                        <div className="card-icon">🌧️</div>
+                                        <div className="card-icon">
+                                            <img src="/icons/meteorologia/icon-rain.png" width="36" height="36" alt="chuva"/>
+                                        </div>
                                         <div className="card-value">{selectedForecast ? `${parseFloat(selectedForecast.precipitaProb).toFixed(0)}%` : '—'}</div>
                                         <div className="card-sub">Probabilidade de precipitação</div>
                                     </div>
 
                                     <div className="data-card card-wind">
                                         <div className="card-label"><span className="theme-label">{t.windLabel}</span></div>
-                                        <div className="card-icon">💨</div>
+                                        <div className="card-icon">
+                                            <img src="/icons/meteorologia/icon-wind.png" width="36" height="36" alt="vento"/>
+                                        </div>
                                         <div className="card-value">{windDir}</div>
                                         <div className="card-sub">Intensidade: {windSpeed}</div>
                                     </div>
@@ -363,11 +408,13 @@ export default function MeteorologiaPage() {
                                     {sevenDayForecast.map((day, index) => (
                                         <div key={day.forecastDate + index} className={`forecast-col ${index === 0 ? 'today-col' : ''}`}>
                                             <div className="f-day">{index === 0 ? t.todayLabel : formatDateStr(day.forecastDate)}</div>
-                                            <div className="f-icon">{WEATHER_EMOJI[day.idWeatherType] || '🌡️'}</div>
+                                            <div className="f-icon">
+                                                <img src={`/icons/meteorologia/${WEATHER_ICONS[day.idWeatherType] || 'icon-medium temperature.png'}`} width="28" height="28" alt="condição" style={{margin: '0 auto', display: 'block'}}/>
+                                            </div>
                                             <div className="f-temps"><span className="f-tmax">{day.tMax}°</span><span className="f-tmin">{day.tMin}°</span></div>
                                             <div className="f-details">
-                                                <span className="f-detail-item">💨 {day.predWindDir}</span>
-                                                <span className="f-detail-item">🌧️ {parseFloat(day.precipitaProb).toFixed(0)}%</span>
+                                                <span className="f-detail-item" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}><img src="/icons/meteorologia/icon-wind.png" width="14" height="14" alt=""/>{day.predWindDir}</span>
+                                                <span className="f-detail-item" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}><img src="/icons/meteorologia/icon-rain.png" width="14" height="14" alt=""/>{parseFloat(day.precipitaProb).toFixed(0)}%</span>
                                             </div>
                                         </div>
                                     ))}

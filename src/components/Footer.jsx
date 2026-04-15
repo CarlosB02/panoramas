@@ -25,7 +25,7 @@ const Footer = () => {
                             <li><Link href="/politica">Política</Link></li>
                             <li><Link href="/economia">Economia</Link></li>
                             <li><Link href="/mundo">Mundo</Link></li>
-                            <li><Link href="/media">Média</Link></li>
+                            <li><Link href="/tecnologia">Tecnologia</Link></li>
                             <li><Link href="/entretenimento">Entretenimento</Link></li>
                         </ul>
                     </div>
@@ -35,7 +35,7 @@ const Footer = () => {
                             <li><Link href="/desporto">Desporto</Link></li>
                             <li><Link href="/saude">Saúde</Link></li>
                             <li><Link href="/estilo-de-vida">Estilo de Vida</Link></li>
-                            <li><Link href="/ia">IA</Link></li>
+
                         </ul>
                     </div>
                     <div className="footer-col">
@@ -49,11 +49,10 @@ const Footer = () => {
                     <div className="footer-col">
                         <h4>O Jornal</h4>
                         <ul>
+                            <li><Link href="/sobre-nos">Sobre Panoramas</Link></li>
                             <li><Link href="/estatuto-editorial">Estatuto Editorial</Link></li>
-                            <li><Link href="/ficha-tecnica">Ficha Técnica</Link></li>
                             <li><Link href="/termos-e-condicoes">Termos e Condições</Link></li>
                             <li><Link href="/politica-de-privacidade">Política de Privacidade</Link></li>
-                            <li><Link href="/contactos">Contactos</Link></li>
                         </ul>
                     </div>
                 </div>

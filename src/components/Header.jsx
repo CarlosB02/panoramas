@@ -141,11 +141,11 @@ const Header = () => {
         { href: '/politica', label: 'Política' },
         { href: '/economia', label: 'Economia' },
         { href: '/mundo', label: 'Mundo' },
-        { href: '/media', label: 'Média' },
+        { href: '/tecnologia', label: 'Tecnologia' },
         { href: '/entretenimento', label: 'Entretenimento' },
         { href: '/desporto', label: 'Desporto' },
         { href: '/saude', label: 'Saúde' },
-        { href: '/ia', label: 'IA' },
+
         { href: '/meteorologia', label: 'Meteorologia' },
     ];
 
@@ -157,7 +157,7 @@ const Header = () => {
                     <span className="utility-date">{formattedDate}</span>
                     <div className="utility-right">
                         <button onClick={() => setIsNewsletterOpen(true)} className="utility-link newsletter-btn">Newsletter</button>
-                        <Link href="/contactos" className="utility-link">Contactos</Link>
+                        <Link href="/sobre-nos" className="utility-link">Sobre Panoramas</Link>
                     </div>
                 </div>
             </div>
@@ -294,12 +294,14 @@ const Header = () => {
                                 <label className="nl-label">Tópicos de Interesse</label>
                                 <div className="nl-categories">
                                     {[
+                                        { id: 'portugal', label: 'Portugal' },
                                         { id: 'politica', label: 'Política' },
                                         { id: 'economia', label: 'Economia' },
+                                        { id: 'mundo', label: 'Mundo' },
+                                        { id: 'tecnologia', label: 'Tecnologia' },
+                                        { id: 'entretenimento', label: 'Entretenimento' },
                                         { id: 'desporto', label: 'Desporto' },
-                                        { id: 'mundo', label: 'Portugal & Mundo' },
-                                        { id: 'saude', label: 'Saúde' },
-                                        { id: 'tecnologia', label: 'IA & Tech' }
+                                        { id: 'saude', label: 'Saúde' }
                                     ].map(cat => (
                                         <label key={cat.id} className={`nl-checkbox-btn ${subCategories.includes(cat.id) ? 'checked' : ''}`}>
                                             <input

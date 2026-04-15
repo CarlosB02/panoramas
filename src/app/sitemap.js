@@ -15,7 +15,7 @@ export default async function sitemap() {
         '/desporto',
         '/saude',
         '/estilo-de-vida',
-        '/ia',
+        '/sobre-nos',
         '/meteorologia'
     ].map(route => ({
         url: `${siteUrl}${route}`,

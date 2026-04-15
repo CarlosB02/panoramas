@@ -100,7 +100,9 @@
 }
 
 @media (max-width: 768px) {
-    .meteo-grid { grid-template-columns: 1fr; }
+    .meteo-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .map-panel {
@@ -115,11 +117,20 @@
 }
 
 @keyframes pulse-ring {
-    0% { r: 8; opacity: 1; }
-    100% { r: 16; opacity: 0; }
+    0% {
+        r: 8;
+        opacity: 1;
+    }
+
+    100% {
+        r: 16;
+        opacity: 0;
+    }
 }
 
-.city-pulse { animation: pulse-ring 1.5s ease-out infinite; }
+.city-pulse {
+    animation: pulse-ring 1.5s ease-out infinite;
+}
 
 .weather-panel {
     display: flex;
@@ -135,41 +146,107 @@
     margin-bottom: 1.5rem;
 }
 
-/* Data Cards Grid */
+.city-name-with-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.district-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 4px;
+    /* Opcional caso os icons beneficiem */
+}
+
 .data-cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1.25rem;
+    align-items: stretch;
 }
 
-@media (max-width: 900px) { .data-cards { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .data-cards { grid-template-columns: 1fr; } }
+@media (max-width: 900px) {
+    .data-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .data-cards {
+        grid-template-columns: 1fr;
+    }
+}
 
 .data-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between; /* Mantém conteúdo a preencher o card de forma igual */
     text-align: center;
     padding: 1.5rem 1rem;
     border-radius: 12px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     min-height: 180px;
+    height: 100%; /* Força a ocupar a mesma altura que os outros */
 }
 
-.data-card:hover { transform: translateY(-4px); }
+.data-card:hover {
+    transform: translateY(-4px);
+}
 
-.card-label { margin-bottom: 0.5rem; }
-.card-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-.card-value { font-size: 2.2rem; font-weight: 900; line-height: 1.1; }
-.card-value-text { font-size: 1.1rem; }
-.card-sub { font-size: 0.8rem; margin-top: 0.4rem; opacity: 0.85; }
-.temp-max { color: inherit; }
-.temp-separator { margin: 0 0.25rem; opacity: 0.5; }
-.temp-min { font-size: 1.4rem; opacity: 0.7; }
+.card-label {
+    margin-bottom: 0.5rem;
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-value {
+    font-size: 2.2rem;
+    font-weight: 900;
+    line-height: 1.1;
+}
+
+.card-value-text {
+    font-size: 1.1rem;
+}
+
+.card-sub {
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+    opacity: 0.85;
+}
+
+.card-temp .card-value {
+    font-size: 1.8rem;
+    white-space: nowrap; /* Impede que a temperatura salte para a linha de baixo */
+}
+
+.temp-max {
+    color: inherit;
+}
+
+.temp-separator {
+    margin: 0 0.25rem;
+    opacity: 0.5;
+}
+
+.temp-min {
+    font-size: 1.2rem;
+    opacity: 0.7;
+}
 
 /* Loading & Error */
-.meteo-loading, .meteo-error { text-align: center; padding: 4rem 0; }
+.meteo-loading,
+.meteo-error {
+    text-align: center;
+    padding: 4rem 0;
+}
 
 .loading-spinner {
     width: 48px;
@@ -181,12 +258,27 @@
     animation: spin 0.8s linear infinite;
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
-.meteo-error p { color: #cc0000; font-weight: 600; }
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.meteo-error p {
+    color: #cc0000;
+    font-weight: 600;
+}
 
 /* Multi-Day Forecast */
-.multi-day-forecast { margin-top: 3rem; }
-.forecast-title { text-align: center; margin-bottom: 1.5rem; }
+.multi-day-forecast {
+    margin-top: 3rem;
+}
+
+.forecast-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
 .forecast-row {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -205,13 +297,48 @@
     transition: transform 0.3s ease;
 }
 
-.forecast-col:hover { transform: translateY(-4px); }
-.f-day { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
-.f-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-.f-temps { display: flex; gap: 0.5rem; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
-.f-tmin { opacity: 0.6; font-size: 1rem; margin-top: 0.15rem; }
-.f-details { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.82rem; width: 100%; }
-.f-detail-item { background: rgba(255, 255, 255, 0.2); padding: 0.2rem 0; border-radius: 4px; }
+.forecast-col:hover {
+    transform: translateY(-4px);
+}
+
+.f-day {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.f-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.f-temps {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.f-tmin {
+    opacity: 0.6;
+    font-size: 1rem;
+    margin-top: 0.15rem;
+}
+
+.f-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.82rem;
+    width: 100%;
+}
+
+.f-detail-item {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.2rem 0;
+    border-radius: 4px;
+}
 
 /* Footer */
 .meteo-footer {
@@ -229,16 +356,26 @@
     background: linear-gradient(180deg, #f5f7fa 0%, #e8edf5 100%);
 }
 
-.theme-classic .theme-title-container h1 { color: #0d47a1; }
-.theme-classic .theme-subtitle { color: #666; }
+.theme-classic .theme-title-container h1 {
+    color: #0d47a1;
+}
+
+.theme-classic .theme-subtitle {
+    color: #666;
+}
 
 .theme-classic .switch-btn.active {
     background: #0d47a1;
     border-color: #0d47a1;
 }
 
-.theme-classic .city-selector label { color: #0d47a1; }
-.theme-classic .city-selector select { border-color: #0d47a1; }
+.theme-classic .city-selector label {
+    color: #0d47a1;
+}
+
+.theme-classic .city-selector select {
+    border-color: #0d47a1;
+}
 
 .portugal-map-wrapper.classic {
     background: #fff;
@@ -253,8 +390,13 @@
     color: #fff;
 }
 
-.theme-classic .city-name-text { color: #fff; }
-.theme-classic .city-subtitle { color: rgba(255,255,255,0.85); }
+.theme-classic .city-name-text {
+    color: #fff;
+}
+
+.theme-classic .city-subtitle {
+    color: rgba(255, 255, 255, 0.85);
+}
 
 .theme-classic .data-card {
     background: #fff;
@@ -263,12 +405,34 @@
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
 
-.theme-classic .data-card:hover { box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1); }
-.theme-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: #888; font-weight: 700; }
-.theme-classic .card-temp .card-value { color: #e74c3c; }
-.theme-classic .card-condition .card-value { color: #2980b9; }
-.theme-classic .card-rain .card-value { color: #2980b9; }
-.theme-classic .card-wind .card-value { color: #0288d1; font-size: 1.5rem; }
+.theme-classic .data-card:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+}
+
+.theme-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #888;
+    font-weight: 700;
+}
+
+.theme-classic .card-temp .card-value {
+    color: #e74c3c;
+}
+
+.theme-classic .card-condition .card-value {
+    color: #2980b9;
+}
+
+.theme-classic .card-rain .card-value {
+    color: #2980b9;
+}
+
+.theme-classic .card-wind .card-value {
+    color: #0288d1;
+    font-size: 1.5rem;
+}
 
 .theme-classic .forecast-col {
     background: #fff;
@@ -283,8 +447,16 @@
     box-shadow: 0 4px 16px rgba(13, 71, 161, 0.3);
 }
 
-.theme-classic .today-col .f-detail-item { background: rgba(255,255,255,0.2); color: #fff; }
-.theme-classic .forecast-title { color: #0d47a1; font-size: 1.2rem; font-weight: 700; }
+.theme-classic .today-col .f-detail-item {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.theme-classic .forecast-title {
+    color: #0d47a1;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
 
 /* =============================================
    DYNAMIC THEME — ATMOSPHERIC FX
@@ -332,26 +504,42 @@
 }
 
 @keyframes sunPulse {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.1); opacity: 1; }
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
 }
 
 /* ---- Fog Overlay ---- */
 .fog-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        135deg,
-        rgba(200, 200, 210, 0.25) 0%,
-        rgba(180, 190, 200, 0.18) 40%,
-        rgba(200, 200, 210, 0.25) 100%
-    );
+    background: linear-gradient(135deg,
+            rgba(200, 200, 210, 0.25) 0%,
+            rgba(180, 190, 200, 0.18) 40%,
+            rgba(200, 200, 210, 0.25) 100%);
     animation: fogDrift 8s ease-in-out infinite;
 }
 
 @keyframes fogDrift {
-    0%, 100% { opacity: 0.7; transform: translateX(0); }
-    50% { opacity: 1; transform: translateX(15px); }
+
+    0%,
+    100% {
+        opacity: 0.7;
+        transform: translateX(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateX(15px);
+    }
 }
 
 /* ---- Lightning Flash ---- */
@@ -364,7 +552,9 @@
     pointer-events: none;
 }
 
-.lightning-flash.visible { opacity: 1; }
+.lightning-flash.visible {
+    opacity: 1;
+}
 
 /* ---- Background by condition ---- */
 
@@ -401,28 +591,45 @@
 }
 
 /* ---- Dynamic Content above FX layer ---- */
-.theme-dynamic .container { position: relative; z-index: 1; }
+.theme-dynamic .container {
+    position: relative;
+    z-index: 1;
+}
 
 /* ---- Dynamic title ---- */
-.dynamic-sunny .theme-title-container h1 { color: #2c3e00; }
+.dynamic-sunny .theme-title-container h1 {
+    color: #2c3e00;
+}
+
 .dynamic-rain .theme-title-container h1,
-.dynamic-thunderstorm .theme-title-container h1 { color: #d0e4f7; }
-.dynamic-fog .theme-title-container h1 { color: #2c3e50; }
-.dynamic-snow .theme-title-container h1 { color: #1a2d45; }
+.dynamic-thunderstorm .theme-title-container h1 {
+    color: #d0e4f7;
+}
+
+.dynamic-fog .theme-title-container h1 {
+    color: #2c3e50;
+}
+
+.dynamic-snow .theme-title-container h1 {
+    color: #1a2d45;
+}
+
 .dynamic-cloudy .theme-title-container h1,
-.dynamic-partlycloudy .theme-title-container h1 { color: #1a2940; }
+.dynamic-partlycloudy .theme-title-container h1 {
+    color: #1a2940;
+}
 
 /* ---- Dynamic Switch ---- */
 .theme-dynamic .switch-btn {
-    border-color: rgba(0,0,0,0.15);
-    background: rgba(255,255,255,0.6);
+    border-color: rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(4px);
 }
 
 .dynamic-rain .switch-btn,
 .dynamic-thunderstorm .switch-btn {
-    border-color: rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
     color: #c8daf0;
 }
 
@@ -434,7 +641,9 @@
 
 /* ---- Dynamic City Selector ---- */
 .dynamic-rain .city-selector label,
-.dynamic-thunderstorm .city-selector label { color: #aac8e8; }
+.dynamic-thunderstorm .city-selector label {
+    color: #aac8e8;
+}
 
 .dynamic-rain .city-selector select,
 .dynamic-thunderstorm .city-selector select {
@@ -446,18 +655,18 @@
 /* ---- Dynamic Map ---- */
 .portugal-map-wrapper.dynamic {
     background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255,255,255,0.25);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 14px;
     padding: 0.75rem;
     backdrop-filter: blur(8px);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* ---- Dynamic City Banner ---- */
 .theme-dynamic .theme-city-name {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.25);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     color: inherit;
 }
 
@@ -467,9 +676,15 @@
     border-color: rgba(100, 160, 220, 0.3);
 }
 
-.theme-dynamic .city-name-text { font-size: 2rem; letter-spacing: 0.5px; }
+.theme-dynamic .city-name-text {
+    font-size: 2rem;
+    letter-spacing: 0.5px;
+}
+
 .dynamic-rain .city-name-text,
-.dynamic-thunderstorm .city-name-text { color: #d0e4f7; }
+.dynamic-thunderstorm .city-name-text {
+    color: #d0e4f7;
+}
 
 .theme-dynamic .city-monument-img {
     border-radius: 0 0 14px 14px;
@@ -496,10 +711,23 @@
     background: rgba(255, 255, 255, 0.65);
     box-shadow: 0 4px 20px rgba(255, 200, 0, 0.1);
 }
-.dynamic-sunny .card-temp .card-value { color: #e65100; }
-.dynamic-sunny .card-condition .card-value { color: #1565c0; }
-.dynamic-sunny .card-rain .card-value { color: #1976d2; }
-.dynamic-sunny .card-wind .card-value { color: #2e7d32; font-size: 1.5rem; }
+
+.dynamic-sunny .card-temp .card-value {
+    color: #e65100;
+}
+
+.dynamic-sunny .card-condition .card-value {
+    color: #1565c0;
+}
+
+.dynamic-sunny .card-rain .card-value {
+    color: #1976d2;
+}
+
+.dynamic-sunny .card-wind .card-value {
+    color: #2e7d32;
+    font-size: 1.5rem;
+}
 
 /* Cloudy / Partly Cloudy */
 .dynamic-cloudy .data-card,
@@ -518,9 +746,13 @@
 }
 
 .dynamic-rain .card-value,
-.dynamic-thunderstorm .card-value { color: #afd4f5; }
+.dynamic-thunderstorm .card-value {
+    color: #afd4f5;
+}
 
-.dynamic-thunderstorm .card-temp .card-value { color: #ffd740; }
+.dynamic-thunderstorm .card-temp .card-value {
+    color: #ffd740;
+}
 
 /* Fog */
 .dynamic-fog .data-card {
@@ -533,11 +765,16 @@
     background: rgba(255, 255, 255, 0.6);
     box-shadow: 0 4px 16px rgba(100, 140, 200, 0.12);
 }
-.dynamic-snow .card-value { color: #1a3a5c; }
+
+.dynamic-snow .card-value {
+    color: #1a3a5c;
+}
 
 /* ---- Dynamic theme label  ---- */
 .dynamic-rain .theme-label,
-.dynamic-thunderstorm .theme-label { color: #7aaed4; }
+.dynamic-thunderstorm .theme-label {
+    color: #7aaed4;
+}
 
 /* ---- Dynamic Forecast Columns ---- */
 .theme-dynamic .forecast-col {
@@ -545,17 +782,29 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.dynamic-sunny .forecast-col { background: rgba(255, 255, 255, 0.6); }
+.dynamic-sunny .forecast-col {
+    background: rgba(255, 255, 255, 0.6);
+}
+
 .dynamic-cloudy .forecast-col,
-.dynamic-partlycloudy .forecast-col { background: rgba(255, 255, 255, 0.5); }
+.dynamic-partlycloudy .forecast-col {
+    background: rgba(255, 255, 255, 0.5);
+}
+
 .dynamic-rain .forecast-col,
 .dynamic-thunderstorm .forecast-col {
     background: rgba(15, 35, 60, 0.55);
     border-color: rgba(100, 160, 220, 0.2);
     color: #c8daf0;
 }
-.dynamic-fog .forecast-col { background: rgba(255,255,255,0.4); }
-.dynamic-snow .forecast-col { background: rgba(240, 248, 255, 0.6); }
+
+.dynamic-fog .forecast-col {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.dynamic-snow .forecast-col {
+    background: rgba(240, 248, 255, 0.6);
+}
 
 .theme-dynamic .today-col {
     background: rgba(13, 71, 161, 0.75) !important;
@@ -565,17 +814,87 @@
 }
 
 /* ---- Dynamic Forecast Title ---- */
-.theme-dynamic .forecast-title { font-size: 1.2rem; font-weight: 700; }
+.theme-dynamic .forecast-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
 .dynamic-rain .forecast-title,
-.dynamic-thunderstorm .forecast-title { color: #afd4f5; }
+.dynamic-thunderstorm .forecast-title {
+    color: #afd4f5;
+}
 
 /* ---- Dynamic Footer ---- */
 .dynamic-rain .meteo-footer,
-.dynamic-thunderstorm .meteo-footer { border-top-color: rgba(100,160,220,0.2); }
+.dynamic-thunderstorm .meteo-footer {
+    border-top-color: rgba(100, 160, 220, 0.2);
+}
 
 /* ---- Responsive ---- */
 @media (max-width: 768px) {
-    .forecast-row { grid-template-columns: repeat(4, 1fr); }
-    .forecast-row .forecast-col:nth-child(n+5) { display: none; }
-    .weather-canvas { position: fixed; }
+    .forecast-row {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .forecast-row .forecast-col:nth-child(n+5) {
+        display: none;
+    }
+
+    .weather-canvas {
+        position: fixed;
+    }
+}
+
+/* =============================================
+   ISLANDS PANELS (Madeira & Açores)
+   ============================================= */
+
+.islands-panels {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.island-panel {
+    border-radius: 10px;
+    padding: 0.5rem 0.75rem 0.4rem;
+    overflow: hidden;
+}
+
+.theme-classic .island-panel {
+    background: #f7faff;
+    border: 1px solid #dde5f5;
+}
+
+.theme-dynamic .island-panel {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(6px);
+}
+
+.dynamic-rain .island-panel,
+.dynamic-thunderstorm .island-panel {
+    background: rgba(15, 35, 60, 0.45);
+    border-color: rgba(100, 160, 220, 0.2);
+}
+
+.island-panel-label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #0d47a1;
+    margin-bottom: 0.2rem;
+}
+
+.dynamic-rain .island-panel-label,
+.dynamic-thunderstorm .island-panel-label {
+    color: #7aaed4;
+}
+
+.island-panel-svg {
+    width: 100%;
+    height: auto;
+    display: block;
 }

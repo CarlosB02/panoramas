@@ -1,38 +1,49 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import Script from 'next/script';
 import './CookieConsent.css';
 
 export default function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
-  const [hasConsent, setHasConsent] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     const consent = localStorage.getItem('panoramas_consent');
+
     if (consent === 'true') {
-      setHasConsent(true);
-    } else if (consent === null || consent === 'false') {
-      if (consent === null) setIsVisible(true);
+      // User already accepted — upgrade consent immediately
+      grantConsent();
+    } else if (consent === null) {
+      // First visit — show the banner
+      setIsVisible(true);
     }
+    // If 'false', keep the defaults (denied) — no banner shown again
   }, []);
+
+  const grantConsent = () => {
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+      window.gtag('consent', 'update', {
+        'ad_storage': 'granted',
+        'ad_user_data': 'granted',
+        'ad_personalization': 'granted',
+        'analytics_storage': 'granted',
+      });
+    }
+  };
 
   const handleAccept = () => {
     localStorage.setItem('panoramas_consent', 'true');
-    setHasConsent(true);
+    grantConsent();
     setIsVisible(false);
     setShowFeedback(true);
-    setTimeout(() => {
-      setShowFeedback(false);
-    }, 3000);
+    setTimeout(() => setShowFeedback(false), 3000);
   };
 
   const handleDecline = () => {
     localStorage.setItem('panoramas_consent', 'false');
-    setHasConsent(false);
+    // Consent stays denied (GA Consent Mode default), no update needed
     setIsVisible(false);
   };
 
@@ -40,23 +51,6 @@ export default function CookieConsent() {
 
   return (
     <>
-      {hasConsent && (
-        <>
-          <Script
-            src="https://www.googletagmanager.com/gtag/js?id=G-V7MJMLJ3E6"
-            strategy="afterInteractive"
-          />
-          <Script id="google-analytics" strategy="afterInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-V7MJMLJ3E6');
-            `}
-          </Script>
-        </>
-      )}
-
       <div className="cookie-overlay">
         <div className={`cookie-banner ${isVisible ? 'visible' : ''}`}>
           <div className="cookie-content">

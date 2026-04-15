@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <!-- MADEIRA GROUP -->
+  <g id="madeira-group">
+    <!-- Ilha da Madeira (forma simplificada, alongada W-E) -->
+    <ellipse id="madeira-ilha" cx="110" cy="80" rx="85" ry="28" fill="#c8e6c9" stroke="#2d6a4f" stroke-width="3"/>
+    <!-- Porto Santo (ilhéu a NE da Madeira) -->
+    <ellipse id="porto-santo-ilha" cx="235" cy="55" rx="28" ry="14" fill="#c8e6c9" stroke="#2d6a4f" stroke-width="2"/>
+    <!-- Label -->
+    <text x="110" y="122" text-anchor="middle" font-size="13" font-weight="700" fill="#1b4332" font-family="sans-serif">MADEIRA</text>
+  </g>
+
+  <!-- AÇORES GROUP -->
+  <g id="acores-group">
+    <!-- Grupo Ocidental: Flores e Corvo -->
+    <ellipse id="flores-ilha" cx="90" cy="310" rx="22" ry="14" fill="#c8e6c9" stroke="#2d6a4f" stroke-width="2"/>
+    <ellipse id="corvo-ilha" cx="90" cy="272" rx="10" ry="8" fill="#c8e6c9" stroke="#2d6a4f" stroke-width="2"/>
+    <!-- Grupo Central: Faial, Pico, São Jorge, Graciosa, Terceira -->
+    <ellipse id="faial-ilha" cx="270" cy="295" rx="22" ry="14" fill="#c8e6c9" stroke="#2d6a4f" stroke-width="2"/>
+    <ellipse id="pico-ilha" cx="305" cy="315" rx="30" ry="12" fill="#c8e6c9" stroke="#2d6a4f" stroke-width="2"/>
+    <ellipse id="saojorge-ilha" cx="340" cy="275" rx="32" ry="10" fill="#c8e6c9" stroke="#2d6a4f" stroke-width="2"/>
+    <ellipse id="graciosa-ilha" cx="355" cy="248" rx="16" ry="10" fill="#c8e6c9" stroke="#2d6a4f" stroke-width="2"/>
+    <ellipse id="terceira-ilha" cx="420" cy="260" rx="28" ry="18" fill="#c8e6c9" stroke="#2d6a4f" stroke-width="2"/>
+    <!-- Grupo Oriental: São Miguel e Santa Maria -->
+    <ellipse id="saomiguel-ilha" cx="555" cy="305" rx="45" ry="18" fill="#c8e6c9" stroke="#2d6a4f" stroke-width="2"/>
+    <ellipse id="santamaria-ilha" cx="590" cy="345" rx="18" ry="10" fill="#c8e6c9" stroke="#2d6a4f" stroke-width="2"/>
+    <!-- Label -->
+    <text x="340" y="395" text-anchor="middle" font-size="13" font-weight="700" fill="#1b4332" font-family="sans-serif">AÇORES</text>
+  </g>
+</svg>

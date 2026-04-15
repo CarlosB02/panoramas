@@ -2,6 +2,7 @@ import './index.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CookieConsent from '@/components/CookieConsent';
+import Script from 'next/script';
 
 export const metadata = {
     title: {
@@ -26,6 +27,30 @@ export default function RootLayout({ children }) {
     return (
         <html lang="pt" suppressHydrationWarning>
             <body suppressHydrationWarning>
+                {/* GA4 Consent Mode v2 — loads always, cookies denied by default */}
+                <Script id="ga-consent-init" strategy="beforeInteractive">
+                    {`
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag(){dataLayer.push(arguments);}
+
+                        // Set default consent state — denied before user choice
+                        gtag('consent', 'default', {
+                            'ad_storage': 'denied',
+                            'ad_user_data': 'denied',
+                            'ad_personalization': 'denied',
+                            'analytics_storage': 'denied',
+                            'wait_for_update': 500
+                        });
+
+                        gtag('js', new Date());
+                        gtag('config', 'G-V7MJMLJ3E6', { 'send_page_view': true });
+                    `}
+                </Script>
+                <Script
+                    src="https://www.googletagmanager.com/gtag/js?id=G-V7MJMLJ3E6"
+                    strategy="afterInteractive"
+                />
+
                 <div className="layout-wrapper">
                     <Header />
                     <main className="main-content">

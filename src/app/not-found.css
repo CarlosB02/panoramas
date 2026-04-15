@@ -1,0 +1,142 @@
+.not-found-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    text-align: center;
+    padding: 2rem;
+    background: radial-gradient(circle at center, #ffffff 0%, #f8faff 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.nf-bg-text {
+    position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-size: 25vw;
+    font-weight: 900;
+    color: rgba(0, 56, 118, 0.03);
+    z-index: 0;
+    user-select: none;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.nf-content {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.nf-badge {
+    display: inline-block;
+    background: #003876;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+}
+
+.nf-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+}
+
+.nf-title span {
+    display: block;
+    color: #003876;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.nf-description {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.nf-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-primary {
+    background: #003876;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 56, 118, 0.2);
+}
+
+.btn-primary:hover {
+    background: #002a58;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 56, 118, 0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #003876;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    border: 2px solid #003876;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: #003876;
+    color: white;
+}
+
+.nf-decoration {
+    margin-top: 4rem;
+    opacity: 0.5;
+}
+
+.newspaper-icon {
+    width: 60px;
+    height: 60px;
+    color: #003876;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@media (max-width: 768px) {
+    .nf-title {
+        font-size: 2.5rem;
+    }
+    .nf-description {
+        font-size: 1rem;
+    }
+    .nf-actions {
+        flex-direction: column;
+    }
+}
