@@ -43,8 +43,6 @@ export default function ArticleContent({ article, slug }) {
                                     <span>{article.readTime}</span>
                                 </>
                             )}
-                            <span className="divider">•</span>
-                            <span>💬 {article.comments || '0'}</span>
                         </div>
                     </div>
 
@@ -84,7 +82,7 @@ export default function ArticleContent({ article, slug }) {
 
                     {article.expertQuote && (
                         <div className="article-expert-quote">
-                            <span className="eq-icon">💬</span>
+                             <span className="eq-icon">💡</span>
                             <blockquote>&quot;{article.expertQuote.text}&quot;</blockquote>
                             <cite>— <strong>{article.expertQuote.author}</strong>, {article.expertQuote.title}</cite>
                         </div>

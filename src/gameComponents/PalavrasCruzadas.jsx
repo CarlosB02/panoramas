@@ -89,7 +89,8 @@ export default function PalavrasCruzadas() {
     return (
         <div className="cruzadas-page">
             <header className="cruzadas-header">
-                <h1>📰 Palavras Cruzadas</h1>
+                <img src="/icons/jogos/icon-palavras cruzadas.png" alt="Palavras Cruzadas" className="game-header-icon" />
+                <h1>Palavras Cruzadas</h1>
                 <p>Preencha a grelha com as respostas corretas usando as pistas fornecidas!</p>
             </header>
 

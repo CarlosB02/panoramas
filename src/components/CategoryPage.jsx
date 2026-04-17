@@ -58,7 +58,7 @@ const CategoryPage = ({ categoryName, articles = [] }) => {
                                     <div className="grid-card__meta">
                                         <span className="meta__author">{article.author}</span>
                                         <span>{article.timestamp}</span>
-                                        <span>💬 {article.comments}</span>
+
                                     </div>
                                     <p className={`grid-card__summary ${isHero ? 'summary--hero' : ''}`}>{article.summary}</p>
                                     {article.pullQuote && isHero && (

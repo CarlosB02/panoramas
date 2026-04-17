@@ -75,7 +75,8 @@ export default function CincoCruzados() {
     return (
         <div className="cinco-page">
             <header className="cinco-header">
-                <h1>🟩 5 Cruzados</h1>
+                <img src="/icons/jogos/icon-5 cruzados.png" alt="5 Cruzados" className="game-header-icon" />
+                <h1>5 Cruzados</h1>
                 <p>Adivinhe a palavra de 5 letras em 6 tentativas. Cores indicam quão perto está!</p>
             </header>
 

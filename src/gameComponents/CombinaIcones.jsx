@@ -64,7 +64,8 @@ export default function CombinaIcones() {
     return (
         <div className="combina-page">
             <header className="combina-header">
-                <h1>🧩 Combina Ícones</h1>
+                <img src="/icons/jogos/icon-combina.png" alt="Combina Ícones" className="game-header-icon" />
+                <h1>Combina Ícones</h1>
                 <p>Encontre todos os pares de emojis! Vire duas cartas de cada vez e treine a sua memória.</p>
             </header>
 

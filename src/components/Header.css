@@ -11,6 +11,8 @@
     padding: 8px 0;
     letter-spacing: 0.02em;
     font-weight: 500;
+    position: relative;
+    z-index: 1051;
 }
 
 .utility-container {

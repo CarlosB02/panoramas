@@ -90,7 +90,8 @@ export default function Troca() {
     return (
         <div className="troca-page">
             <header className="troca-header">
-                <h1>🎲 Troca</h1>
+                <img src="/icons/jogos/icon-troca.png" alt="Troca" className="game-header-icon" />
+                <h1>Troca</h1>
                 <p>Troque letras de posição para formar a palavra correta. Selecione duas letras para as trocar!</p>
             </header>
 

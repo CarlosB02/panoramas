@@ -88,7 +88,8 @@ export default function SopaDeLetras() {
     return (
         <div className="sopa-page">
             <header className="sopa-header">
-                <h1>🔍 Sopa de Letras</h1>
+                <img src="/icons/jogos/icon-sopa de letras.png" alt="Sopa de Letras" className="game-header-icon" />
+                <h1>Sopa de Letras</h1>
                 <p>Encontre todas as palavras ocultas na grelha. Clique nas letras para as selecionar!</p>
             </header>
 

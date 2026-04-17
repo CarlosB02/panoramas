@@ -63,7 +63,8 @@ export default function Sudoku() {
     return (
         <div className="sudoku-page">
             <header className="sudoku-header">
-                <h1>🔢 Sudoku</h1>
+                <img src="/icons/jogos/icon-sudoku.png" alt="Sudoku" className="game-header-icon" />
+                <h1>Sudoku</h1>
                 <p>Preencha a grelha para que cada linha, coluna e bloco 3×3 contenha os dígitos de 1 a 9.</p>
             </header>
 

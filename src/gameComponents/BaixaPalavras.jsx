@@ -54,7 +54,8 @@ export default function BaixaPalavras() {
     return (
         <div className="baixa-page">
             <header className="baixa-header">
-                <h1>📝 BaixaPalavras</h1>
+                <img src="/icons/jogos/icon-baixa palavras.png" alt="BaixaPalavras" className="game-header-icon" />
+                <h1>BaixaPalavras</h1>
                 <p>Descubra todas as palavras ocultas em cada nível. Encontre padrões e pavimente o caminho!</p>
             </header>
 

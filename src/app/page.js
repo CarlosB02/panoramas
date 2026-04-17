@@ -7,7 +7,7 @@ import NewsCard from '@/components/NewsCard';
 import CategorySection from '@/components/CategorySection';
 import InteractiveHub from '@/components/InteractiveHub';
 import MixedNewsBand from '@/components/MixedNewsBand';
-import { localFeatured, localByCategory, localBreaking, localMostRead, localLive, allLocalArticles } from '@/data/localNews';
+
 import { getTrendingArticles, getLatestArticles } from '@/lib/articles';
 import { supabase } from '@/lib/supabase';
 import { mapSupabaseArticle } from '@/lib/articles';
@@ -61,7 +61,7 @@ function groupByCategory(articles) {
 
 export default function HomePage() {
     const [allSupabaseArticles, setAllSupabaseArticles] = React.useState([]);
-    const [mostReadArticles, setMostReadArticles] = React.useState(localMostRead);
+    const [mostReadArticles, setMostReadArticles] = React.useState([]);
     const [latestArticles, setLatestArticles] = React.useState([]);
     const [loaded, setLoaded] = React.useState(false);
 
@@ -94,8 +94,8 @@ export default function HomePage() {
         }
     }, []);
 
-    // --- Article pool: use Supabase if available, otherwise local fallback ---
-    const articlePool = allSupabaseArticles.length > 0 ? allSupabaseArticles : allLocalArticles;
+    // --- Article pool: Supabase only ---
+    const articlePool = allSupabaseArticles;
 
     // Daily seed for consistent-but-rotating content
     const seed = getDailySeed();
@@ -106,7 +106,7 @@ export default function HomePage() {
     // --- Lead / Featured story: first article in daily shuffle ---
     const featuredArticle = latestArticles.length > 0
         ? latestArticles[0]
-        : (dailyShuffled[0] || localFeatured);
+        : (dailyShuffled[0] || null);
 
     // --- Top stories sidebar (4 articles, skip the featured one) ---
     const topStoriesColumn = latestArticles.length > 0
@@ -114,20 +114,13 @@ export default function HomePage() {
         : dailyShuffled.slice(1, 5);
 
     // --- "Ao Minuto" live list (3 most recent) ---
-    const liveItems = latestArticles.length > 0
-        ? latestArticles.slice(0, 3)
-        : localLive.slice(0, 3);
+    const liveItems = latestArticles.slice(0, 3);
 
     // --- Analysis / Opinion band: 4 articles from a rotated offset ---
     const opinionBand = dailyShuffled.slice(5, 9);
 
     // --- Category sections: group the shuffled pool ---
-    const byCategory = React.useMemo(() => {
-        if (allSupabaseArticles.length > 0) {
-            return groupByCategory(dailyShuffled);
-        }
-        return localByCategory;
-    }, [allSupabaseArticles, dailyShuffled]);
+    const byCategory = React.useMemo(() => groupByCategory(dailyShuffled), [dailyShuffled]);
 
     const categorySections = Object.entries(byCategory).map(([name, articles]) => ({
         name,
@@ -146,9 +139,7 @@ export default function HomePage() {
     };
 
     // Breaking news headlines
-    const breakingHeadlines = latestArticles.length > 0
-        ? latestArticles.slice(0, 5).map(a => a.title)
-        : localBreaking;
+    const breakingHeadlines = latestArticles.slice(0, 5).map(a => a.title);
 
     return (
         <div className="home-page">
@@ -159,7 +150,7 @@ export default function HomePage() {
                 {/* EDITORIAL TOP SECTION */}
                 <div className="editorial-top">
                     <div className="lead-story-area">
-                        <NewsCard news={featuredArticle} variant="lead" showSummary={true} />
+                        {featuredArticle && <NewsCard news={featuredArticle} variant="lead" showSummary={true} />}
                     </div>
                     <aside className="top-stories-sidebar">
                         <div className="sidebar-header">

@@ -172,10 +172,11 @@ export default function MeteorologiaPage() {
     const [cities, setCities] = useState([]);
     const [weatherTypes, setWeatherTypes] = useState({});
     const [selectedCityId, setSelectedCityId] = useState(1110600);
-    const [theme, setTheme] = useState('classic');
+    const [theme, setTheme] = useState('dynamic');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [sevenDayForecast, setSevenDayForecast] = useState([]);
+    const [mapModalOpen, setMapModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -265,7 +266,7 @@ export default function MeteorologiaPage() {
     const t = {
         title: 'Meteorologia',
         subtitle: 'Previsão meteorológica para Portugal — Fonte: IPMA',
-        citySelector: <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}><img src="/icons/meteorologia/icon-select.png" width="18" height="18" alt="select"/>Selecionar cidade:</span>,
+        citySelector: <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}><img src="/icons/meteorologia/icon-select.png" width="18" height="18" alt="select" />Selecionar cidade:</span>,
         todayPrevisão: 'Previsão para hoje',
         tempLabel: 'Temperatura', condLabel: 'Condição',
         rainLabel: 'Prob. de Chuva', windLabel: 'Vento',
@@ -309,10 +310,10 @@ export default function MeteorologiaPage() {
                 <div className="style-switch">
                     <span className="switch-label">Estilo:</span>
                     <button className={`switch-btn ${theme === 'classic' ? 'active' : ''}`} onClick={() => setTheme('classic')} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                        <img src="/icons/meteorologia/icon-classico.png" width="16" height="16" alt=""/> Clássico
+                        <img src="/icons/meteorologia/icon-classico.png" width="16" height="16" alt="" /> Clássico
                     </button>
                     <button className={`switch-btn ${theme === 'dynamic' ? 'active' : ''}`} onClick={() => setTheme('dynamic')} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                        <img src="/icons/meteorologia/icon-aguaceiros.png" width="16" height="16" alt=""/> Dinâmico
+                        <img src="/icons/meteorologia/icon-aguaceiros.png" width="16" height="16" alt="" /> Dinâmico
                     </button>
                 </div>
 
@@ -331,8 +332,32 @@ export default function MeteorologiaPage() {
                             </select>
                         </div>
 
+                        {/* Mobile map button */}
+                        <button
+                            className="mobile-map-btn"
+                            onClick={() => setMapModalOpen(true)}
+                            aria-label="Ver mapa de Portugal"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+                            Ver Mapa de Portugal
+                        </button>
+
+                        {/* Map modal overlay (mobile) */}
+                        {mapModalOpen && (
+                            <div className="map-modal-overlay" onClick={() => setMapModalOpen(false)}>
+                                <div className="map-modal" onClick={e => e.stopPropagation()}>
+                                    <button className="map-modal-close" onClick={() => setMapModalOpen(false)} aria-label="Fechar mapa">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    </button>
+                                    <h3 className="map-modal-title">Mapa de Portugal</h3>
+                                    <p className="map-modal-hint">Toca numa cidade para selecionar</p>
+                                    <PortugalMap cities={cities} selectedCityId={selectedCityId} onCitySelect={(id) => { setSelectedCityId(id); setMapModalOpen(false); }} theme={theme} />
+                                </div>
+                            </div>
+                        )}
+
                         <div className="meteo-grid">
-                            {/* Map */}
+                            {/* Map — hidden on mobile via CSS */}
                             <div className="map-panel">
                                 <PortugalMap cities={cities} selectedCityId={selectedCityId} onCitySelect={setSelectedCityId} theme={theme} />
                             </div>
@@ -361,7 +386,7 @@ export default function MeteorologiaPage() {
                                     <div className="data-card card-temp">
                                         <div className="card-label"><span className="theme-label">{t.tempLabel}</span></div>
                                         <div className="card-icon">
-                                            <img src={`/icons/meteorologia/${getTempIcon(selectedForecast?.tMax)}`} width="36" height="36" alt="temperatura"/>
+                                            <img src={`/icons/meteorologia/${getTempIcon(selectedForecast?.tMax)}`} width="36" height="36" alt="temperatura" />
                                         </div>
                                         <div className="card-value">
                                             {selectedForecast ? (
@@ -371,30 +396,32 @@ export default function MeteorologiaPage() {
                                         <div className="card-sub">Máx: {selectedForecast?.tMax || '—'}°C | Mín: {selectedForecast?.tMin || '—'}°C</div>
                                     </div>
 
-                                    <div className="data-card card-condition">
-                                        <div className="card-label"><span className="theme-label">{t.condLabel}</span></div>
-                                        <div className="card-icon">
-                                            <img src={`/icons/meteorologia/${conditionIcon}`} width="36" height="36" alt="condição"/>
+                                    <div className="data-cards-carousel">
+                                        <div className="data-card card-condition">
+                                            <div className="card-label"><span className="theme-label">{t.condLabel}</span></div>
+                                            <div className="card-icon">
+                                                <img src={`/icons/meteorologia/${conditionIcon}`} width="36" height="36" alt="condição" />
+                                            </div>
+                                            <div className="card-value card-value-text">{conditionText}</div>
                                         </div>
-                                        <div className="card-value card-value-text">{conditionText}</div>
-                                    </div>
 
-                                    <div className="data-card card-rain">
-                                        <div className="card-label"><span className="theme-label">{t.rainLabel}</span></div>
-                                        <div className="card-icon">
-                                            <img src="/icons/meteorologia/icon-rain.png" width="36" height="36" alt="chuva"/>
+                                        <div className="data-card card-rain">
+                                            <div className="card-label"><span className="theme-label">{t.rainLabel}</span></div>
+                                            <div className="card-icon">
+                                                <img src="/icons/meteorologia/icon-rain.png" width="36" height="36" alt="chuva" />
+                                            </div>
+                                            <div className="card-value">{selectedForecast ? `${parseFloat(selectedForecast.precipitaProb).toFixed(0)}%` : '—'}</div>
+                                            <div className="card-sub">Probabilidade de precipitação</div>
                                         </div>
-                                        <div className="card-value">{selectedForecast ? `${parseFloat(selectedForecast.precipitaProb).toFixed(0)}%` : '—'}</div>
-                                        <div className="card-sub">Probabilidade de precipitação</div>
-                                    </div>
 
-                                    <div className="data-card card-wind">
-                                        <div className="card-label"><span className="theme-label">{t.windLabel}</span></div>
-                                        <div className="card-icon">
-                                            <img src="/icons/meteorologia/icon-wind.png" width="36" height="36" alt="vento"/>
+                                        <div className="data-card card-wind">
+                                            <div className="card-label"><span className="theme-label">{t.windLabel}</span></div>
+                                            <div className="card-icon">
+                                                <img src="/icons/meteorologia/icon-wind.png" width="36" height="36" alt="vento" />
+                                            </div>
+                                            <div className="card-value">{windDir}</div>
+                                            <div className="card-sub">Intensidade: {windSpeed}</div>
                                         </div>
-                                        <div className="card-value">{windDir}</div>
-                                        <div className="card-sub">Intensidade: {windSpeed}</div>
                                     </div>
                                 </div>
                             </div>
@@ -409,12 +436,12 @@ export default function MeteorologiaPage() {
                                         <div key={day.forecastDate + index} className={`forecast-col ${index === 0 ? 'today-col' : ''}`}>
                                             <div className="f-day">{index === 0 ? t.todayLabel : formatDateStr(day.forecastDate)}</div>
                                             <div className="f-icon">
-                                                <img src={`/icons/meteorologia/${WEATHER_ICONS[day.idWeatherType] || 'icon-medium temperature.png'}`} width="28" height="28" alt="condição" style={{margin: '0 auto', display: 'block'}}/>
+                                                <img src={`/icons/meteorologia/${WEATHER_ICONS[day.idWeatherType] || 'icon-medium temperature.png'}`} width="28" height="28" alt="condição" style={{ margin: '0 auto', display: 'block' }} />
                                             </div>
                                             <div className="f-temps"><span className="f-tmax">{day.tMax}°</span><span className="f-tmin">{day.tMin}°</span></div>
                                             <div className="f-details">
-                                                <span className="f-detail-item" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}><img src="/icons/meteorologia/icon-wind.png" width="14" height="14" alt=""/>{day.predWindDir}</span>
-                                                <span className="f-detail-item" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}><img src="/icons/meteorologia/icon-rain.png" width="14" height="14" alt=""/>{parseFloat(day.precipitaProb).toFixed(0)}%</span>
+                                                <span className="f-detail-item" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}><img src="/icons/meteorologia/icon-wind.png" width="14" height="14" alt="" />{day.predWindDir}</span>
+                                                <span className="f-detail-item" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}><img src="/icons/meteorologia/icon-rain.png" width="14" height="14" alt="" />{parseFloat(day.precipitaProb).toFixed(0)}%</span>
                                             </div>
                                         </div>
                                     ))}

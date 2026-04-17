@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { getTopPreference, recordCategoryView } from '@/lib/userPreferences';
-import { allLocalArticles } from '@/data/localNews';
+import { getArticlesByCategory, getLatestArticles } from '@/lib/articles';
 import MixedNewsBand from './MixedNewsBand';
 
 export default function RecommendedArticles({ currentArticleId, fallbackCategory }) {
@@ -15,27 +15,29 @@ export default function RecommendedArticles({ currentArticleId, fallbackCategory
         // Identificar a categoria principal do utilizador
         const preferredCat = getTopPreference(fallbackCategory);
         
-        // Obter os artigos dessa mesma categoria
-        let candidates = allLocalArticles.filter(a => 
-            a.id !== currentArticleId && 
-            (a.categorySlug === preferredCat || a.category === preferredCat)
-        );
+        const fetchRecommended = async () => {
+            // Obter os artigos dessa mesma categoria
+            let candidates = await getArticlesByCategory(preferredCat);
+            candidates = candidates.filter(a => a.id !== currentArticleId);
+            
+            // Se a categoria tiver poucos artigos, misturar com artigos gerais para não ficar vazio
+            if (candidates.length < 4) {
+                let others = await getLatestArticles(15);
+                others = others.filter(a => 
+                    a.id !== currentArticleId && 
+                    a.categorySlug !== preferredCat
+                );
+                // Aleatorizar um pouco os outros
+                const shuffledOthers = others.sort(() => 0.5 - Math.random());
+                candidates = [...candidates, ...shuffledOthers].slice(0, 6);
+            } else {
+                candidates = candidates.sort(() => 0.5 - Math.random()).slice(0, 6);
+            }
+            
+            setRecommended(candidates);
+        };
         
-        // Se a categoria tiver poucos artigos, misturar com artigos gerais para não ficar vazio
-        if (candidates.length < 4) {
-            const others = allLocalArticles.filter(a => 
-                a.id !== currentArticleId && 
-                a.categorySlug !== preferredCat
-            );
-            // Aleatorizar um pouco os outros (pseudo-random para dar vibe diferente)
-            const shuffledOthers = others.sort(() => 0.5 - Math.random());
-            candidates = [...candidates, ...shuffledOthers].slice(0, 6);
-        } else {
-            // Aleatorizar dentro da categoria também é fixe
-            candidates = candidates.sort(() => 0.5 - Math.random()).slice(0, 6);
-        }
-        
-        setRecommended(candidates);
+        fetchRecommended();
     }, [currentArticleId, fallbackCategory]);
 
     if (recommended.length === 0) return null;

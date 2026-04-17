@@ -1,5 +1,4 @@
 import { supabase } from './supabase';
-import { allLocalArticles, localMostRead, localByCategory } from '../data/localNews';
 
 /**
  * Map a Supabase `noticias` row to the article shape used by components.
@@ -26,7 +25,7 @@ export function mapSupabaseArticle(row) {
         content: content,
         category: row.categoria || '',
         categorySlug: (row.categoria || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-'),
-        image: row.imagem_url || row.image_url || '/images/almada_float.png',
+        image: row.imagem_url || row.image_url || null,
         timestamp: row.created_at
             ? new Date(row.created_at).toLocaleDateString('pt-PT', { day: 'numeric', month: 'long', year: 'numeric' })
             : '',
@@ -66,9 +65,8 @@ export async function getArticleBySlug(slug) {
         }
     }
 
-    // Fallback to local data
-    const localArticle = allLocalArticles.find(a => a.seoMeta?.slug === slug);
-    return localArticle ? { ...localArticle, _fromSupabase: false } : null;
+    // No data found
+    return null;
 }
 
 /**
@@ -112,7 +110,7 @@ export async function getTrendingArticles(limit = 6) {
         }
     }
 
-    return localMostRead.slice(0, limit);
+    return [];
 }
 
 /**
@@ -144,24 +142,7 @@ export async function searchArticles(queryStr) {
         }
     }
 
-    const lowerQuery = queryStr.toLowerCase();
-    const localResults = allLocalArticles.filter(article => {
-        return (
-            article.title.toLowerCase().includes(lowerQuery) ||
-            article.summary.toLowerCase().includes(lowerQuery) ||
-            article.category.toLowerCase().includes(lowerQuery) ||
-            (article.content && article.content.toLowerCase().includes(lowerQuery))
-        );
-    });
-
-    const merged = [...supabaseResults];
-    for (const local of localResults) {
-        if (!merged.find(m => m.seoMeta?.slug === local.seoMeta?.slug)) {
-            merged.push({ ...local, _fromSupabase: false });
-        }
-    }
-
-    return merged;
+    return supabaseResults;
 }
 
 /**
@@ -189,14 +170,5 @@ export async function getArticlesByCategory(categoryName) {
         }
     }
 
-    const localResults = localByCategory[categoryName] || [];
-
-    const merged = [...supabaseResults];
-    for (const local of localResults) {
-        if (!merged.find(m => m.seoMeta?.slug === local.seoMeta?.slug)) {
-            merged.push({ ...local, _fromSupabase: false });
-        }
-    }
-
-    return merged;
+    return supabaseResults;
 }

@@ -47,7 +47,8 @@ export default function StopDiario() {
         <div className="stop-page">
             <header className="stop-header">
                 <span className="stop-badge-new">NOVO</span>
-                <h1>🧠 Stop Diário</h1>
+                <img src="/icons/jogos/icon-stop.png" alt="Stop Diário" className="game-header-icon" />
+                <h1>Stop Diário</h1>
                 <p>Lance uma letra e preencha todas as categorias o mais depressa possível!</p>
             </header>
 

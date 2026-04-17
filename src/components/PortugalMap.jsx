@@ -17,15 +17,15 @@ const latLonToSvg = (lat, lon) => {
 // Cities to show in the islands panels (IPMA globalIdLocal IDs)
 // Madeira
 const MADEIRA_CITIES = [
-    { id: 2310300, local: 'Funchal',     cx: 110, cy: 80  },
-    { id: 2320100, local: 'Porto Santo', cx: 235, cy: 55  },
+    { id: 2310300, local: 'Funchal', cx: 110, cy: 80 },
+    { id: 2320100, local: 'Porto Santo', cx: 235, cy: 55 },
 ];
 // Açores
 const ACORES_CITIES = [
-    { id: 3480200, local: 'Santa Cruz das Flores', cx: 90,  cy: 310 },
-    { id: 3470100, local: 'Horta',                 cx: 270, cy: 295 },
-    { id: 3430100, local: 'Angra do Heroísmo',     cx: 420, cy: 260 },
-    { id: 3420300, local: 'Ponta Delgada',         cx: 555, cy: 305 },
+    { id: 3480200, local: 'Santa Cruz das Flores', cx: 90, cy: 310 },
+    { id: 3470100, local: 'Horta', cx: 270, cy: 295 },
+    { id: 3430100, local: 'Angra do Heroísmo', cx: 420, cy: 260 },
+    { id: 3420300, local: 'Ponta Delgada', cx: 555, cy: 305 },
 ];
 
 const PortugalMap = ({ cities, selectedCityId, onCitySelect, theme }) => {
@@ -120,7 +120,13 @@ const PortugalMap = ({ cities, selectedCityId, onCitySelect, theme }) => {
                     </g>
                 )}
                 {cities.map(city => {
-                    const { x, y } = latLonToSvg(parseFloat(city.latitude), parseFloat(city.longitude));
+                    let { x, y } = latLonToSvg(parseFloat(city.latitude), parseFloat(city.longitude));
+
+                    // Ajustes manuais para alinhar cidades específicas mais à direita
+                    if (['Santarém', 'Viana do Castelo', 'Porto', 'Aveiro'].includes(city.local)) {
+                        x += 800;
+                    }
+
                     const isSelected = city.globalIdLocal === selectedCityId;
                     if (parseFloat(city.latitude) < LAT_MIN || parseFloat(city.latitude) > LAT_MAX) return null;
                     if (parseFloat(city.longitude) < LON_MIN || parseFloat(city.longitude) > LON_MAX) return null;

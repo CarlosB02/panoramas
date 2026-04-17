@@ -1,8 +1,39 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import './InteractiveHub.css';
 
 const InteractiveHub = () => {
+    const [fuelData, setFuelData] = useState({
+        gasolina95: '1.689',
+        gasoleo: '1.549',
+        gpl: '0.829',
+        loading: true
+    });
+
+    useEffect(() => {
+        const fetchPrices = async () => {
+            try {
+                const response = await fetch('/api/fuel');
+                if (response.ok) {
+                    const data = await response.json();
+                    setFuelData({
+                        gasolina95: data.gasolina95 || '1.689',
+                        gasoleo: data.gasoleo || '1.549',
+                        gpl: data.gpl || '0.829',
+                        loading: false
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to fetch fuel prices:', error);
+                setFuelData(prev => ({ ...prev, loading: false }));
+            }
+        };
+
+        fetchPrices();
+    }, []);
+
     return (
         <section className="interactive-hub-section">
             <h3 className="section-title">O Centro Panorâmico</h3>
@@ -47,18 +78,24 @@ const InteractiveHub = () => {
                     <div className="fuel-list">
                         <div className="fuel-item">
                             <span className="fuel-name">Gasolina 95</span>
-                            <span className="fuel-price">1.689 <small>€/l</small></span>
+                            <span className="fuel-price">
+                                {fuelData.gasolina95} <small>€/l</small>
+                            </span>
                         </div>
                         <div className="fuel-item highlight">
                             <span className="fuel-name">Gasóleo</span>
-                            <span className="fuel-price">1.549 <small>€/l</small></span>
+                            <span className="fuel-price">
+                                {fuelData.gasoleo} <small>€/l</small>
+                            </span>
                         </div>
                         <div className="fuel-item gpl">
                             <span className="fuel-name">GPL Auto</span>
-                            <span className="fuel-price">0.829 <small>€/l</small></span>
+                            <span className="fuel-price">
+                                {fuelData.gpl} <small>€/l</small>
+                            </span>
                         </div>
                     </div>
-                    <div className="fuel-footer">Preço médio nacional</div>
+                    <div className="fuel-footer">Preço médio nacional • DGEG</div>
                 </div>
             </div>
         </section>

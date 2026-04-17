@@ -103,11 +103,123 @@
     .meteo-grid {
         grid-template-columns: 1fr;
     }
+    .map-panel {
+        display: none;
+    }
 }
 
 .map-panel {
     position: sticky;
     top: 1rem;
+}
+
+/* Mobile map trigger button */
+.mobile-map-btn {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-map-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem auto;
+        gap: 0.5rem;
+        padding: 0.7rem 1.5rem;
+        border-radius: 999px;
+        border: none;
+        background: #0d47a1;
+        color: #fff;
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+        transition: transform 0.2s, background 0.2s;
+    }
+
+    .theme-dynamic .mobile-map-btn {
+        background: #fff;
+        color: #0d47a1;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .mobile-map-btn:hover {
+        background: #1976d2;
+        color: #fff;
+    }
+
+    .theme-dynamic .mobile-map-btn:hover {
+        background: rgba(255,255,255,0.2);
+    }
+}
+
+/* Map Modal */
+.map-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 9000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    animation: fadeInOverlay 0.2s ease;
+}
+
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.map-modal {
+    background: #fff;
+    width: 100%;
+    max-height: 90vh;
+    border-radius: 20px 20px 0 0;
+    padding: 1.5rem 1rem 2rem;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUpModal 0.25s ease;
+}
+
+@keyframes slideUpModal {
+    from { transform: translateY(60px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+.map-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #333;
+    transition: background 0.2s;
+}
+
+.map-modal-close:hover {
+    background: #ddd;
+}
+
+.map-modal-title {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #0d47a1;
+    margin-bottom: 0.25rem;
+}
+
+.map-modal-hint {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 1rem;
 }
 
 .portugal-map-svg {
@@ -136,6 +248,8 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    min-width: 0;
+    width: 100%;
 }
 
 /* City Banner */
@@ -174,9 +288,46 @@
     }
 }
 
+.data-cards-carousel {
+    display: contents;
+}
+
 @media (max-width: 600px) {
     .data-cards {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .data-cards-carousel {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .data-cards-carousel::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .data-cards-carousel::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+    }
+
+    .theme-dynamic .data-cards-carousel::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .data-cards-carousel .data-card {
+        min-width: 150px;
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        height: auto;
     }
 }
 
@@ -184,13 +335,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between; /* Mantém conteúdo a preencher o card de forma igual */
+    justify-content: space-between;
+    /* Mantém conteúdo a preencher o card de forma igual */
     text-align: center;
     padding: 1.5rem 1rem;
     border-radius: 12px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     min-height: 180px;
-    height: 100%; /* Força a ocupar a mesma altura que os outros */
+    height: 100%;
+    /* Força a ocupar a mesma altura que os outros */
 }
 
 .data-card:hover {
@@ -224,7 +377,8 @@
 
 .card-temp .card-value {
     font-size: 1.8rem;
-    white-space: nowrap; /* Impede que a temperatura salte para a linha de baixo */
+    white-space: nowrap;
+    /* Impede que a temperatura salte para a linha de baixo */
 }
 
 .temp-max {
@@ -283,6 +437,37 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .forecast-row {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 1rem;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .forecast-row::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .forecast-row::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+    }
+
+    .theme-dynamic .forecast-row::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .forecast-col {
+        min-width: 120px;
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+    }
 }
 
 .forecast-col {
@@ -664,27 +849,22 @@
 
 /* ---- Dynamic City Banner ---- */
 .theme-dynamic .theme-city-name {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: inherit;
-}
-
-.dynamic-rain .theme-city-name,
-.dynamic-thunderstorm .theme-city-name {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(100, 160, 220, 0.3);
+    background: linear-gradient(135deg, #0d47a1, #1976d2);
+    color: #fff;
+    border-radius: 12px;
 }
 
 .theme-dynamic .city-name-text {
     font-size: 2rem;
     letter-spacing: 0.5px;
+    color: #fff;
 }
 
-.dynamic-rain .city-name-text,
-.dynamic-thunderstorm .city-name-text {
-    color: #d0e4f7;
+.theme-dynamic .city-subtitle {
+    color: rgba(255, 255, 255, 0.9);
 }
+
+
 
 .theme-dynamic .city-monument-img {
     border-radius: 0 0 14px 14px;

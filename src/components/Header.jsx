@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import './Header.css';
-import { localMostRead } from '../data/localNews';
 import { getTrendingArticles } from '@/lib/articles';
 
 const Header = () => {
@@ -17,7 +16,7 @@ const Header = () => {
     const [email, setEmail] = useState('');
     const [subCategories, setSubCategories] = useState([]);
     const [subStatus, setSubStatus] = useState('idle');
-    const [trendingNews, setTrendingNews] = useState(localMostRead.slice(0, 5));
+    const [trendingNews, setTrendingNews] = useState([]);
     const pathname = usePathname();
     const router = useRouter();
     const searchInputRef = useRef(null);

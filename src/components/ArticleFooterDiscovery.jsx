@@ -2,34 +2,43 @@ import React from 'react';
 import Link from 'next/link';
 import NewsCard from './NewsCard';
 import CategorySection from './CategorySection';
-import { allLocalArticles, localByCategory } from '@/data/localNews';
-import { getTrendingArticles } from '@/lib/articles';
+import { getTrendingArticles, getLatestArticles } from '@/lib/articles';
 import './ArticleFooterDiscovery.css';
 
 export default async function ArticleFooterDiscovery({ currentArticleId, currentCategory }) {
-    // Excluir o artigo atual da pool
-    const otherArticles = allLocalArticles.filter(a => a.id !== currentArticleId);
+    // Get latest articles from DB
+    const latest = await getLatestArticles(50);
     
-    // Grid 1: Mais Notícias (9 artigos, misturados pseudo-aleatório consistente)
+    // Excluir o artigo atual da pool
+    const otherArticles = latest.filter(a => a.id !== currentArticleId);
+    
+    // Grid 1: Mais Notícias (9 artigos)
     const grid1Articles = otherArticles.slice(0, 9);
     
     // Grid 2: Em Destaque (6 artigos)
     const grid2Articles = otherArticles.slice(9, 15);
 
     // Outras Categorias (escolher 3 categorias que não sejam a atual)
-    const currentCatNormalized = currentCategory ? currentCategory.toLowerCase() : '';
-    const otherCats = Object.entries(localByCategory)
-        .filter(([cat]) => cat.toLowerCase() !== currentCatNormalized)
+    const currentCatNormalized = currentCategory ? currentCategory.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-') : '';
+    
+    const grouped = {};
+    otherArticles.slice(15).forEach(a => {
+        const cat = a.category || 'Geral';
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(a);
+    });
+    
+    const otherCats = Object.entries(grouped)
+        .filter(([cat]) => cat.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-') !== currentCatNormalized)
         .slice(0, 3);
         
     const trendingNews = await getTrendingArticles(6);
 
-    // Ligar a lista das Mais Lidas aos artigos completos para obter as imagens
-    const mostReadWithImages = trendingNews.map(mr => {
-        if (mr._fromSupabase) return mr;
-        const fullArticle = allLocalArticles.find(a => a.seoMeta?.slug === mr.seoMeta?.slug);
-        return { ...mr, image: fullArticle?.image || 'https://via.placeholder.com/600x400?text=Panoramas' };
-    });
+    // Mapear também para assegurar imagens mesmo se algo falhar
+    const mostReadWithImages = trendingNews.map(mr => ({
+        ...mr,
+        image: mr.image || 'https://via.placeholder.com/600x400?text=Panoramas'
+    }));
     
     return (
         <div className="article-footer-discovery">

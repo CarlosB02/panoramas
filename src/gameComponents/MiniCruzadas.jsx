@@ -81,7 +81,8 @@ export default function MiniCruzadas() {
     return (
         <div className="mini-page">
             <header className="mini-header">
-                <h1>✏️ Mini Cruzadas</h1>
+                <img src="/icons/jogos/icon-mini cruzadas.png" alt="Mini Cruzadas" className="game-header-icon" />
+                <h1>Mini Cruzadas</h1>
                 <p>Um puzzle rápido e satisfatório! Preencha a grelha 5×5 com as palavras corretas.</p>
             </header>
 
