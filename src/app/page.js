@@ -38,7 +38,7 @@ function getDailySeed() {
  * Group an array of articles by their category field.
  * Categories are shown in a preferred order; any extra categories come last.
  */
-const CATEGORY_ORDER = ['Política', 'Economia', 'Saúde', 'Portugal', 'Mundo', 'Entretenimento', 'Desporto', 'IA', 'Estilo de Vida', 'Descontos'];
+const CATEGORY_ORDER = ['Política', 'Economia', 'Saúde', 'Portugal', 'Mundo', 'Sociedade', 'Desporto', 'IA', 'Estilo de Vida', 'Descontos'];
 
 function groupByCategory(articles) {
     const groups = {};

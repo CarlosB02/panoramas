@@ -26,7 +26,7 @@ const Footer = () => {
                             <li><Link href="/economia">Economia</Link></li>
                             <li><Link href="/mundo">Mundo</Link></li>
                             <li><Link href="/tecnologia">Tecnologia</Link></li>
-                            <li><Link href="/entretenimento">Entretenimento</Link></li>
+                            <li><Link href="/sociedade">Sociedade</Link></li>
                         </ul>
                     </div>
                     <div className="footer-col">

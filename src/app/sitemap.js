@@ -11,7 +11,7 @@ export default async function sitemap() {
         '/economia',
         '/mundo',
         '/media',
-        '/entretenimento',
+        '/sociedade',
         '/desporto',
         '/saude',
         '/estilo-de-vida',

@@ -141,7 +141,7 @@ const Header = () => {
         { href: '/economia', label: 'Economia' },
         { href: '/mundo', label: 'Mundo' },
         { href: '/tecnologia', label: 'Tecnologia' },
-        { href: '/entretenimento', label: 'Entretenimento' },
+        { href: '/sociedade', label: 'Sociedade' },
         { href: '/desporto', label: 'Desporto' },
         { href: '/saude', label: 'Saúde' },
 
